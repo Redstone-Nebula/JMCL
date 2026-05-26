@@ -120,7 +120,7 @@ tasks.withType<JavaCompile> {
 
 tasks.checkstyleMain {
     // Third-party code is not checked
-    exclude("**/org/jackhuang/jmcl/ui/image/apng/**")
+    exclude("**/org/Open_code_Studio/jmcl/ui/image/apng/**")
 }
 
 val addOpens = listOf(
