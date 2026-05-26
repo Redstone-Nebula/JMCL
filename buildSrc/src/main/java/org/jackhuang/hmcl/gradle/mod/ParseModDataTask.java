@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.jackhuang.hmcl.gradle.mod;
+package org.jackhuang.jmcl.gradle.mod;
 
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;

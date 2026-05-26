@@ -1,6 +1,6 @@
-import org.jackhuang.hmcl.gradle.ci.CheckUpdate
-import org.jackhuang.hmcl.gradle.docs.UpdateDocuments
-import org.jackhuang.hmcl.gradle.l10n.ParseLanguageSubtagRegistry
+import org.jackhuang.jmcl.gradle.ci.CheckUpdate
+import org.jackhuang.jmcl.gradle.docs.UpdateDocuments
+import org.jackhuang.jmcl.gradle.l10n.ParseLanguageSubtagRegistry
 
 plugins {
     id("checkstyle")
@@ -75,15 +75,15 @@ subprojects {
     }
 }
 
-org.jackhuang.hmcl.gradle.javafx.JavaFXUtils.register(rootProject)
+org.jackhuang.jmcl.gradle.javafx.JavaFXUtils.register(rootProject)
 
 defaultTasks("clean", "build")
 
 tasks.register<ParseLanguageSubtagRegistry>("parseLanguageSubtagRegistry") {
     languageSubtagRegistryFile.set(layout.projectDirectory.file("language-subtag-registry"))
 
-    sublanguagesFile.set(layout.projectDirectory.file("HMCLCore/src/main/resources/assets/lang/sublanguages.csv"))
-    defaultScriptFile.set(layout.projectDirectory.file("HMCLCore/src/main/resources/assets/lang/default_script.csv"))
+    sublanguagesFile.set(layout.projectDirectory.file("JMCLCore/src/main/resources/assets/lang/sublanguages.csv"))
+    defaultScriptFile.set(layout.projectDirectory.file("JMCLCore/src/main/resources/assets/lang/default_script.csv"))
 }
 
 tasks.register<UpdateDocuments>("updateDocuments") {
@@ -91,9 +91,9 @@ tasks.register<UpdateDocuments>("updateDocuments") {
 }
 
 tasks.register<CheckUpdate>("checkUpdateDev") {
-    uri.set("https://ci.huangyuhui.net/job/HMCL-nightly")
+    uri.set("https://ci.huangyuhui.net/job/JMCL-nightly")
 }
 
 tasks.register<CheckUpdate>("checkUpdateStable") {
-    uri.set("https://ci.huangyuhui.net/job/HMCL-stable")
+    uri.set("https://ci.huangyuhui.net/job/JMCL-stable")
 }

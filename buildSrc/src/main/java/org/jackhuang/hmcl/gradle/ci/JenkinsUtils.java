@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.jackhuang.hmcl.gradle.ci;
+package org.jackhuang.jmcl.gradle.ci;
 
 /// @author Glavo
 public final class JenkinsUtils {

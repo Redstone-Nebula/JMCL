@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.jackhuang.hmcl.gradle.l10n;
+package org.jackhuang.jmcl.gradle.l10n;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
@@ -23,7 +23,7 @@ import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
-import org.jackhuang.hmcl.gradle.utils.PropertiesUtils;
+import org.jackhuang.jmcl.gradle.utils.PropertiesUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

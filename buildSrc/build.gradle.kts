@@ -24,7 +24,7 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.processResources {
-    into("org/jackhuang/hmcl/gradle/l10n") {
-        from(projectDir.resolve("../HMCLCore/src/main/resources/assets/lang/"))
+    into("org/jackhuang/jmcl/gradle/l10n") {
+        from(projectDir.resolve("../JMCLCore/src/main/resources/assets/lang/"))
     }
 }

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.jackhuang.hmcl.gradle.pack;
+package org.jackhuang.jmcl.gradle.pack;
 
 /// Debian packaging metadata for one HMCL release type.
 ///
@@ -23,9 +23,9 @@ package org.jackhuang.hmcl.gradle.pack;
 /// priority are intentionally centralized here so `CreateDeb` can stay focused
 /// on archive layout instead of duplicating channel-specific branching.
 public enum ReleaseType {
-    STABLE("stable", "hmcl", "HMCL", 100),
-    DEVELOPMENT("beta", "hmcl-beta", "HMCL (Beta)", 200),
-    NIGHTLY("nightly", "hmcl-nightly", "HMCL (Nightly)", 300);
+    STABLE("stable", "hmcl", "JMCL", 100),
+    DEVELOPMENT("beta", "jmcl-beta", "HMCL (Beta)", 200),
+    NIGHTLY("nightly", "jmcl-nightly", "HMCL (Nightly)", 300);
 
     private final String name;
     private final String packageName;

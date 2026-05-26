@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.jackhuang.hmcl.gradle.pack;
+package org.jackhuang.jmcl.gradle.pack;
 
 import kala.compress.archivers.ar.ArArchiveEntry;
 import kala.compress.archivers.ar.ArArchiveOutputStream;
@@ -230,7 +230,7 @@ public abstract class CreateDeb extends DefaultTask {
                 Installed-Size: %d
                 Maintainer: Glavo <zjx001202@gmail.com>
                 Description: Hello Minecraft! Launcher
-                Homepage: https://github.com/HMCL-dev/HMCL
+                Homepage: https://github.com/Open-code-Studio/JMCL
                 """.formatted(getCurrentType().getPackageName(), getVersion().get(), Math.max(installedSize, 1)) + "\n";
     }
 
