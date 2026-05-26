@@ -11,7 +11,7 @@
 <!-- #PROPERTY NAME=BADGES -->
 <div align="center">
 
-[![GitHub](https://img.shields.io/badge/GitHub-repo-blue?style=flat-square&logo=github)]([GitHub](https://github.com/Open-code-Studio/JMCL)
+[![GitHub](https://img.shields.io/badge/GitHub-repo-blue?style=flat-square&logo=github)]([GitHub](https://github.com/Open-code-Studio/JMCL))
 
 </div>
 <!-- #END BLOCK -->
