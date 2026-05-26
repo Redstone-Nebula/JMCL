@@ -45,7 +45,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import org.jackhuang.jmcl.ui.animation.Motion;
+import org.Open_code_Studio.jmcl.ui.animation.Motion;
 
 import java.util.ArrayList;
 import java.util.Collections;

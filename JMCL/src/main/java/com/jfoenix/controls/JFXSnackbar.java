@@ -35,7 +35,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-import org.jackhuang.jmcl.ui.animation.Motion;
+import org.Open_code_Studio.jmcl.ui.animation.Motion;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;

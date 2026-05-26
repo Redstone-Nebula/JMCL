@@ -47,7 +47,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static org.jackhuang.jmcl.util.logging.Logger.LOG;
+import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
 public abstract class JFXGenericPickerSkin<T> extends ComboBoxPopupControl<T> {
 

@@ -1,12 +1,12 @@
-import org.jackhuang.jmcl.gradle.ci.CheckUpdate
-import org.jackhuang.jmcl.gradle.docs.UpdateDocuments
-import org.jackhuang.jmcl.gradle.l10n.ParseLanguageSubtagRegistry
+import org.Open_code_Studio.jmcl.gradle.ci.CheckUpdate
+import org.Open_code_Studio.jmcl.gradle.docs.UpdateDocuments
+import org.Open_code_Studio.jmcl.gradle.l10n.ParseLanguageSubtagRegistry
 
 plugins {
     id("checkstyle")
 }
 
-group = "org.jackhuang"
+group = "org.Open_code_Studio"
 version = "3.0"
 
 subprojects {
@@ -75,7 +75,7 @@ subprojects {
     }
 }
 
-org.jackhuang.jmcl.gradle.javafx.JavaFXUtils.register(rootProject)
+org.Open_code_Studio.jmcl.gradle.javafx.JavaFXUtils.register(rootProject)
 
 defaultTasks("clean", "build")
 

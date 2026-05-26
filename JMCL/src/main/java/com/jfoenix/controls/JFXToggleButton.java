@@ -27,7 +27,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.jackhuang.jmcl.ui.animation.AnimationUtils;
+import org.Open_code_Studio.jmcl.ui.animation.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

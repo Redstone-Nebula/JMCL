@@ -1,14 +1,14 @@
-import org.jackhuang.jmcl.gradle.TerracottaConfigUpgradeTask
-import org.jackhuang.jmcl.gradle.ci.GitHubActionUtils
-import org.jackhuang.jmcl.gradle.ci.JenkinsUtils
-import org.jackhuang.jmcl.gradle.l10n.CheckTranslations
-import org.jackhuang.jmcl.gradle.l10n.CreateLanguageList
-import org.jackhuang.jmcl.gradle.l10n.CreateLocaleNamesResourceBundle
-import org.jackhuang.jmcl.gradle.l10n.UpsideDownTranslate
-import org.jackhuang.jmcl.gradle.mod.ParseModDataTask
-import org.jackhuang.jmcl.gradle.pack.CreateDeb
-import org.jackhuang.jmcl.gradle.pack.ReleaseType
-import org.jackhuang.jmcl.gradle.utils.PropertiesUtils
+import org.Open_code_Studio.jmcl.gradle.TerracottaConfigUpgradeTask
+import org.Open_code_Studio.jmcl.gradle.ci.GitHubActionUtils
+import org.Open_code_Studio.jmcl.gradle.ci.JenkinsUtils
+import org.Open_code_Studio.jmcl.gradle.l10n.CheckTranslations
+import org.Open_code_Studio.jmcl.gradle.l10n.CreateLanguageList
+import org.Open_code_Studio.jmcl.gradle.l10n.CreateLocaleNamesResourceBundle
+import org.Open_code_Studio.jmcl.gradle.l10n.UpsideDownTranslate
+import org.Open_code_Studio.jmcl.gradle.mod.ParseModDataTask
+import org.Open_code_Studio.jmcl.gradle.pack.CreateDeb
+import org.Open_code_Studio.jmcl.gradle.pack.ReleaseType
+import org.Open_code_Studio.jmcl.gradle.utils.PropertiesUtils
 import java.net.URI
 import java.nio.file.FileSystems
 import java.nio.file.Files
@@ -211,7 +211,7 @@ tasks.shadowJar {
     manifest.attributes(
         "Created-By" to "Copyright(c) 2013-2025 huangyuhui.",
         "Implementation-Version" to project.version.toString(),
-        "Main-Class" to "org.jackhuang.jmcl.Main",
+        "Main-Class" to "org.Open_code_Studio.jmcl.Main",
         "Multi-Release" to "true",
         "Add-Opens" to addOpens.joinToString(" "),
         "Enable-Native-Access" to "ALL-UNNAMED",

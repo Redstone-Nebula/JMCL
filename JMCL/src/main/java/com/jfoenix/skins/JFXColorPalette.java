@@ -44,7 +44,7 @@ import javafx.scene.shape.StrokeType;
 
 import java.util.List;
 
-import static org.jackhuang.jmcl.util.i18n.I18n.i18n;
+import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
 /**
  * @author Shadi Shaheen FUTURE WORK: this UI will get re-designed to match material design guidlines

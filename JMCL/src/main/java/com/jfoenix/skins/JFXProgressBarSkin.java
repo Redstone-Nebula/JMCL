@@ -27,7 +27,7 @@ import javafx.scene.control.SkinBase;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import org.jackhuang.jmcl.ui.animation.AnimationUtils;
+import org.Open_code_Studio.jmcl.ui.animation.AnimationUtils;
 
 /// # Material Design ProgressBar Skin
 ///

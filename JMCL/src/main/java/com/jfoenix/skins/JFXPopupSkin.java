@@ -32,8 +32,8 @@ import javafx.scene.control.Skin;
 import javafx.scene.layout.*;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
-import org.jackhuang.jmcl.ui.animation.AnimationUtils;
-import org.jackhuang.jmcl.ui.animation.Motion;
+import org.Open_code_Studio.jmcl.ui.animation.AnimationUtils;
+import org.Open_code_Studio.jmcl.ui.animation.Motion;
 
 /// # Material Design Popup Skin
 /// TODO: REWORK
