@@ -1,0 +1,81 @@
+/* Material Design 3 theme extensions for JavaFX components
+   使用已定义的 -monet-* 变量，提供圆角、elevation、按钮与卡片的基础样式。 */
+
+/* Global shape tokens */
+.root {
+    -md-sys-shape-corner-extra-small: -md3-shape-corner-extra-small;
+    -md-sys-shape-corner-small: -md3-shape-corner-small;
+    -md-sys-shape-corner-medium: -md3-shape-corner-medium;
+    -fx-font-size: -md3-typography-body-large;
+}
+
+/* Surface / card */
+.card {
+    -fx-background-color: -monet-surface;
+    -fx-background-radius: -md3-shape-corner-medium;
+    -fx-effect: dropshadow( one-pass-box , -md3-elevation-overlay-2 , 8, 0.0 , 0, 2 );
+    -fx-padding: 12;
+}
+
+/* Buttons: contained / tonal / text */
+.md3-contained-button {
+    -fx-background-color: -monet-primary;
+    -fx-text-fill: -monet-on-primary;
+    -fx-background-radius: -md3-shape-corner-small;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: -md3-typography-label-large;
+}
+
+.md3-tonal-button {
+    -fx-background-color: -monet-secondary-container;
+    -fx-text-fill: -monet-on-secondary-container;
+    -fx-background-radius: 12;
+}
+
+.md3-text-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -monet-primary;
+}
+
+/* Chips */
+.chip {
+    -fx-background-color: -monet-surface-container;
+    -fx-background-radius: -md3-shape-corner-extra-small;
+    -fx-padding: 6 10 6 10;
+    -fx-text-fill: -monet-on-surface;
+    -fx-font-size: -md3-typography-label-medium;
+}
+
+/* Elevated App bar / top bar */
+.top-app-bar {
+    -fx-background-color: -monet-surface;
+    -fx-background-radius: 0;
+    -fx-effect: dropshadow( one-pass-box , -md3-elevation-overlay-1 , 6, 0.0 , 0, 2 );
+}
+
+.md3-main-page {
+    -fx-background-color: -monet-background;
+}
+
+.md3-sidebar {
+    -fx-background-color: -monet-surface-container;
+    -fx-background-radius: -md3-shape-corner-medium;
+}
+
+/* Ripple / rippler defaults for JFoenix rippler usage */
+.rippler-container {
+    -jfx-rippler-fill: -monet-on-surface-variant;
+}
+
+/* Elevation utility classes */
+.elev-1 {
+    -fx-effect: dropshadow( one-pass-box , -md3-elevation-overlay-1 , 4, 0.0 , 0, 1 );
+}
+
+.elev-2 {
+    -fx-effect: dropshadow( one-pass-box , -md3-elevation-overlay-2 , 8, 0.0 , 0, 2 );
+}
+
+.elev-3 {
+    -fx-effect: dropshadow( one-pass-box , -md3-elevation-overlay-3 , 12, 0.0 , 0, 4 );
+}

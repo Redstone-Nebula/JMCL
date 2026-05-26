@@ -1,0 +1,78 @@
+/* Material Design 3 token skeleton mapped to existing monet variables
+   该文件定义主要色彩令牌，供 theme/css 使用。可根据需要替换颜色值以适配品牌色。 */
+* {
+    -monet-primary: #6750A4;
+    -monet-on-primary: #FFFFFF;
+    -monet-primary-container: #EADDFF;
+    -monet-on-primary-container: #21005D;
+
+    -monet-secondary: #625B71;
+    -monet-on-secondary: #FFFFFF;
+    -monet-secondary-container: #E8DEF8;
+    -monet-on-secondary-container: #1D192B;
+
+    -monet-tertiary: #7D5260;
+    -monet-on-tertiary: #FFFFFF;
+    -monet-tertiary-container: #FFD8E4;
+    -monet-on-tertiary-container: #370B1E;
+
+    -monet-error: #B3261E;
+    -monet-on-error: #FFFFFF;
+    -monet-error-container: #F9DEDC;
+    -monet-on-error-container: #410E0B;
+
+    -monet-background: #FFFBFE;
+    -monet-on-background: #1C1B1F;
+    -monet-surface: #FFFBFE;
+    -monet-on-surface: #1C1B1F;
+    -monet-surface-variant: #E7E0EC;
+    -monet-on-surface-variant: #49454F;
+
+    -monet-outline: #79747E;
+    -monet-shadow: #000000;
+    -monet-scrim: #000000;
+
+    /* common transparency helpers */
+    -monet-primary-transparent-50: #6750A480;
+    -monet-surface-transparent-50: #FFFBFE80;
+    -monet-surface-transparent-80: #FFFBFECC;
+}
+
+/* MD3 Typography tokens */
+* {
+    -md3-typography-display-large: 57px;
+    -md3-typography-display-medium: 45px;
+    -md3-typography-display-small: 36px;
+
+    -md3-typography-headline-large: 32px;
+    -md3-typography-headline-medium: 28px;
+    -md3-typography-headline-small: 24px;
+
+    -md3-typography-title-large: 22px;
+    -md3-typography-title-medium: 16px;
+    -md3-typography-title-small: 14px;
+
+    -md3-typography-body-large: 16px;
+    -md3-typography-body-medium: 14px;
+    -md3-typography-body-small: 12px;
+
+    -md3-typography-label-large: 14px;
+    -md3-typography-label-medium: 12px;
+    -md3-typography-label-small: 11px;
+}
+
+/* MD3 Shape tokens */
+* {
+    -md3-shape-corner-extra-small: 4px;
+    -md3-shape-corner-small: 8px;
+    -md3-shape-corner-medium: 12px;
+    -md3-shape-corner-large: 16px;
+    -md3-shape-corner-full: 999px;
+}
+
+/* MD3 Elevation helper colors (used with -fx-effect or background blends) */
+* {
+    -md3-elevation-overlay-1: rgba(0,0,0,0.04);
+    -md3-elevation-overlay-2: rgba(0,0,0,0.06);
+    -md3-elevation-overlay-3: rgba(0,0,0,0.08);
+}

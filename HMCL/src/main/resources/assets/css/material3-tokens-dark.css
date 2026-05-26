@@ -1,0 +1,37 @@
+/* Material Design 3 dark token skeleton mapped to monet variables */
+* {
+    -monet-primary: #D0BCFF;
+    -monet-on-primary: #381E72;
+    -monet-primary-container: #4F378B;
+    -monet-on-primary-container: #EADDFF;
+
+    -monet-secondary: #CCC2DC;
+    -monet-on-secondary: #332D41;
+    -monet-secondary-container: #4A4458;
+    -monet-on-secondary-container: #E8DEF8;
+
+    -monet-tertiary: #EFB8C8;
+    -monet-on-tertiary: #492532;
+    -monet-tertiary-container: #633B48;
+    -monet-on-tertiary-container: #FFD8E4;
+
+    -monet-error: #F2B8B5;
+    -monet-on-error: #601410;
+    -monet-error-container: #8C1D18;
+    -monet-on-error-container: #FFDAD6;
+
+    -monet-background: #1C1B1F;
+    -monet-on-background: #E6E1E6;
+    -monet-surface: #1C1B1F;
+    -monet-on-surface: #E6E1E6;
+    -monet-surface-variant: #49454F;
+    -monet-on-surface-variant: #CAC4D0;
+
+    -monet-outline: #938F99;
+    -monet-shadow: #000000;
+    -monet-scrim: rgba(0, 0, 0, 0.72);
+
+    -monet-primary-transparent-50: #D0BCFF80;
+    -monet-surface-transparent-50: #1C1B1F80;
+    -monet-surface-transparent-80: #1C1B1FCC;
+}
