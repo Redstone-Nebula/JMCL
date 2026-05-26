@@ -1,7 +1,7 @@
 # Contributing Guide
 
 <!-- #BEGIN LANGUAGE_SWITCHER -->
-**English** | 中文 ([简体](docs/Contributing_zh.md))
+**English** | 中文 ([简体](/Contributing_zh.md))
 <!-- #END LANGUAGE_SWITCHER -->
 
 ## Build JMCL
