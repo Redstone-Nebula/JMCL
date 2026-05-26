@@ -1,7 +1,7 @@
 <!-- #BEGIN BLOCK -->
 <!-- #PROPERTY NAME=TITLE -->
 <div align="center">
-    <img src="../IMG_0132.jpg" alt="JMCL Logo" width="64"/>
+    <img src="../IMG_0132.JPG" alt="JMCL Logo" width="64"/>
 </div>
 
 <h1 align="center">JAVA Minecraft Launcher</h1>
