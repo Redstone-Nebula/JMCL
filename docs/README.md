@@ -19,7 +19,7 @@
 ---
 
 <!-- #BEGIN LANGUAGE_SWITCHER -->
-**English** (**Standard**) | 中文 ([简体](README_zh.md)
+**English** (**Standard**) | 中文 ([简体](README_zh.md))
 <!-- #END LANGUAGE_SWITCHER -->
 
 ## Introduction
