@@ -1,0 +1,243 @@
+/* MD3 Component Styles — Only for native JavaFX / non-JFoenix controls.
+   JFoenix controls (.jfx-slider, .jfx-button, .jfx-check-box, etc.)
+   are styled by root.css.  Generic JavaFX selectors (.slider, .button,
+   .check-box, .text-field, .combo-box, .tab-pane, .list-view,
+   .progress-bar, .toggle-button, .radio-button, .menu-button) are
+   intentionally omitted here to avoid conflicting with JFoenix overrides.
+
+   Available -monet-* variables set at runtime by StyleSheets.java. */
+
+.root {
+    -fx-font-size: 14px;
+    -fx-font-family: "System";
+    -fx-text-fill: -monet-on-surface;
+}
+
+.svg {
+    -fx-fill: -monet-on-surface;
+}
+
+.label {
+    -fx-text-fill: -monet-on-surface;
+}
+.label:disabled {
+    -fx-opacity: 0.38;
+}
+
+/* =============================================================================
+   MD3 Scroll Bar — thin, rounded, no track
+   ============================================================================= */
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.scroll-bar > .track {
+    -fx-background-color: transparent;
+}
+.scroll-bar > .thumb {
+    -fx-background-color: -monet-on-surface-variant;
+    -fx-background-radius: 4px;
+    -fx-opacity: 0.4;
+}
+.scroll-bar > .thumb:hover {
+    -fx-opacity: 0.8;
+}
+.scroll-bar > .thumb:pressed {
+    -fx-opacity: 1;
+}
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-opacity: 0;
+}
+.scroll-bar > .increment-arrow,
+.scroll-bar > .decrement-arrow {
+    -fx-opacity: 0;
+}
+
+/* =============================================================================
+   MD3 Hyperlink
+   ============================================================================= */
+.hyperlink {
+    -fx-text-fill: -monet-primary;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+.hyperlink:hover {
+    -fx-underline: true;
+}
+.hyperlink:focused {
+    -fx-border-color: -monet-primary;
+}
+
+/* =============================================================================
+   MD3 Button Variants — custom style classes (not JFoenix)
+   Applied by Java code via getStyleClass().add("md3-xxx")
+   ============================================================================= */
+
+/* Filled / Contained Button */
+.md3-contained-button {
+    -fx-background-color: -monet-primary;
+    -fx-text-fill: -monet-on-primary;
+    -fx-background-radius: 999px;
+    -fx-padding: 10 24 10 24;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-font-weight: 500;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 2, 0, 0, 1);
+}
+.md3-contained-button:hover {
+    -fx-background-color: -monet-primary-fixed;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 4, 0, 0, 2);
+}
+.md3-contained-button:pressed {
+    -fx-background-color: -monet-primary-fixed-dim;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 1, 0, 0, 0);
+}
+.md3-contained-button:focused {
+    -fx-effect: dropshadow(gaussian, -monet-primary, 0, 1, 0, 0), dropshadow(gaussian, rgba(0,0,0,0.08), 2, 0, 0, 1);
+}
+.md3-contained-button:disabled {
+    -fx-opacity: 0.38;
+    -fx-effect: none;
+}
+
+/* Tonal Button */
+.md3-tonal-button {
+    -fx-background-color: -monet-secondary-container;
+    -fx-text-fill: -monet-on-secondary-container;
+    -fx-background-radius: 999px;
+    -fx-padding: 10 24 10 24;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-font-weight: 500;
+    -fx-effect: none;
+}
+.md3-tonal-button:hover {
+    -fx-background-color: -monet-secondary-fixed;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 2, 0, 0, 1);
+}
+.md3-tonal-button:pressed {
+    -fx-background-color: -monet-secondary-fixed-dim;
+    -fx-effect: none;
+}
+
+/* Outlined Button */
+.md3-outlined-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -monet-primary;
+    -fx-border-color: -monet-outline;
+    -fx-border-width: 1px;
+    -fx-border-radius: 999px;
+    -fx-padding: 9 23 9 23;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-font-weight: 500;
+    -fx-effect: none;
+}
+.md3-outlined-button:hover {
+    -fx-background-color: -monet-surface-container-high;
+    -fx-border-color: -monet-primary;
+}
+.md3-outlined-button:pressed {
+    -fx-background-color: -monet-primary-container;
+    -fx-border-color: -monet-primary;
+}
+.md3-outlined-button:focused {
+    -fx-border-color: -monet-primary;
+    -fx-border-width: 2px;
+    -fx-padding: 8 22 8 22;
+}
+.md3-outlined-button:disabled {
+    -fx-border-color: -monet-on-surface-variant;
+    -fx-opacity: 0.38;
+}
+
+/* Text Button */
+.md3-text-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -monet-primary;
+    -fx-padding: 10 12 10 12;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-font-weight: 500;
+    -fx-background-radius: 999px;
+    -fx-effect: none;
+}
+.md3-text-button:hover {
+    -fx-background-color: -monet-surface-container-high;
+}
+.md3-text-button:pressed {
+    -fx-background-color: -monet-primary-container;
+}
+.md3-text-button:disabled {
+    -fx-opacity: 0.38;
+}
+
+/* =============================================================================
+   MD3 Dialog Pane
+   ============================================================================= */
+.dialog-pane {
+    -fx-background-color: -monet-surface-container-high;
+    -fx-background-radius: 28px;
+    -fx-padding: 24px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 8);
+}
+.dialog-pane > .content {
+    -fx-padding: 24px 0;
+    -fx-font-size: 14px;
+    -fx-text-fill: -monet-on-surface-variant;
+}
+.dialog-pane .header-panel {
+    -fx-padding: 0;
+}
+.dialog-pane .header-panel .label {
+    -fx-font-size: 24px;
+    -fx-font-weight: 400;
+    -fx-text-fill: -monet-on-surface;
+}
+.dialog-pane > .button-bar > .container {
+    -fx-padding: 8px 0 0 0;
+    -fx-spacing: 8px;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+/* =============================================================================
+   MD3 Tooltip
+   ============================================================================= */
+.tooltip {
+    -fx-background-color: -monet-inverse-surface;
+    -fx-text-fill: -monet-inverse-on-surface;
+    -fx-background-radius: 4px;
+    -fx-padding: 6 8 6 8;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 2);
+}
+
+/* =============================================================================
+   MD3 Context Menu
+   ============================================================================= */
+.context-menu {
+    -fx-background-color: -monet-surface-container;
+    -fx-background-radius: 8px;
+    -fx-padding: 8 0 8 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4);
+}
+.menu-item {
+    -fx-padding: 10 16 10 16;
+    -fx-font-size: 14px;
+    -fx-text-fill: -monet-on-surface;
+}
+.menu-item:hover {
+    -fx-background-color: -monet-surface-container-high;
+}
+.menu-item .label {
+    -fx-text-fill: -monet-on-surface;
+    -fx-font-size: 14px;
+}
+.menu-item .accelerator-text {
+    -fx-text-fill: -monet-on-surface-variant;
+}

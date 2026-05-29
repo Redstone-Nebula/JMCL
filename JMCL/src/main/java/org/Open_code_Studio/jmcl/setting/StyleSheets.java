@@ -60,14 +60,15 @@ public final class StyleSheets {
             getMaterial3TokensStyleSheet(),
             getBrightnessStyleSheet(),
             "/assets/css/material3-theme.css",
-            "/assets/css/root.css"
+            "/assets/css/root.css",
+            "/assets/css/component.css"
         };
         stylesheets = FXCollections.observableList(Arrays.asList(array));
 
         FontManager.fontProperty().addListener(o -> stylesheets.set(FONT_STYLE_SHEET_INDEX, getFontStyleSheet()));
         Themes.colorSchemeProperty().addListener(o -> {
             stylesheets.set(THEME_STYLE_SHEET_INDEX, getThemeStyleSheet());
-            stylesheets.set(MATERIAL3_TOKENS_SHEET_INDEX, getMaterial3TokensStyleSheet());
+            stylesheets.set(MATERIAL3_TOKENS_STYLE_SHEET_INDEX, getMaterial3TokensStyleSheet());
             stylesheets.set(BRIGHTNESS_SHEET_INDEX, getBrightnessStyleSheet());
         });
     }

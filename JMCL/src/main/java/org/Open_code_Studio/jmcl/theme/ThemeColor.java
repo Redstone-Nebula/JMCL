@@ -49,7 +49,25 @@ public record ThemeColor(@NotNull String name, @NotNull Color color) {
             new ThemeColor("green", Color.web("#43A047")),
             new ThemeColor("orange", Color.web("#E67E22")),
             new ThemeColor("purple", Color.web("#9C27B0")),
-            new ThemeColor("red", Color.web("#B71C1C"))
+            new ThemeColor("red", Color.web("#B71C1C")),
+            new ThemeColor("pink", Color.web("#E91E63")),
+            new ThemeColor("rose", Color.web("#F06292")),
+            new ThemeColor("deep_purple", Color.web("#673AB7")),
+            new ThemeColor("indigo", Color.web("#3F51B5")),
+            new ThemeColor("light_blue", Color.web("#03A9F4")),
+            new ThemeColor("cyan", Color.web("#00BCD4")),
+            new ThemeColor("teal", Color.web("#009688")),
+            new ThemeColor("lime", Color.web("#C0CA33")),
+            new ThemeColor("yellow", Color.web("#FFEB3B")),
+            new ThemeColor("amber", Color.web("#FFB300")),
+            new ThemeColor("deep_orange", Color.web("#FF5722")),
+            new ThemeColor("brown", Color.web("#795548")),
+            new ThemeColor("blue_grey", Color.web("#607D8B")),
+            new ThemeColor("slate", Color.web("#455A64")),
+            new ThemeColor("magenta", Color.web("#E040FB")),
+            new ThemeColor("violet", Color.web("#7E57C2")),
+            new ThemeColor("emerald", Color.web("#2E7D32")),
+            new ThemeColor("coral", Color.web("#FF7043"))
     );
 
     public static String getColorDisplayName(Color c) {

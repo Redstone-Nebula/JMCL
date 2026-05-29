@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.glavo</groupId>
+  <artifactId>chardet</artifactId>
+  <version>2.5.0</version>
+  <name>chardet</name>
+  <description>Java Chardet is a Java encoding detector library</description>
+  <url>https://github.com/Glavo/java-chardet</url>
+  <licenses>
+    <license>
+      <name>Mozilla Public License Version 1.1</name>
+      <url>https://www.mozilla.org/en-US/MPL/1.1</url>
+    </license>
+    <license>
+      <name>GENERAL PUBLIC LICENSE, version 3 (GPL-3.0)</name>
+      <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+    </license>
+    <license>
+      <name>GNU LESSER GENERAL PUBLIC LICENSE, version 3 (LGPL-3.0)</name>
+      <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>albfernandez</id>
+      <name>Alberto Fernández</name>
+      <email>infjaf@gmail.com</email>
+      <organization>Alberto Fernández</organization>
+      <organizationUrl>https://github.com/albfernandez/</organizationUrl>
+    </developer>
+    <developer>
+      <id>glavo</id>
+      <name>Glavo</name>
+      <email>zjx001202@gmail.com</email>
+      <url>https://github.com/Glavo</url>
+    </developer>
+  </developers>
+  <scm>
+    <url>https://github.com/Glavo/java-chardet</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Glavo/java-chardet/issues</url>
+  </issueManagement>
+</project>

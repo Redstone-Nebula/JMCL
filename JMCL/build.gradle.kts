@@ -65,7 +65,7 @@ dependencies {
     implementation(libs.nayuki.qrcodegen)
 
     if (launcherExe.isBlank()) {
-        implementation(libs.jmclauncher)
+        implementation(libs.hmclauncher)
     }
 
     embedResources(libs.authlib.injector)

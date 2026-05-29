@@ -1,27 +1,28 @@
-# Java Code Style Requirements
+# Java 代码风格要求
 
-These rules apply to all Java code written or modified in this repository.
+这些规则适用于在此代码库中编写或修改的所有 Java 代码。
 
-## Nullability
+## 可空性
 
-- Annotate every class with JetBrains Annotations `@NotNullByDefault`.
-- Any type, field, parameter, return value, local variable, or generic type argument that may be `null` must be explicitly annotated with `@Nullable`.
+- 用 JetBrains 注解 `@NotNullByDefault` 标注每个类。
+- 任何可能为 `null` 的类型、字段、参数、返回值、局部变量或泛型类型参数都必须明确标注 `@Nullable`。
 - Nullability must never be implicit.
 
-## Immutability
+## 不可变性
 
-- Immutable arrays and collections must be explicitly annotated with JetBrains Annotations `@Unmodifiable` or `@UnmodifiableView` as appropriate.
-- For arrays, use type-use syntax such as `String @Unmodifiable []`.
+- 不可变数组和集合必须根据情况明确使用 JetBrains 注解 `@Unmodifiable` 或 `@UnmodifiableView` 标注。
+- 对于数组，请使用类型使用语法，例如 `String @Unmodifiable []`。
 
-## Documentation
+## 文档
 
-- Every class, field, and method must have documentation.
-- Documentation must use `///` Markdown-style Javadoc comments.
-- Keep documentation accurate and specific to the actual behavior, constraints, and side effects.
-- Add concise implementation comments inside complex logic whenever they materially improve readability or explain non-obvious behavior.
+- 每个类、字段和方法都必须有文档。
+- 文档必须使用 `///` Markdown 风格的 Javadoc 注释。
+- 保持文档的准确性，并具体说明实际的行为、限制和副作用。
+- 在复杂逻辑中添加简明的实现注释，只有在它们能够显著提高可读性或解释非显而易见的行为时才添加。
 
 ## Gradle
 
-- When invoking Gradle in this repository, always set `GRADLE_USER_HOME` to the workspace-local `.gradle-user-home` directory.
-- Prefer commands such as `./gradlew -g .gradle-user-home ...` or the equivalent environment-variable-based configuration.
-- When running Gradle `test` tasks, use a higher timeout of ten minutes.
+- 在本仓库中调用 Gradle 时，总是将 `GRADLE_USER_HOME` 设置为工作区本地的 `.gradle-user-home` 目录。
+- 优先使用如 `./gradlew -g .gradle-user-home ...` 的命令，或等效的基于环境变量的配置。
+- 运行 Gradle 的 `test` 任务时，使用更高的十分钟超时时间。
+

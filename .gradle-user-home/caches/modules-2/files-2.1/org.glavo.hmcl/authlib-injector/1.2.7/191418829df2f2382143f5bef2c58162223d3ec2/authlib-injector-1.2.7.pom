@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.glavo.hmcl</groupId>
+  <artifactId>authlib-injector</artifactId>
+  <version>1.2.7</version>
+  <name>authlib-injector</name>
+  <description>Build your own Minecraft authentication system.</description>
+  <url>https://github.com/yushijinhun/authlib-injector</url>
+  <licenses>
+    <license>
+      <name>AGPL 3.0</name>
+      <url>https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>yushijinhun</id>
+      <name>Haowei Wen</name>
+      <email>haoweiwen@cmu.edu</email>
+    </developer>
+  </developers>
+  <scm>
+    <url>https://github.com/yushijinhun/authlib-injector</url>
+  </scm>
+</project>

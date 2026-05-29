@@ -1,0 +1,125 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.hildan.fxgson",
+    "module": "fx-gson",
+    "version": "5.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.6"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.10"
+          }
+        },
+        {
+          "group": "org.jetbrains",
+          "module": "annotations",
+          "version": {
+            "requires": "23.0.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "fx-gson-5.0.0.jar",
+          "url": "fx-gson-5.0.0.jar",
+          "size": 29520,
+          "sha512": "0ac512c9563f42725845c825093db603152107b668ae11aa2d1fa8f8ce6e0fd192f9d98880d3ab93cea07c85c436928c48327bc38455dd100c79e8332467d12c",
+          "sha256": "2ba9a9729c6cf0d12d2d64d7d5ba8ca4a6f0807887684f6d7783b53628355973",
+          "sha1": "97ac06cc9399d6026bfaef1c6223165aaf520bf3",
+          "md5": "1e577138db80cd1f83c75a2c89b3973e"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.code.gson",
+          "module": "gson",
+          "version": {
+            "requires": "2.10"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "fx-gson-5.0.0.jar",
+          "url": "fx-gson-5.0.0.jar",
+          "size": 29520,
+          "sha512": "0ac512c9563f42725845c825093db603152107b668ae11aa2d1fa8f8ce6e0fd192f9d98880d3ab93cea07c85c436928c48327bc38455dd100c79e8332467d12c",
+          "sha256": "2ba9a9729c6cf0d12d2d64d7d5ba8ca4a6f0807887684f6d7783b53628355973",
+          "sha1": "97ac06cc9399d6026bfaef1c6223165aaf520bf3",
+          "md5": "1e577138db80cd1f83c75a2c89b3973e"
+        }
+      ]
+    },
+    {
+      "name": "javadocElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "fx-gson-5.0.0-javadoc.jar",
+          "url": "fx-gson-5.0.0-javadoc.jar",
+          "size": 387769,
+          "sha512": "54ee83bccdd8a5902c4a32c18a11334b8275c60a895c456a2cbcd6bad36a387184c902d93aeff56245a6e7107caf4c9b8df569e8259758aee2b73e03b1a8297a",
+          "sha256": "7da8be61a1954caaacdad4e1fa0bcc1aa33d3fb459ec78e8ac6126756bc2bdc7",
+          "sha1": "09b469e228564f13019f94ddf9dab765dead2d0d",
+          "md5": "c284771835ed738eba9838600524a50a"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "fx-gson-5.0.0-sources.jar",
+          "url": "fx-gson-5.0.0-sources.jar",
+          "size": 22166,
+          "sha512": "11a1c406d96c2d73bcf1705af0acbcb1a18ec6f3edd25533ff34e9974b2ab7a32c6ba84bfaea6c3d777f88d86d8683de04cf32a48f62c6439754e001f516cb57",
+          "sha256": "2be0feb138c8910dda3255c170449cd8a13c02745aeeee7a39fd33f5b7bae00d",
+          "sha1": "3be97b08bf4da62b056ef6f8e268303243141624",
+          "md5": "443ce8215c6288b78f1c65f066b3e91c"
+        }
+      ]
+    }
+  ]
+}
