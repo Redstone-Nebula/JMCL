@@ -1,0 +1,118 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "io.github.palexdev",
+    "module": "mfxresources",
+    "version": "11.3.2",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxeffects",
+          "version": {
+            "requires": "11.0.5"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "mfxresources-11.3.2.jar",
+          "url": "mfxresources-11.3.2.jar",
+          "size": 5202144,
+          "sha512": "3f9233453b04b6d82a947d484f9b4e356c4c9c5a1b18b139ecf6b41bf3749b07aa99e4d3ab62bf144bf25b468fe961cfcfcc0f1eab52273b01b6359a7dc9ef6c",
+          "sha256": "824618350f5c9883355c7cd1eb5a8f052341a9d05c45e72f645babb7069935a7",
+          "sha1": "85ff72bd8a8754534e4c48e2ffca3b140ee38d4d",
+          "md5": "917c04515fa4692a50592b81e471577b"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxeffects",
+          "version": {
+            "requires": "11.0.5"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "mfxresources-11.3.2.jar",
+          "url": "mfxresources-11.3.2.jar",
+          "size": 5202144,
+          "sha512": "3f9233453b04b6d82a947d484f9b4e356c4c9c5a1b18b139ecf6b41bf3749b07aa99e4d3ab62bf144bf25b468fe961cfcfcc0f1eab52273b01b6359a7dc9ef6c",
+          "sha256": "824618350f5c9883355c7cd1eb5a8f052341a9d05c45e72f645babb7069935a7",
+          "sha1": "85ff72bd8a8754534e4c48e2ffca3b140ee38d4d",
+          "md5": "917c04515fa4692a50592b81e471577b"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mfxresources-11.3.2-sources.jar",
+          "url": "mfxresources-11.3.2-sources.jar",
+          "size": 5116300,
+          "sha512": "3a0ecfbc1dd846d0f03ec5929ea1b303ec69b5a3a84ba45a6b497cb32787403fab0a7c5968b2fc5fe32fd09e17a9873f1c149215be6a06b00fdb952cb13d2467",
+          "sha256": "0edf182e1c73e075042674a49de61125e603e7ca56afaa01774a56c8c8e9a198",
+          "sha1": "3cb3104d2661a7034164a54e1723ca22688d2527",
+          "md5": "4bf4f92f76b9dd452d7f236e46b788d0"
+        }
+      ]
+    },
+    {
+      "name": "javadocElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mfxresources-11.3.2-javadoc.jar",
+          "url": "mfxresources-11.3.2-javadoc.jar",
+          "size": 276720,
+          "sha512": "d12e81e472d5f61c50598eee86a5b420af8176c1400b66185f0432d3694ad293bafe7e83d27cb18dd24c71bd162a3366a64830489d48d5d4df101454bb942c41",
+          "sha256": "3f505542dff68e30464921292ebff5b0cd61c77642f74c861221ab67fceb6123",
+          "sha1": "dad696576f4e877168727be2fbe18b76577b6d4c",
+          "md5": "ba53c542ee2fd60774057eff9a72b0b3"
+        }
+      ]
+    }
+  ]
+}

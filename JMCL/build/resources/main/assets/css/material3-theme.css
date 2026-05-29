@@ -345,30 +345,24 @@
 .md3-contained-button {
     -fx-background-color: -monet-primary;
     -fx-text-fill: -monet-on-primary;
-    -fx-background-radius: 999px;
-    -fx-padding: 10px 24px;
     -fx-font-size: 14px;
     -fx-font-weight: 500;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 2, 0.0, 0, 1);
 }
 .md3-contained-button:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 4, 0.0, 0, 2);
-}
-.md3-contained-button:disabled {
-    -fx-opacity: 0.38;
-    -fx-effect: none;
+    -fx-opacity: 0.92;
 }
 
 /* Tonal Button */
 .md3-tonal-button {
     -fx-background-color: -monet-secondary-container;
     -fx-text-fill: -monet-on-secondary-container;
-    -fx-background-radius: 999px;
-    -fx-padding: 10px 24px;
     -fx-font-size: 14px;
     -fx-font-weight: 500;
     -fx-cursor: hand;
+}
+.md3-tonal-button:hover {
+    -fx-opacity: 0.92;
 }
 
 /* Outlined Button */
@@ -377,20 +371,22 @@
     -fx-text-fill: -monet-primary;
     -fx-border-color: -monet-outline;
     -fx-border-width: 1px;
-    -fx-border-radius: 999px;
-    -fx-padding: 9px 23px;
     -fx-font-size: 14px;
     -fx-font-weight: 500;
     -fx-cursor: hand;
+}
+.md3-outlined-button:hover {
+    -fx-opacity: 0.92;
 }
 
 /* Text Button */
 .md3-text-button {
     -fx-background-color: transparent;
     -fx-text-fill: -monet-primary;
-    -fx-padding: 10px 12px;
     -fx-font-size: 14px;
     -fx-font-weight: 500;
     -fx-cursor: hand;
-    -fx-background-radius: 999px;
+}
+.md3-text-button:hover {
+    -fx-opacity: 0.92;
 }

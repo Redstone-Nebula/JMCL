@@ -1,0 +1,106 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "io.github.palexdev",
+    "module": "virtualizedfx",
+    "version": "11.9.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.6"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxcore",
+          "version": {
+            "requires": "11.3.0"
+          }
+        },
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxeffects",
+          "version": {
+            "requires": "11.0.5"
+          }
+        },
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxresources",
+          "version": {
+            "requires": "11.3.2"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "virtualizedfx-11.9.1.jar",
+          "url": "virtualizedfx-11.9.1.jar",
+          "size": 338594,
+          "sha512": "2bfec007d5bc510db1d04496a96bd30e25eaec7acaecba0a5e4dab30f8ec02bab916e0974acd2d31f670dd545bef61f3deb485ed3b1ebba511ac7b84672bb6bc",
+          "sha256": "97c201a6fe558f307551d389b4ab29edf2011e911c7cc644d20d0f260796d0f2",
+          "sha1": "1b253272f4e333795ebacef36a350953e2dbc4ce",
+          "md5": "b5accec2a5aaaa1020ca657c913ee204"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxcore",
+          "version": {
+            "requires": "11.3.0"
+          }
+        },
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxeffects",
+          "version": {
+            "requires": "11.0.5"
+          }
+        },
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxresources",
+          "version": {
+            "requires": "11.3.2"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "virtualizedfx-11.9.1.jar",
+          "url": "virtualizedfx-11.9.1.jar",
+          "size": 338594,
+          "sha512": "2bfec007d5bc510db1d04496a96bd30e25eaec7acaecba0a5e4dab30f8ec02bab916e0974acd2d31f670dd545bef61f3deb485ed3b1ebba511ac7b84672bb6bc",
+          "sha256": "97c201a6fe558f307551d389b4ab29edf2011e911c7cc644d20d0f260796d0f2",
+          "sha1": "1b253272f4e333795ebacef36a350953e2dbc4ce",
+          "md5": "b5accec2a5aaaa1020ca657c913ee204"
+        }
+      ]
+    }
+  ]
+}

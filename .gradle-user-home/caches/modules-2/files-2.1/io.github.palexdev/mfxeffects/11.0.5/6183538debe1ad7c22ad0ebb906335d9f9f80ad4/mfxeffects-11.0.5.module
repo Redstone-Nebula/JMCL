@@ -1,0 +1,100 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "io.github.palexdev",
+    "module": "mfxeffects",
+    "version": "11.0.5",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "mfxeffects-11.0.5.jar",
+          "url": "mfxeffects-11.0.5.jar",
+          "size": 122857,
+          "sha512": "be72b740e41e51b1f177eb3ebdd29f7073fe1f5580013b2973b7c5ed19d77c6f446c2c0998d4a33736b82927c6d8eb2fc321863f07ee413559f7959a516f6ad1",
+          "sha256": "26880de4cb103a75f5cef7936587e7cdecc0b1b9ea84deb659af3b4d84f219d8",
+          "sha1": "474e7a69739ac52aca579946788249412666c4c7",
+          "md5": "bfa78a429cccb62db85e1a6c645093d9"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mfxeffects-11.0.5.jar",
+          "url": "mfxeffects-11.0.5.jar",
+          "size": 122857,
+          "sha512": "be72b740e41e51b1f177eb3ebdd29f7073fe1f5580013b2973b7c5ed19d77c6f446c2c0998d4a33736b82927c6d8eb2fc321863f07ee413559f7959a516f6ad1",
+          "sha256": "26880de4cb103a75f5cef7936587e7cdecc0b1b9ea84deb659af3b4d84f219d8",
+          "sha1": "474e7a69739ac52aca579946788249412666c4c7",
+          "md5": "bfa78a429cccb62db85e1a6c645093d9"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mfxeffects-11.0.5-sources.jar",
+          "url": "mfxeffects-11.0.5-sources.jar",
+          "size": 70491,
+          "sha512": "d542cc0f8113acbe46b778877bd0cd36f39d04dd713c7013fafcc899e52c24091c40c0e5f113a57e06e2d67c672e299695cc57ddb18982118552234c6f2c20da",
+          "sha256": "25f8b7e5b9d4594d5a191648e2be9aaa58f19c0cfa9281b7acd84e735b39d95d",
+          "sha1": "59c4f902f6b0c63114dc6c44932bd9f16f42b4c0",
+          "md5": "309043f6a112673d207f7a45a8d9fe31"
+        }
+      ]
+    },
+    {
+      "name": "javadocElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mfxeffects-11.0.5-javadoc.jar",
+          "url": "mfxeffects-11.0.5-javadoc.jar",
+          "size": 357400,
+          "sha512": "99154b6b49845bc783281636997370496916873b3ae68c0f09638ab4831c21cfbce1fcc995e81e4802eae9070500231d0cdf5665ba629daefaa21c8a895c8c19",
+          "sha256": "0c8f467e16d7e902cdb46ef09697fe232d4e635d8a8ecbbbe2cc1a257f85f575",
+          "sha1": "d29c75bd342821643b87188c2e7576c2fd50d5ab",
+          "md5": "48fc0a724682f6b384cfbedfae506139"
+        }
+      ]
+    }
+  ]
+}

@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":JVM-MCLCore"))
     implementation(project(":JVM-MCLBoot"))
     implementation("libs:JFoenix")
+    implementation(libs.materialfx)
     implementation(libs.jwebp)
     implementation(libs.fxsvgimage)
     implementation(libs.java.info)

@@ -1,0 +1,100 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "io.github.palexdev",
+    "module": "mfxlocalization",
+    "version": "11.1.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "mfxlocalization-11.1.0.jar",
+          "url": "mfxlocalization-11.1.0.jar",
+          "size": 15417,
+          "sha512": "8fc1965383981890e62664e1d968eba8b984b0d1b5cfa00241d9ea00553b64528c858d3db049e56cd7e8bbb8082047e324e7e946822833a4fd309ccdee8e5bad",
+          "sha256": "9c6a5912148afa3cc01b21da1d0eb03555bf8f94565cdce9fb5bf5a5e70b50ed",
+          "sha1": "c96becc3b304b73caf082cd5155407e05543c10c",
+          "md5": "2dabbf4a5a93c0b10d07d328da971bf7"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mfxlocalization-11.1.0.jar",
+          "url": "mfxlocalization-11.1.0.jar",
+          "size": 15417,
+          "sha512": "8fc1965383981890e62664e1d968eba8b984b0d1b5cfa00241d9ea00553b64528c858d3db049e56cd7e8bbb8082047e324e7e946822833a4fd309ccdee8e5bad",
+          "sha256": "9c6a5912148afa3cc01b21da1d0eb03555bf8f94565cdce9fb5bf5a5e70b50ed",
+          "sha1": "c96becc3b304b73caf082cd5155407e05543c10c",
+          "md5": "2dabbf4a5a93c0b10d07d328da971bf7"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mfxlocalization-11.1.0-sources.jar",
+          "url": "mfxlocalization-11.1.0-sources.jar",
+          "size": 14860,
+          "sha512": "bd6835fea94ee7bcdc3541e499b8a16e8d834b44bdda234d404d36f6a22abd9d722cdb19ebb79afa28fd3efba8b6c8748cd117c0b7d500716f0dc84bc2036e94",
+          "sha256": "7be12f5626c5231730d9e11c29520a064c52b4e5934ac813867e3798f9576766",
+          "sha1": "36c05082958c8a704c409e81e9f35fc5d90ab05a",
+          "md5": "82b495d64d6f56bc5706169c14d393a4"
+        }
+      ]
+    },
+    {
+      "name": "javadocElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "mfxlocalization-11.1.0-javadoc.jar",
+          "url": "mfxlocalization-11.1.0-javadoc.jar",
+          "size": 101186,
+          "sha512": "8dd968c73f6bf48475754e635ea1da3d05d18eb966b1dccb1f73b5e9943b2ec138cfa7fb829fb6b0d74b7be059c5218ab5dca70eccf51ab107b56495b4dbc950",
+          "sha256": "702cd07d2540fb3eeddf83653a3ef44608c6681bd59633889a6d5b8d9fc20a8d",
+          "sha1": "f4a5299b412d450803d1618a7d1abf1d759a5831",
+          "md5": "3519af47b1b751e2a9f2ccc5c4a00df8"
+        }
+      ]
+    }
+  ]
+}
