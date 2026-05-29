@@ -13,15 +13,21 @@
     -fx-text-fill: -monet-on-surface;
 }
 
-.svg {
-    -fx-fill: -monet-on-surface;
-}
-
 .label {
     -fx-text-fill: -monet-on-surface;
 }
 .label:disabled {
     -fx-opacity: 0.38;
+}
+
+.text {
+    -fx-fill: -monet-on-surface;
+}
+
+/* MD3 Body Medium is the default text style */
+.md3-body-medium {
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
 }
 
 /* =============================================================================
