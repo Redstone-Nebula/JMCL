@@ -1,7 +1,7 @@
 # 本地化
 
 <!-- #BEGIN LANGUAGE_SWITCHER -->
-[English](Localization.md) | **中文** (**简体**)
+[English](Localization.md) | **中文**
 <!-- #END LANGUAGE_SWITCHER -->
 
 JMCL 为多种语言提供本地化支持。
