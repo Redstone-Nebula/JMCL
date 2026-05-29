@@ -911,7 +911,7 @@
 .jfx-button-raised, .jfx-button-raised * {
     -fx-text-fill: -monet-on-primary;
     -fx-font-size: 14px;
-    -fx-font-weight: 600;
+    -fx-font-weight: 500;
 }
 
 /* MD3 Outlined Button */
@@ -925,7 +925,7 @@
 
 .jfx-button-border, .jfx-button-border * {
     -fx-text-fill: -monet-primary;
-    -fx-font-weight: 600;
+    -fx-font-weight: 500;
 }
 
 /* MD3 Filled Tonal Button (rounded container) */
@@ -936,7 +936,7 @@
 }
 
 .jfx-button-raised-round, .jfx-button-raised-round * {
-    -fx-font-weight: 600;
+    -fx-font-weight: 500;
 }
 
 .menu-up-down-button .label {
