@@ -53,13 +53,19 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0.0, 0, 2);
 }
 
+.md3-root-page {
+    -fx-background-color: -monet-background;
+}
+
 .md3-main-page {
     -fx-background-color: -monet-background;
 }
 
 .md3-sidebar {
-    -fx-background-color: -monet-surface-container;
-    -fx-background-radius: -md3-shape-corner-medium;
+    -fx-background-color: -monet-surface;
+    -fx-background-radius: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 6, 0, 0, 1);
+    -fx-padding: 8 0 8 0;
 }
 
 /* Ripple / rippler defaults for JFoenix rippler usage */
@@ -67,15 +73,15 @@
     -jfx-rippler-fill: -monet-on-surface-variant;
 }
 
-/* Elevation utility classes */
+/* Elevation utility classes - using gaussian dropshadow directly */
 .elev-1 {
-    -fx-effect: dropshadow( one-pass-box , -md3-elevation-overlay-1 , 4, 0.0 , 0, 1 );
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0.0, 0, 1);
 }
 
 .elev-2 {
-    -fx-effect: dropshadow( one-pass-box , -md3-elevation-overlay-2 , 8, 0.0 , 0, 2 );
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0.0, 0, 2);
 }
 
 .elev-3 {
-    -fx-effect: dropshadow( one-pass-box , -md3-elevation-overlay-3 , 12, 0.0 , 0, 4 );
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0.0, 0, 4);
 }

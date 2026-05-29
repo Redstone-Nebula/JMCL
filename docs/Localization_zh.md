@@ -20,8 +20,8 @@ JMCL 为多种语言提供本地化支持。
 | 中文 (繁体) | `zh-Hant` | `zh-Hant` | `_zh_Hant` | `zh_tw` <br/> `zh_hk`                       | **主要** | [cangcang-zh-2025](https://github.com/cangcang-zh-2025)         |
 | 中文 (文言) | `lzh`     | `lzh`     | `_lzh`     | `lzh`                                       | 次要     |                                           |
 | 日语      | `ja`      | `ja`      | `_ja`      | `ja_jp`                                     | 次要     |                                           |
-| 西班牙语    | `es`      | `es`      | `_es`      | `es_es`                                     | 次要     | [3gf8jv4dv](https://github.com/3gf8jv4dv) |
-| 俄语      | `ru`      | `ru`      | `_ru`      | `ru_ru`                                     | 次要     | [3gf8jv4dv](https://github.com/3gf8jv4dv) |
+| 西班牙语    | `es`      | `es`      | `_es`      | `es_es`                                     | 次要     | [cangcang-zh-2025](https://github.com/cangcang-zh-2025) |
+| 俄语      | `ru`      | `ru`      | `_ru`      | `ru_ru`                                     | 次要     | [cangcang-zh-2025](https://github.com/cangcang-zh-2025) |
 | 乌克兰语    | `uk`      | `uk`      | `_uk`      | `uk_ua`                                     | 次要     |                                           |
 
 <details>
@@ -311,5 +311,5 @@ JMCL 总是会将 `zh-CN` 加入所有中文环境的搜索列表中，将 `zh-T
 **English** (**Standard**, [uʍoᗡ ǝpᴉsd∩](README_en_Qabs.md)) | 中文 ([简体](README_zh.md), [繁體](README_zh_Hant.md), [文言](README_lzh.md)) | [日本語](README_ja.md) | [español](README_es.md) | [русский](README_ru.md) | [українська](README_uk.md)
 ```
 
-关于宏的更多内容，请见 [MacroProcessor.java](../buildSrc/src/main/java/org/jackhuang/HMCL/gradle/docs/MacroProcessor.java)。
+关于宏的更多内容，请见 [MacroProcessor.java](../buildSrc/src/main/java/org/jackhuang/JMCL/gradle/docs/MacroProcessor.java)。
 <!-- #END BLOCK -->

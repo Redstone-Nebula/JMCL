@@ -727,6 +727,7 @@
     -fx-min-height: 48px;
     -fx-max-height: 48px;
     -fx-pref-height: 48px;
+    -fx-background-color: -monet-surface-container-high;
 }
 
 .jfx-tool-bar .jfx-decorator-title {
@@ -735,7 +736,7 @@
 }
 
 .jfx-tool-bar.background {
-    -fx-background-color: -monet-primary-container;
+    -fx-background-color: -monet-surface-container-high;
 }
 
 .jfx-tool-bar .jfx-decorator-button {
@@ -749,7 +750,7 @@
 }
 
 .jfx-tool-bar .jfx-decorator-button .svg {
-    -fx-fill: -monet-on-primary-container;
+    -fx-fill: -monet-on-surface;
 }
 
 .jfx-tool-bar Label {
@@ -775,13 +776,15 @@
 .jfx-tool-bar-second {
     -fx-pref-height: 48;
     -fx-padding: 4 8 4 8;
-    -fx-background-color: -monet-primary-container;
+    -fx-background-color: -monet-surface-container-high;
     -fx-alignment: CENTER-LEFT;
     -fx-spacing: 12;
+    -fx-border-color: -monet-outline-variant;
+    -fx-border-width: 0 0 1 0;
 }
 
 .jfx-tool-bar-second .label {
-    -fx-text-fill: -monet-on-primary-container;
+    -fx-text-fill: -monet-on-surface;
     -fx-font-size: 16;
     -fx-font-weight: 700;
 }
@@ -1092,13 +1095,6 @@
  * ============================================================================= */
 .padding-8 {
     -fx-padding: 8px;
-}
-
-.card {
-    -fx-background-color: -monet-surface-container-low;
-    -fx-background-radius: 12;
-    -fx-padding: 12px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 6, 0.0, 0, 1);
 }
 
 .card-no-padding {
@@ -1738,10 +1734,11 @@
 }
 
 /* =============================================================================
- * MD3 Decorator / Window
+ * MD3 Decorator / Window — surface background, rounded corners
  * ============================================================================= */
 .jfx-decorator {
-    -fx-decorator-color: -monet-primary-container;
+    -fx-decorator-color: -monet-surface-container-high;
+    -fx-background-color: -monet-surface;
 }
 
 .jfx-decorator-drawer {
@@ -1758,11 +1755,7 @@
     -fx-padding: 8;
 }
 
-.debug-border {
-    -fx-border-color: red;
-    -fx-border-width: 1;
-}
-
+/* Content background — surface container */
 .content-background {
     -fx-background-color: -monet-surface;
 }

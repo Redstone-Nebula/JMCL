@@ -26,7 +26,7 @@
 
 JMCL is an open-source, cross-platform Minecraft launcher that supports Mod Management, Game Customizing, ModLoader Installing (Forge, NeoForge, Cleanroom, Fabric, Legacy Fabric, Quilt, LiteLoader, and OptiFine), Modpack Creating, UI Customization, and more.
 
-HMCL has amazing cross-platform capabilities. Not only does it run on different operating systems like Windows, Linux, macOS, and FreeBSD, but it also supports various CPU architectures such as x86, ARM, RISC-V, MIPS, and LoongArch. You can easily enjoy Minecraft across different platforms through HMCL.
+JMCL has amazing cross-platform capabilities. Not only does it run on different operating systems like Windows, Linux, macOS, and FreeBSD, but it also supports various CPU architectures such as x86, ARM, RISC-V, MIPS, and LoongArch. You can easily enjoy Minecraft across different platforms through JMCL.
 
 For systems and CPU architectures supported by JMCL, please refer to [this table](PLATFORM.md).
 
@@ -47,8 +47,8 @@ You can contribute to JMCL development in the following ways:
 
 Before contributing, please read the [Contributing Guide](./Contributing.md), which includes the following:
 
-- [How to build and run HMCL from source](./Contributing.md#build-hmcl)
-- [Adjusting HMCL behavior using debug options](./Contributing.md#debug-options)
+- [How to build and run JMCL from source](./Contributing.md#build-hmcl)
+- [Adjusting JMCL behavior using debug options](./Contributing.md#debug-options)
 
 
 
