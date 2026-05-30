@@ -34,9 +34,7 @@ JMCL 有着强大的跨平台能力。它不仅支持 Windows、Linux、macOS、
 
 你可以从这些渠道下载 JMCL：
 
-- [JMCL 官方网站](https://hmcl.huangyuhui.net/download)
 - [GitHub Release](https://github.com/Open-code-Studio/JMCL/releases)
-- [CNB Release](https://cnb.cool/Open-code-Studio/JMCL/-/releases)
 
 ## 参与贡献
 
