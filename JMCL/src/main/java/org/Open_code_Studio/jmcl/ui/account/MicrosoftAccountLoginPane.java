@@ -47,7 +47,6 @@ import org.Open_code_Studio.jmcl.theme.Themes;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.ui.WeakListenerHolder;
 import org.Open_code_Studio.jmcl.ui.construct.*;
-import org.Open_code_Studio.jmcl.upgrade.IntegrityChecker;
 import org.Open_code_Studio.jmcl.util.Lang;
 import org.Open_code_Studio.jmcl.util.QrCodeUtils;
 import org.Open_code_Studio.jmcl.util.StringUtils;
@@ -142,12 +141,6 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
             btnLogin.setDisable(true);
             loginButtonSpinner.setLoading(false);
             return;
-        }
-
-        if (!IntegrityChecker.isOfficial()) {
-            var unofficialHintPane = new HintPane(MessageDialogPane.MessageType.WARNING);
-            unofficialHintPane.setSegment(i18n("unofficial.hint"));
-            rootContainer.getChildren().add(unofficialHintPane);
         }
 
         if (currentStep instanceof Step.Init) {

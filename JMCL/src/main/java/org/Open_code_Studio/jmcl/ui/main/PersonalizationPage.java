@@ -21,10 +21,6 @@ import com.jfoenix.controls.*;
 import com.jfoenix.effects.JFXDepthManager;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
-import javafx.beans.binding.When;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ColorPicker;
@@ -33,7 +29,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontSmoothingType;
-import org.Open_code_Studio.jmcl.setting.EnumBackgroundImage;
 import org.Open_code_Studio.jmcl.setting.FontManager;
 import org.Open_code_Studio.jmcl.theme.ThemeColor;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
@@ -42,7 +37,6 @@ import org.Open_code_Studio.jmcl.ui.construct.*;
 import org.Open_code_Studio.jmcl.util.Lang;
 import org.Open_code_Studio.jmcl.util.javafx.SafeStringConverter;
 
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -51,20 +45,6 @@ import static org.Open_code_Studio.jmcl.setting.ConfigHolder.globalConfig;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
 public class PersonalizationPage extends StackPane {
-
-    private static int snapOpacity(double val) {
-        if (val <= 0) {
-            return 0;
-        } else if (Double.isNaN(val) || val >= 100.) {
-            return 100;
-        }
-
-        int prevTick = (int) (val / 5);
-        int prevTickValue = prevTick * 5;
-        int nextTickValue = (prevTick + 1) * 5;
-
-        return (val - prevTickValue) > (nextTickValue - val) ? nextTickValue : prevTickValue;
-    }
 
     public PersonalizationPage() {
         VBox content = new VBox(10);
@@ -119,84 +99,7 @@ public class PersonalizationPage extends StackPane {
         }
         content.getChildren().addAll(ComponentList.createComponentListTitle(i18n("settings.launcher.appearance")), themeList);
 
-        {
-            ComponentList componentList = new ComponentList();
-
-            MultiFileItem<EnumBackgroundImage> backgroundItem = new MultiFileItem<>();
-            ComponentSublist backgroundSublist = new ComponentSublist();
-            backgroundSublist.getContent().add(backgroundItem);
-            backgroundSublist.setTitle(i18n("launcher.background"));
-            backgroundSublist.setHasSubtitle(true);
-
-            backgroundItem.loadChildren(Arrays.asList(
-                    new MultiFileItem.Option<>(i18n("launcher.background.default"), EnumBackgroundImage.DEFAULT)
-                            .setTooltip(i18n("launcher.background.default.tooltip")),
-                    new MultiFileItem.Option<>(i18n("launcher.background.classic"), EnumBackgroundImage.CLASSIC),
-                    new MultiFileItem.FileOption<>(i18n("settings.custom"), EnumBackgroundImage.CUSTOM)
-                            .setChooserTitle(i18n("launcher.background.choose"))
-                            .addExtensionFilter(FXUtils.getImageExtensionFilter())
-                            .setSelectionMode(FileSelector.SelectionMode.FILE_OR_DIRECTORY)
-                            .bindBidirectional(config().backgroundImageProperty()),
-                    new MultiFileItem.StringOption<>(i18n("launcher.background.network"), EnumBackgroundImage.NETWORK)
-                            .setValidators(new URLValidator(true))
-                            .bindBidirectional(config().backgroundImageUrlProperty()),
-                    new MultiFileItem.PaintOption<>(i18n("launcher.background.paint"), EnumBackgroundImage.PAINT)
-                            .bindBidirectional(config().backgroundPaintProperty())
-            ));
-            backgroundItem.selectedDataProperty().bindBidirectional(config().backgroundImageTypeProperty());
-            backgroundSublist.subtitleProperty().bind(
-                    new When(backgroundItem.selectedDataProperty().isEqualTo(EnumBackgroundImage.DEFAULT))
-                            .then(i18n("launcher.background.default"))
-                            .otherwise(config().backgroundImageProperty()));
-
-            HBox opacityItem = new HBox(8);
-            {
-                opacityItem.setAlignment(Pos.CENTER);
-
-                Label label = new Label(i18n("settings.launcher.background.settings.opacity"));
-
-                JFXSlider slider = new JFXSlider(0, 100,
-                        config().getBackgroundImageType() != EnumBackgroundImage.TRANSLUCENT
-                                ? config().getBackgroundImageOpacity() : 50);
-                slider.setShowTickMarks(true);
-                slider.setMajorTickUnit(10);
-                slider.setMinorTickCount(1);
-                slider.setBlockIncrement(5);
-                slider.setSnapToTicks(true);
-                slider.setPadding(new Insets(9, 0, 0, 0));
-                HBox.setHgrow(slider, Priority.ALWAYS);
-
-                if (config().getBackgroundImageType() == EnumBackgroundImage.TRANSLUCENT) {
-                    slider.setDisable(true);
-                    config().backgroundImageTypeProperty().addListener(new ChangeListener<>() {
-                        @Override
-                        public void changed(ObservableValue<? extends EnumBackgroundImage> observable, EnumBackgroundImage oldValue, EnumBackgroundImage newValue) {
-                            if (newValue != EnumBackgroundImage.TRANSLUCENT) {
-                                config().backgroundImageTypeProperty().removeListener(this);
-                                slider.setDisable(false);
-                                slider.setValue(100);
-                            }
-                        }
-                    });
-                }
-
-                Label textOpacity = new Label();
-                FXUtils.setLimitWidth(textOpacity, 50);
-
-                StringBinding valueBinding = Bindings.createStringBinding(() -> ((int) slider.getValue()) + "%", slider.valueProperty());
-                textOpacity.textProperty().bind(valueBinding);
-                slider.setValueFactory(s -> valueBinding);
-
-                slider.valueProperty().addListener((observable, oldValue, newValue) ->
-                        config().setBackgroundImageOpacity(snapOpacity(newValue.doubleValue())));
-
-                opacityItem.getChildren().setAll(label, slider, textOpacity);
-            }
-
-            componentList.getContent().setAll(backgroundItem, opacityItem);
-            content.getChildren().addAll(ComponentList.createComponentListTitle(i18n("launcher.background")), componentList);
-        }
-
+        // Font & Log Settings
         {
             ComponentList logPane = new ComponentList();
 

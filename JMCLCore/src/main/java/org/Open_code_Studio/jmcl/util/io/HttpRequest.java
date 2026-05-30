@@ -42,6 +42,7 @@ import static org.Open_code_Studio.jmcl.util.Lang.wrap;
 import static org.Open_code_Studio.jmcl.util.gson.JsonUtils.GSON;
 import static org.Open_code_Studio.jmcl.util.io.NetworkUtils.createHttpConnection;
 import static org.Open_code_Studio.jmcl.util.io.NetworkUtils.resolveConnection;
+import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
 public abstract class HttpRequest {
     protected final String url;
@@ -221,6 +222,19 @@ public abstract class HttpRequest {
         for (int i = 0; i < retryTimes; i++) {
             try {
                 return supplier.get();
+            } catch (ResponseCodeException e) {
+                if (e.getResponseCode() == 429) {
+                    long delay = Math.min((long) Math.pow(2, i) * 1000, 30_000);
+                    LOG.warning("Rate limited (429), retrying in " + delay / 1000 + "s (attempt " + (i + 1) + "/" + retryTimes + ")");
+                    try {
+                        Thread.sleep(delay);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw e;
+                    }
+                } else {
+                    exception = e;
+                }
             } catch (Throwable e) {
                 exception = e;
             }

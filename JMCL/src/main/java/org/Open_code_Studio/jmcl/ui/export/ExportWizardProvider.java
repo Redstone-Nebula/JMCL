@@ -126,8 +126,6 @@ public final class ExportWizardProvider implements WizardProvider {
                 try (Zipper zip = new Zipper(modpackFile)) {
                     Config exported = new Config();
 
-                    exported.setBackgroundImageType(config().getBackgroundImageType());
-                    exported.setBackgroundImage(config().getBackgroundImage());
                     exported.setThemeColor(config().getThemeColor());
                     exported.setDownloadType(config().getDownloadType());
                     exported.setPreferredLoginType(config().getPreferredLoginType());
@@ -137,21 +135,6 @@ public final class ExportWizardProvider implements WizardProvider {
                     zip.putFile(tempModpack, ModpackTypeSelectionPage.MODPACK_TYPE_MODRINTH.equals(modpackType)
                             ? "modpack.mrpack"
                             : "modpack.zip");
-
-                    Path bg = Metadata.LOCAL_DIRECTORY.resolve("background");
-                    if (!Files.isDirectory(bg))
-                        bg = Metadata.CURRENT_DIRECTORY.resolve("bg");
-                    if (Files.isDirectory(bg))
-                        zip.putDirectory(bg, ".hmcl/bg");
-
-                    for (String extension : FXUtils.IMAGE_EXTENSIONS) {
-                        String fileName = "background." + extension;
-                        Path background = Metadata.LOCAL_DIRECTORY.resolve(fileName);
-                        if (!Files.isRegularFile(background))
-                            background = Metadata.CURRENT_DIRECTORY.resolve(fileName);
-                        if (Files.isRegularFile(background))
-                            zip.putFile(background, ".hmcl/" + fileName);
-                    }
 
                     for (String extension : FontManager.FONT_EXTENSIONS) {
                         String fileName = "font." + extension;

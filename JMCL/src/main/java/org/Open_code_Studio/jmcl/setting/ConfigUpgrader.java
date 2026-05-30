@@ -71,8 +71,6 @@ final class ConfigUpgrader {
             // Upgrade configuration of HMCL earlier than 3.1.70
             if (!rawJson.containsKey("commonDirType"))
                 deserialized.setCommonDirType(deserialized.getCommonDirectory().equals(Settings.getDefaultCommonDirectory()) ? EnumCommonDirectory.DEFAULT : EnumCommonDirectory.CUSTOM);
-            if (!rawJson.containsKey("backgroundType"))
-                deserialized.setBackgroundImageType(StringUtils.isNotBlank(deserialized.getBackgroundImage()) ? EnumBackgroundImage.CUSTOM : EnumBackgroundImage.DEFAULT);
             if (!rawJson.containsKey("hasProxy"))
                 deserialized.setHasProxy(StringUtils.isNotBlank(deserialized.getProxyHost()));
             if (!rawJson.containsKey("hasProxyAuth"))

@@ -56,7 +56,6 @@ public final class Config extends ObservableSetting {
             .registerTypeAdapter(ObservableSet.class, new ObservableSetCreator())
             .registerTypeAdapter(ObservableMap.class, new ObservableMapCreator())
             .registerTypeAdapterFactory(new JavaFxPropertyTypeAdapterFactory(true, true))
-            .registerTypeAdapter(EnumBackgroundImage.class, new EnumOrdinalDeserializer<>(EnumBackgroundImage.class)) // backward compatibility for backgroundType
             .registerTypeAdapter(Proxy.Type.class, new EnumOrdinalDeserializer<>(Proxy.Type.class)) // backward compatibility for hasProxy
             .registerTypeAdapter(Paint.class, new PaintAdapter())
             .setPrettyPrinting()
@@ -413,81 +412,6 @@ public final class Config extends ObservableSetting {
 
     public void setTitleTransparent(boolean titleTransparent) {
         this.titleTransparent.set(titleTransparent);
-    }
-
-    @SerializedName("backgroundType")
-    private final ObjectProperty<EnumBackgroundImage> backgroundImageType = new RawPreservingObjectProperty<>(EnumBackgroundImage.DEFAULT);
-
-    public ObjectProperty<EnumBackgroundImage> backgroundImageTypeProperty() {
-        return backgroundImageType;
-    }
-
-    public EnumBackgroundImage getBackgroundImageType() {
-        return backgroundImageType.get();
-    }
-
-    public void setBackgroundImageType(EnumBackgroundImage backgroundImageType) {
-        this.backgroundImageType.set(backgroundImageType);
-    }
-
-    @SerializedName("bgpath")
-    private final StringProperty backgroundImage = new SimpleStringProperty();
-
-    public StringProperty backgroundImageProperty() {
-        return backgroundImage;
-    }
-
-    public String getBackgroundImage() {
-        return backgroundImage.get();
-    }
-
-    public void setBackgroundImage(String backgroundImage) {
-        this.backgroundImage.set(backgroundImage);
-    }
-
-    @SerializedName("bgurl")
-    private final StringProperty backgroundImageUrl = new SimpleStringProperty();
-
-    public StringProperty backgroundImageUrlProperty() {
-        return backgroundImageUrl;
-    }
-
-    public String getBackgroundImageUrl() {
-        return backgroundImageUrl.get();
-    }
-
-    public void setBackgroundImageUrl(String backgroundImageUrl) {
-        this.backgroundImageUrl.set(backgroundImageUrl);
-    }
-
-    @SerializedName("bgpaint")
-    private final ObjectProperty<Paint> backgroundPaint = new SimpleObjectProperty<>();
-
-    public Paint getBackgroundPaint() {
-        return backgroundPaint.get();
-    }
-
-    public ObjectProperty<Paint> backgroundPaintProperty() {
-        return backgroundPaint;
-    }
-
-    public void setBackgroundPaint(Paint backgroundPaint) {
-        this.backgroundPaint.set(backgroundPaint);
-    }
-
-    @SerializedName("bgImageOpacity")
-    private final IntegerProperty backgroundImageOpacity = new SimpleIntegerProperty(100);
-
-    public IntegerProperty backgroundImageOpacityProperty() {
-        return backgroundImageOpacity;
-    }
-
-    public int getBackgroundImageOpacity() {
-        return backgroundImageOpacity.get();
-    }
-
-    public void setBackgroundImageOpacity(int backgroundImageOpacity) {
-        this.backgroundImageOpacity.set(backgroundImageOpacity);
     }
 
     // Networks

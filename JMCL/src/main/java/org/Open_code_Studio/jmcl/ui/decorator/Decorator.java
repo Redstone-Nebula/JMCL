@@ -49,7 +49,6 @@ import org.Open_code_Studio.jmcl.util.platform.OperatingSystem;
 public class Decorator extends Control {
     private final ListProperty<Node> content = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ListProperty<Node> container = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private final ObjectProperty<Background> contentBackground = new SimpleObjectProperty<>();
     private final ObjectProperty<DecoratorPage.State> state = new SimpleObjectProperty<>();
     private final ObjectProperty<EventHandler<ActionEvent>> onCloseNavButtonAction = new SimpleObjectProperty<>();
     private final ObjectProperty<EventHandler<ActionEvent>> onBackNavButtonAction = new SimpleObjectProperty<>();
@@ -149,18 +148,6 @@ public class Decorator extends Control {
 
     public void setContainer(ObservableList<Node> container) {
         this.container.set(container);
-    }
-
-    public Background getContentBackground() {
-        return contentBackground.get();
-    }
-
-    public ObjectProperty<Background> contentBackgroundProperty() {
-        return contentBackground;
-    }
-
-    public void setContentBackground(Background contentBackground) {
-        this.contentBackground.set(contentBackground);
     }
 
     public BooleanProperty canRefreshProperty() {

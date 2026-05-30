@@ -20,26 +20,12 @@ package org.Open_code_Studio.jmcl.ui.decorator;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSnackbarLayout;
 import javafx.animation.Interpolator;
-import javafx.beans.InvalidationListener;
-import javafx.beans.WeakInvalidationListener;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.glavo.url.WebURL;
-import org.Open_code_Studio.jmcl.Metadata;
 import org.Open_code_Studio.jmcl.auth.authlibinjector.AuthlibInjectorDnD;
-import org.Open_code_Studio.jmcl.setting.EnumBackgroundImage;
-import org.Open_code_Studio.jmcl.task.Schedulers;
-import org.Open_code_Studio.jmcl.task.Task;
 import org.Open_code_Studio.jmcl.ui.Controllers;
 import org.Open_code_Studio.jmcl.ui.DialogUtils;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
@@ -51,23 +37,10 @@ import org.Open_code_Studio.jmcl.ui.construct.JFXDialogPane;
 import org.Open_code_Studio.jmcl.ui.construct.Navigator;
 import org.Open_code_Studio.jmcl.ui.wizard.Refreshable;
 import org.Open_code_Studio.jmcl.ui.wizard.WizardProvider;
-import org.Open_code_Studio.jmcl.util.MathUtils;
 import org.Open_code_Studio.jmcl.util.platform.OperatingSystem;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.Open_code_Studio.jmcl.setting.ConfigHolder.config;
-import static org.Open_code_Studio.jmcl.ui.FXUtils.newBuiltinImage;
 import static org.Open_code_Studio.jmcl.ui.FXUtils.onEscPressed;
-import static org.Open_code_Studio.jmcl.util.io.FileUtils.getExtension;
 import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
 public class DecoratorController {
@@ -88,16 +61,6 @@ public class DecoratorController {
         decorator.onRefreshNavButtonActionProperty().set(e -> refresh());
 
         setupAuthlibInjectorDnD();
-
-        // Setup background
-        decorator.setContentBackground(getBackground());
-        changeBackgroundListener = o -> updateBackground();
-        WeakInvalidationListener weakListener = new WeakInvalidationListener(changeBackgroundListener);
-        config().backgroundImageTypeProperty().addListener(weakListener);
-        config().backgroundImageProperty().addListener(weakListener);
-        config().backgroundImageUrlProperty().addListener(weakListener);
-        config().backgroundPaintProperty().addListener(weakListener);
-        config().backgroundImageOpacityProperty().addListener(weakListener);
 
         // pass key events to current dialog / current page
         decorator.addEventFilter(KeyEvent.ANY, e -> {
@@ -159,183 +122,6 @@ public class DecoratorController {
 
     public Decorator getDecorator() {
         return decorator;
-    }
-
-    // ==== Background ====
-
-    //FXThread
-    private int changeBackgroundCount = 0;
-
-    @SuppressWarnings("FieldCanBeLocal") // Strong reference
-    private final InvalidationListener changeBackgroundListener;
-
-    private void updateBackground() {
-        final int currentCount = ++this.changeBackgroundCount;
-        Task.supplyAsync(Schedulers.io(), this::getBackground)
-                .setName("Update background")
-                .whenComplete(Schedulers.javafx(), (background, exception) -> {
-                    if (exception == null) {
-                        if (this.changeBackgroundCount == currentCount)
-                            decorator.setContentBackground(background);
-                    } else {
-                        LOG.warning("Failed to update background", exception);
-                    }
-                }).start();
-    }
-
-    private Background getBackground() {
-        EnumBackgroundImage imageType = config().getBackgroundImageType();
-        if (imageType == null)
-            imageType = EnumBackgroundImage.DEFAULT;
-
-        Image image = null;
-        switch (imageType) {
-            case CUSTOM:
-                String backgroundImage = config().getBackgroundImage();
-                if (backgroundImage != null)
-                    try {
-                        Path path = Path.of(backgroundImage);
-                        image = Files.isDirectory(path)
-                                ? randomImageIn(path)
-                                : tryLoadImage(path);
-                    } catch (Exception e) {
-                        LOG.warning("Couldn't load background image", e);
-                    }
-                break;
-            case NETWORK:
-                String backgroundImageUrl = config().getBackgroundImageUrl();
-                if (backgroundImageUrl != null) {
-                    try {
-                        image = FXUtils.loadImage(WebURL.parseBrowserInput(backgroundImageUrl));
-                    } catch (Exception e) {
-                        LOG.warning("Couldn't load background image", e);
-                    }
-                }
-                break;
-            case CLASSIC:
-                image = newBuiltinImage("/assets/img/background-classic.jpg");
-                break;
-            case TRANSLUCENT: // Deprecated
-                return new Background(new BackgroundFill(new Color(1, 1, 1, 0.5), CornerRadii.EMPTY, Insets.EMPTY));
-            case PAINT:
-                Paint paint = config().getBackgroundPaint();
-                double opacity = MathUtils.clamp(config().getBackgroundImageOpacity(), 0, 100) / 100.;
-                if (paint instanceof Color || paint == null) {
-                    Color color = (Color) paint;
-                    if (color == null)
-                        color = Color.WHITE; // Default to white if no color is set
-                    if (opacity < 1.)
-                        color = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
-                    return new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
-                } else {
-                    // TODO: Support opacity for non-color paints
-                    return new Background(new BackgroundFill(paint, CornerRadii.EMPTY, Insets.EMPTY));
-                }
-        }
-        if (image == null) {
-            image = loadDefaultBackgroundImage();
-        }
-        return createBackgroundWithOpacity(image, config().getBackgroundImageOpacity());
-    }
-
-    private Background createBackgroundWithOpacity(Image image, int opacity) {
-        if (opacity <= 0) {
-            return new Background(new BackgroundFill(new Color(1, 1, 1, 0), CornerRadii.EMPTY, Insets.EMPTY));
-        } else if (opacity >= 100 || image.getPixelReader() == null) {
-            return new Background(new BackgroundImage(
-                    image,
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundPosition.DEFAULT,
-                    new BackgroundSize(800, 480, false, false, true, true)
-            ));
-        } else {
-            WritableImage tempImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
-            PixelReader pixelReader = image.getPixelReader();
-            PixelWriter pixelWriter = tempImage.getPixelWriter();
-            for (int y = 0; y < image.getHeight(); y++) {
-                for (int x = 0; x < image.getWidth(); x++) {
-                    Color color = pixelReader.getColor(x, y);
-                    Color newColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getOpacity() * opacity / 100);
-                    pixelWriter.setColor(x, y, newColor);
-                }
-            }
-
-            return new Background(new BackgroundImage(
-                    tempImage,
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundPosition.DEFAULT,
-                    new BackgroundSize(800, 480, false, false, true, true)
-            ));
-        }
-    }
-
-    /**
-     * Load background image from bg/, background.png, background.jpg, background.gif
-     */
-    private Image loadDefaultBackgroundImage() {
-        Image image = randomImageIn(Metadata.LOCAL_DIRECTORY.resolve("background"));
-        if (image != null)
-            return image;
-
-        for (String extension : FXUtils.IMAGE_EXTENSIONS) {
-            image = tryLoadImage(Metadata.LOCAL_DIRECTORY.resolve("background." + extension));
-            if (image != null)
-                return image;
-        }
-
-        image = randomImageIn(Metadata.CURRENT_DIRECTORY.resolve("bg"));
-        if (image != null)
-            return image;
-
-        for (String extension : FXUtils.IMAGE_EXTENSIONS) {
-            image = tryLoadImage(Metadata.CURRENT_DIRECTORY.resolve("background." + extension));
-            if (image != null)
-                return image;
-        }
-
-        return newBuiltinImage("/assets/img/background.jpg");
-    }
-
-    private @Nullable Image randomImageIn(Path imageDir) {
-        if (!Files.isDirectory(imageDir)) {
-            return null;
-        }
-
-        ArrayList<Path> candidates;
-        try (Stream<Path> stream = Files.list(imageDir)) {
-            candidates = stream
-                    .filter(it -> FXUtils.IMAGE_EXTENSIONS.contains(getExtension(it).toLowerCase(Locale.ROOT)))
-                    .filter(Files::isReadable)
-                    .collect(Collectors.toCollection(ArrayList::new));
-        } catch (IOException e) {
-            LOG.warning("Failed to list files in " + imageDir, e);
-            return null;
-        }
-
-        Random rnd = new Random();
-        while (!candidates.isEmpty()) {
-            int selected = rnd.nextInt(candidates.size());
-            Image loaded = tryLoadImage(candidates.get(selected));
-            if (loaded != null)
-                return loaded;
-            else
-                candidates.remove(selected);
-        }
-        return null;
-    }
-
-    private @Nullable Image tryLoadImage(Path path) {
-        if (!Files.isReadable(path))
-            return null;
-
-        try {
-            return FXUtils.loadImage(path);
-        } catch (Exception e) {
-            LOG.warning("Couldn't load background image", e);
-            return null;
-        }
     }
 
     // ==== Navigation ====

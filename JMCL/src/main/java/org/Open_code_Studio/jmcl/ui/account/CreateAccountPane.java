@@ -52,7 +52,6 @@ import org.Open_code_Studio.jmcl.ui.Controllers;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.ui.SVG;
 import org.Open_code_Studio.jmcl.ui.construct.*;
-import org.Open_code_Studio.jmcl.upgrade.IntegrityChecker;
 import org.Open_code_Studio.jmcl.util.StringUtils;
 import org.Open_code_Studio.jmcl.util.gson.UUIDTypeAdapter;
 import org.Open_code_Studio.jmcl.util.javafx.BindingMapping;
@@ -336,15 +335,6 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
             getColumnConstraints().add(col1);
 
             int rowIndex = 0;
-
-            if (!IntegrityChecker.isOfficial() && !(factory instanceof OfflineAccountFactory)) {
-                HintPane hintPane = new HintPane(MessageDialogPane.MessageType.WARNING);
-                hintPane.setSegment(i18n("unofficial.hint"));
-                GridPane.setColumnSpan(hintPane, 2);
-                add(hintPane, 0, rowIndex);
-
-                rowIndex++;
-            }
 
             if (factory instanceof BoundAuthlibInjectorAccountFactory) {
                 this.server = ((BoundAuthlibInjectorAccountFactory) factory).getServer();

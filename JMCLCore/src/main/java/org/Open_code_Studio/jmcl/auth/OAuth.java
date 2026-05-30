@@ -65,6 +65,7 @@ public class OAuth {
                     throw new UnsupportedOperationException("grant flow " + grantFlow);
             }
         } catch (IOException e) {
+            LOG.warning("OAuth authenticate failed with IOException", e);
             throw new ServerDisconnectException(e);
         } catch (InterruptedException e) {
             throw new NoSelectedCharacterException();
@@ -72,9 +73,11 @@ public class OAuth {
             if (e.getCause() instanceof InterruptedException) {
                 throw new NoSelectedCharacterException();
             } else {
+                LOG.warning("OAuth authenticate failed with ExecutionException", e);
                 throw new ServerDisconnectException(e);
             }
         } catch (JsonParseException e) {
+            LOG.warning("OAuth authenticate failed with JsonParseException", e);
             throw new ServerResponseMalformedException(e);
         }
     }

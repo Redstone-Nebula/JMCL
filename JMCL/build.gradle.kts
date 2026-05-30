@@ -36,19 +36,13 @@ val launcherExe = System.getenv("JVM-MCL_LAUNCHER_EXE") ?: ""
 
 val buildNumber = System.getenv("BUILD_NUMBER")?.toInt()
 if (buildNumber != null) {
-    version = if (JenkinsUtils.IS_ON_CI && versionType == "dev") {
-        "$versionRoot.0.$buildNumber"
-    } else {
-        "$versionRoot.$buildNumber"
-    }
+    version = "$versionRoot.$buildNumber"
 } else {
     val shortCommit = System.getenv("GITHUB_SHA")?.lowercase()?.substring(0, 7)
     version = if (shortCommit.isNullOrBlank()) {
-        "$versionRoot.SNAPSHOT"
-    } else if (isOfficial) {
-        "$versionRoot.dev-$shortCommit"
+        "DEV$versionRoot"
     } else {
-        "$versionRoot.unofficial-$shortCommit"
+        "DEV$versionRoot-$shortCommit"
     }
 }
 
@@ -58,7 +52,6 @@ dependencies {
     implementation(project(":JVM-MCLCore"))
     implementation(project(":JVM-MCLBoot"))
     implementation("libs:JFoenix")
-    implementation(libs.materialfx)
     implementation(libs.jwebp)
     implementation(libs.fxsvgimage)
     implementation(libs.java.info)

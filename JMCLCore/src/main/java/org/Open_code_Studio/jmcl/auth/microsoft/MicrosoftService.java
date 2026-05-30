@@ -77,8 +77,10 @@ public class MicrosoftService {
             OAuth.Result result = OAuth.MICROSOFT.authenticate(flow, new OAuth.Options(SCOPE, callback));
             return authenticateViaLiveAccessToken(result.getAccessToken(), result.getRefreshToken());
         } catch (IOException e) {
+            LOG.warning("MicrosoftService.authenticate failed with IOException", e);
             throw new ServerDisconnectException(e);
         } catch (JsonParseException e) {
+            LOG.warning("MicrosoftService.authenticate failed with JsonParseException", e);
             throw new ServerResponseMalformedException(e);
         }
     }

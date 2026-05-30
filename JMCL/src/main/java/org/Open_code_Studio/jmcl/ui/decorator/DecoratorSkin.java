@@ -183,14 +183,10 @@ public class DecoratorSkin extends SkinBase<Decorator> {
         // and decide whether the whole top bar should be rendered in white or black. TODO
         FXUtils.onChangeAndOperate(skinnable.titleTransparentProperty(), titleTransparent -> {
             if (titleTransparent) {
-                wrapper.backgroundProperty().bind(skinnable.contentBackgroundProperty());
-                container.backgroundProperty().unbind();
                 container.setBackground(null);
                 titleContainer.getStyleClass().remove("background");
                 titleContainer.getStyleClass().add("gray-background");
             } else {
-                container.backgroundProperty().bind(skinnable.contentBackgroundProperty());
-                wrapper.backgroundProperty().unbind();
                 wrapper.setBackground(null);
                 titleContainer.getStyleClass().add("background");
                 titleContainer.getStyleClass().remove("gray-background");
@@ -231,12 +227,6 @@ public class DecoratorSkin extends SkinBase<Decorator> {
             buttonsContainer.setAlignment(Pos.TOP_RIGHT);
             buttonsContainer.setMaxHeight(40);
             {
-                JFXButton btnHelp = new JFXButton();
-                btnHelp.setFocusTraversable(false);
-                btnHelp.setGraphic(SVG.HELP.createIcon(Themes.titleFillProperty()));
-                btnHelp.getStyleClass().add("jfx-decorator-button");
-                btnHelp.setOnAction(e -> FXUtils.openLink(Metadata.CONTACT_URL));
-
                 JFXButton btnMin = new JFXButton();
                 btnMin.setFocusTraversable(false);
                 btnMin.setGraphic(SVG.MINIMIZE_CENTER.createIcon(Themes.titleFillProperty()));
@@ -249,7 +239,7 @@ public class DecoratorSkin extends SkinBase<Decorator> {
                 btnClose.getStyleClass().add("jfx-decorator-button");
                 btnClose.setOnAction(e -> skinnable.close());
 
-                buttonsContainer.getChildren().setAll(btnHelp, btnMin, btnClose);
+                buttonsContainer.getChildren().setAll(btnMin, btnClose);
             }
             AnchorPane layer = new AnchorPane();
             layer.setPickOnBounds(false);
