@@ -34,9 +34,7 @@ JMCL 有着强大的跨平台能力。它不仅支持 Windows、Linux、macOS、
 
 你可以从这些渠道下载 JMCL：
 
-- [JMCL 官方网站](https://hmcl.huangyuhui.net/download)
 - [GitHub Release](https://github.com/Open-code-Studio/JMCL/releases)
-- [CNB Release](https://cnb.cool/Open-code-Studio/JMCL/-/releases)
 
 ## 参与贡献
 
@@ -54,7 +52,7 @@ JMCL 是一个社区驱动的开源项目，欢迎任何人参与贡献代码或
 
 ## 贡献者
 
-自 2015 年以来，JMCL 已经有超过 120 位贡献者参与其中，感谢他们的辛勤付出！
+自 2026 年以来，JMCL 已经有超过 1 位贡献者参与其中，感谢他们的辛勤付出！
 
 [![Contributors](https://contrib.rocks/image?repo=Open-code-Studio/JMCL)](https://github.com/Open-code-Studio/JMCL/graphs/contributors)
 

@@ -1,4 +1,4 @@
-# Hello Minecraft! Launcher Release Schedule
+#JAVA Minecraft Launcher Release Schedule
 
 <!-- #BEGIN LANGUAGE_SWITCHER -->
 **English** | [中文](ReleaseSchedule_zh.md)
