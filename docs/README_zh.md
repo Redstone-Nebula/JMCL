@@ -52,7 +52,7 @@ JMCL 是一个社区驱动的开源项目，欢迎任何人参与贡献代码或
 
 ## 贡献者
 
-自 2015 年以来，JMCL 已经有超过 120 位贡献者参与其中，感谢他们的辛勤付出！
+自 2026 年以来，JMCL 已经有超过 1 位贡献者参与其中，感谢他们的辛勤付出！
 
 [![Contributors](https://contrib.rocks/image?repo=Open-code-Studio/JMCL)](https://github.com/Open-code-Studio/JMCL/graphs/contributors)
 
