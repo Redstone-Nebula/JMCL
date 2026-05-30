@@ -257,6 +257,10 @@ public final class LauncherHelper {
                 }).thenAcceptAsync(process -> { // process is LaunchTask's result
                     if (scriptFile == null) {
                         PROCESSES.add(new WeakReference<>(process));
+                        runLater(() -> new InstanceManagerWindow(
+                                process, profile, selectedVersion,
+                                profile.getRepository()
+                        ).show());
                         if (launcherVisibility == LauncherVisibility.CLOSE)
                             Launcher.stopApplication();
                         else

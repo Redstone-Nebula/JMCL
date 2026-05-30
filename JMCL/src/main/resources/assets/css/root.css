@@ -1986,3 +1986,40 @@
 .update-pane:active .subtitle-label {
     -fx-text-fill: -monet-tertiary;
 }
+
+/* =============================================================================
+ * Instance Manager — small vertical companion window
+ * ============================================================================= */
+.instance-manager {
+    -fx-background-color: -monet-surface-container-high;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 12, 0.0, 0, 3);
+    -fx-padding: 6;
+    -fx-spacing: 4;
+    -fx-alignment: top-center;
+    -fx-min-width: 34px;
+    -fx-max-width: 34px;
+}
+
+.instance-manager-button {
+    -fx-min-width: 28px;
+    -fx-max-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-height: 28px;
+    -fx-background-radius: 8;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}
+
+.instance-manager-button .svg {
+    -fx-fill: -monet-on-surface-variant;
+}
+
+.instance-manager-button:hover {
+    -fx-background-color: -monet-secondary-container;
+}
+
+.instance-manager-button:hover .svg {
+    -fx-fill: -monet-on-secondary-container;
+}
