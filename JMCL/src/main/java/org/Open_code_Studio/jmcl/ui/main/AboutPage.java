@@ -131,14 +131,14 @@ public final class AboutPage extends SpinnerPane {
 
             TextArea textArea = new TextArea(text);
             textArea.setEditable(false);
-            textArea.setWrapText(false);
-            textArea.setPrefWidth(600);
-            textArea.setPrefHeight(500);
+            textArea.setWrapText(true);
+            textArea.setPrefWidth(450);
+            textArea.setPrefHeight(350);
             textArea.getStyleClass().add("license-text-area");
 
             ScrollPane scrollPane = new ScrollPane(textArea);
             scrollPane.setFitToWidth(true);
-            scrollPane.setPrefSize(620, 520);
+            scrollPane.setPrefSize(470, 370);
 
             JFXButton closeButton = FXUtils.newToggleButton4(SVG.CLOSE);
             closeButton.getStyleClass().add("license-close-button");
@@ -148,6 +148,7 @@ public final class AboutPage extends SpinnerPane {
             header.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
 
             VBox dialogContent = new VBox(header, scrollPane);
+            dialogContent.getStyleClass().add("license-dialog");
             VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
             closeButton.setOnAction(e -> dialogContent.fireEvent(new DialogCloseEvent()));
