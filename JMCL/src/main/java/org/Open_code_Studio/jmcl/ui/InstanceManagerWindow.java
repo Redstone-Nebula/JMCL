@@ -18,9 +18,7 @@
 package org.Open_code_Studio.jmcl.ui;
 
 import javafx.application.Platform;
-import javafx.beans.WeakInvalidationListener;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -30,18 +28,21 @@ import org.Open_code_Studio.jmcl.game.JMCLGameRepository;
 import org.Open_code_Studio.jmcl.setting.Profile;
 import org.Open_code_Studio.jmcl.setting.StyleSheets;
 import org.Open_code_Studio.jmcl.ui.construct.MessageDialogPane;
+import org.Open_code_Studio.jmcl.util.Lang;
 import org.Open_code_Studio.jmcl.util.TaskCancellationAction;
 import org.Open_code_Studio.jmcl.util.platform.ManagedProcess;
 import org.Open_code_Studio.jmcl.util.platform.OperatingSystem;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
 /// A small undecorated window that manages a running Minecraft game instance.
 ///
-/// It appears next to the main launcher window when a game is launched,
+/// It tracks the Minecraft game window position and appears next to it,
 /// providing quick access to stop the game, open its folder, and view mods.
 public final class InstanceManagerWindow extends Stage {
 
@@ -59,6 +60,33 @@ public final class InstanceManagerWindow extends Stage {
 
     /// Thread monitoring the game process for exit detection.
     private @Nullable Thread monitorThread;
+
+    /// Thread tracking the game window position via osascript.
+    private @Nullable Thread trackerThread;
+
+    /// The root layout.
+    private final VBox root;
+
+    /// Button to toggle collapse/expand.
+    private final IconButton btnCollapse;
+
+    /// Button to stop the game process.
+    private final IconButton btnExit;
+
+    /// Button to open the game folder.
+    private final IconButton btnFolder;
+
+    /// Button to view installed mods.
+    private final IconButton btnMods;
+
+    /// Whether the window is currently collapsed to a thin strip.
+    private boolean collapsed;
+
+    /// Width of the manager in expanded state.
+    private static final double EXPANDED_WIDTH = 34;
+
+    /// Width of the manager in collapsed state.
+    private static final double COLLAPSED_WIDTH = 10;
 
     /// Creates an instance manager window for a running game.
     ///
@@ -81,50 +109,149 @@ public final class InstanceManagerWindow extends Stage {
         root.getStyleClass().add("instance-manager");
         root.setPadding(new Insets(6));
         root.setAlignment(Pos.TOP_CENTER);
+        this.root = root;
 
-        IconButton btnClose = new IconButton(SVG.CLOSE, this::close);
-        FXUtils.installFastTooltip(btnClose, i18n("instance.manager.close"));
+        btnCollapse = new IconButton(SVG.KEYBOARD_ARROW_UP, this::toggleCollapse);
+        FXUtils.installFastTooltip(btnCollapse, i18n("instance.manager.collapse"));
 
-        IconButton btnExit = new IconButton(SVG.CANCEL, () -> {
+        btnExit = new IconButton(SVG.CANCEL, () -> {
             process.stop();
             close();
         });
         FXUtils.installFastTooltip(btnExit, i18n("instance.manager.exit"));
 
-        IconButton btnFolder = new IconButton(SVG.FOLDER_OPEN, () ->
+        btnFolder = new IconButton(SVG.FOLDER_OPEN, () ->
                 FXUtils.openFolder(repository.getRunDirectory(versionId)));
         FXUtils.installFastTooltip(btnFolder, i18n("instance.manager.folder"));
 
-        IconButton btnMods = new IconButton(SVG.EXTENSION, this::openModPage);
+        btnMods = new IconButton(SVG.EXTENSION, this::openModPage);
         FXUtils.installFastTooltip(btnMods, i18n("instance.manager.mods"));
 
-        root.getChildren().setAll(btnClose, btnExit, btnFolder, btnMods);
+        root.getChildren().setAll(btnCollapse, btnExit, btnFolder, btnMods);
 
         Scene scene = new Scene(root);
         scene.setFill(null);
         StyleSheets.init(scene);
         setScene(scene);
 
-        positionRelativeToMainStage();
+        positionNearLauncher();
+        startWindowTracker();
         startProcessMonitor();
     }
 
-    /// Positions this window to the right of the main launcher stage.
-    private void positionRelativeToMainStage() {
+    /// Positions this window near the main launcher as a starting point.
+    private void positionNearLauncher() {
         Stage mainStage = Controllers.getStage();
         if (mainStage == null) return;
+        setX(mainStage.getX() + mainStage.getWidth() + 4);
+        setY(mainStage.getY() + 40);
+    }
 
-        double offsetX = mainStage.getX() + mainStage.getWidth() + 4;
-        double offsetY = mainStage.getY() + 40;
-        setX(offsetX);
-        setY(offsetY);
+    /// Toggles between collapsed and expanded state.
+    private void toggleCollapse() {
+        if (collapsed) {
+            expand();
+        } else {
+            collapse();
+        }
+    }
 
-        mainStage.xProperty().addListener(new WeakInvalidationListener(
-                obs -> setX(mainStage.getX() + mainStage.getWidth() + 4)));
-        mainStage.yProperty().addListener(new WeakInvalidationListener(
-                obs -> setY(mainStage.getY() + 40)));
-        mainStage.widthProperty().addListener(new WeakInvalidationListener(
-                obs -> setX(mainStage.getX() + mainStage.getWidth() + 4)));
+    /// Collapses the window into a thin vertical strip.
+    private void collapse() {
+        collapsed = true;
+        Platform.runLater(() -> {
+            root.getChildren().clear();
+            root.setMinWidth(COLLAPSED_WIDTH);
+            root.setMaxWidth(COLLAPSED_WIDTH);
+            root.setMinHeight(60);
+            root.setMaxHeight(60);
+            root.setPrefWidth(COLLAPSED_WIDTH);
+            root.setPrefHeight(60);
+            root.getStyleClass().add("instance-manager-collapsed");
+            root.setOnMouseClicked(e -> toggleCollapse());
+            sizeToScene();
+        });
+    }
+
+    /// Expands the window back to show all manager buttons.
+    private void expand() {
+        collapsed = false;
+        Platform.runLater(() -> {
+            root.getStyleClass().remove("instance-manager-collapsed");
+            root.setOnMouseClicked(null);
+            root.setMinWidth(EXPANDED_WIDTH);
+            root.setMaxWidth(EXPANDED_WIDTH);
+            root.setMinHeight(VBox.USE_COMPUTED_SIZE);
+            root.setMaxHeight(VBox.USE_COMPUTED_SIZE);
+            root.setPrefWidth(EXPANDED_WIDTH);
+            root.setPrefHeight(VBox.USE_COMPUTED_SIZE);
+            root.getChildren().setAll(btnCollapse, btnExit, btnFolder, btnMods);
+            sizeToScene();
+        });
+    }
+
+    /// Starts a background thread that periodically detects the Minecraft game window
+    /// and repositions this manager next to it.
+    ///
+    /// On macOS, uses the Accessibility API via `osascript` to query window bounds by PID.
+    /// When the game window is not found yet, the manager stays at its initial position.
+    private void startWindowTracker() {
+        long pid = process.getProcess().pid();
+
+        trackerThread = Lang.thread(() -> {
+            while (process.isRunning()) {
+                try {
+                    String[] bounds = getGameWindowBounds(pid);
+                    if (bounds != null) {
+                        double wx = Double.parseDouble(bounds[0]);
+                        double wy = Double.parseDouble(bounds[1]);
+                        double ww = Double.parseDouble(bounds[2]);
+                        Platform.runLater(() -> {
+                            setX(wx + ww + 4);
+                            setY(wy + 40);
+                        });
+                    }
+                } catch (Exception ignored) {
+                    // game window not ready yet, keep current position
+                }
+
+                try {
+                    //noinspection BusyWait
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            }
+        }, "GameWindowTracker-" + versionId, true);
+    }
+
+    /// Queries the game window bounds using macOS Accessibility API.
+    ///
+    /// @param pid the game process ID.
+    /// @return an array of [x, y, width], or null if the window isn't found.
+    private static @Nullable String[] getGameWindowBounds(long pid) throws IOException {
+        if (OperatingSystem.CURRENT_OS != OperatingSystem.MACOS)
+            return null;
+
+        String script = "tell application \"System Events\" to get {position, size} of first window of (first process whose unix id is " + pid + ")";
+        Process p = new ProcessBuilder("osascript", "-e", script).start();
+        String output = new String(p.getInputStream().readAllBytes(), StandardCharsets.UTF_8).trim();
+
+        if (output.isEmpty() || output.startsWith("error"))
+            return null;
+
+        // Parse "{{x, y}, {width, height}}"
+        output = output.replace("{", "").replace("}", "");
+        String[] parts = output.split(",");
+        if (parts.length >= 4) {
+            return new String[]{
+                    parts[0].trim(),
+                    parts[1].trim(),
+                    parts[2].trim()
+            };
+        }
+        return null;
     }
 
     /// Starts a background thread that monitors the game process.

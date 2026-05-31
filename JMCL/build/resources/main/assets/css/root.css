@@ -2023,3 +2023,22 @@
 .instance-manager-button:hover .svg {
     -fx-fill: -monet-on-secondary-container;
 }
+
+/* =============================================================================
+ * Instance Manager — collapsed state (thin expandable strip)
+ * ============================================================================= */
+.instance-manager-collapsed {
+    -fx-min-width: 10px;
+    -fx-max-width: 10px;
+    -fx-min-height: 60px;
+    -fx-max-height: 60px;
+    -fx-background-color: -monet-secondary-container;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 8, 0.0, 0, 2);
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}
+
+.instance-manager-collapsed:hover {
+    -fx-background-color: -monet-primary-container;
+}
