@@ -18,9 +18,13 @@
 package org.Open_code_Studio.jmcl.ui.main;
 
 import com.google.gson.*;
+import com.jfoenix.controls.JFXButton;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import org.Open_code_Studio.jmcl.Metadata;
 import org.Open_code_Studio.jmcl.theme.Themes;
@@ -30,11 +34,16 @@ import org.Open_code_Studio.jmcl.ui.SVG;
 import org.Open_code_Studio.jmcl.ui.WeakListenerHolder;
 import org.Open_code_Studio.jmcl.ui.construct.ComponentList;
 import org.Open_code_Studio.jmcl.ui.construct.LineButton;
+import org.Open_code_Studio.jmcl.ui.construct.DialogCloseEvent;
 import org.Open_code_Studio.jmcl.ui.construct.SpinnerPane;
 import org.Open_code_Studio.jmcl.util.gson.JsonUtils;
 
+import javax.imageio.ImageIO;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
@@ -79,8 +88,6 @@ public final class AboutPage extends SpinnerPane {
 
         ComponentList thanks = loadIconedTwoLineList("/assets/about/thanks.json");
 
-        ComponentList originalContributors = loadIconedTwoLineList("/assets/about/original_contributors.json");
-
         ComponentList deps = loadIconedTwoLineList("/assets/about/deps.json");
 
         ComponentList legal = new ComponentList();
@@ -90,10 +97,12 @@ public final class AboutPage extends SpinnerPane {
             copyright.setTitle(i18n("about.copyright"));
             copyright.setSubtitle(i18n("about.copyright.statement"));
 
-            var claim = LineButton.createExternalLinkButton(Metadata.EULA_URL);
+            var claim = new LineButton();
             claim.setLargeTitle(true);
             claim.setTitle(i18n("about.claim"));
             claim.setSubtitle(i18n("about.claim.statement"));
+            claim.setTrailingIcon(SVG.OPEN_IN_NEW);
+            claim.setOnAction(e -> showLicenseDialog());
 
             var newRepo = LineButton.createExternalLinkButton(Metadata.NEW_REPO_URL);
             newRepo.setLargeTitle(true);
@@ -108,13 +117,45 @@ public final class AboutPage extends SpinnerPane {
                 about,
                 ComponentList.createComponentListTitle(i18n("about.thanks_to")),
                 thanks,
-                ComponentList.createComponentListTitle(i18n("about.original_contributors")),
-                originalContributors,
                 ComponentList.createComponentListTitle(i18n("about.dependency")),
                 deps,
                 ComponentList.createComponentListTitle(i18n("about.legal")),
                 legal
         );
+    }
+
+    private void showLicenseDialog() {
+        try (InputStream input = FXUtils.class.getResourceAsStream("/assets/about/eula.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(input, java.nio.charset.StandardCharsets.UTF_8))) {
+            String text = reader.lines().collect(Collectors.joining("\n"));
+
+            TextArea textArea = new TextArea(text);
+            textArea.setEditable(false);
+            textArea.setWrapText(false);
+            textArea.setPrefWidth(600);
+            textArea.setPrefHeight(500);
+            textArea.getStyleClass().add("license-text-area");
+
+            ScrollPane scrollPane = new ScrollPane(textArea);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setPrefSize(620, 520);
+
+            JFXButton closeButton = FXUtils.newToggleButton4(SVG.CLOSE);
+            closeButton.getStyleClass().add("license-close-button");
+
+            HBox header = new HBox(closeButton);
+            header.getStyleClass().add("license-header");
+            header.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
+
+            VBox dialogContent = new VBox(header, scrollPane);
+            VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+            closeButton.setOnAction(e -> dialogContent.fireEvent(new DialogCloseEvent()));
+
+            Controllers.dialog(dialogContent);
+        } catch (IOException e) {
+            LOG.warning("Failed to load license text", e);
+        }
     }
 
     private static Image loadImage(String url) {

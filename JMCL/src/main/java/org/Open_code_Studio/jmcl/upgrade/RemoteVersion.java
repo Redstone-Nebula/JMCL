@@ -17,9 +17,11 @@
  */
 package org.Open_code_Studio.jmcl.upgrade;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import org.Open_code_Studio.jmcl.Metadata;
 import org.Open_code_Studio.jmcl.task.FileDownloadTask.IntegrityCheck;
 import org.Open_code_Studio.jmcl.util.gson.JsonUtils;
 import org.Open_code_Studio.jmcl.util.io.NetworkUtils;
@@ -30,6 +32,8 @@ import java.util.Optional;
 
 public record RemoteVersion(UpdateChannel channel, String version, String url, Type type, IntegrityCheck integrityCheck,
                             boolean preview, boolean force) {
+
+    private static final String GITHUB_API_LATEST = "https://api.github.com/repos/Open-code-Studio/JVM-MCL/releases/latest";
 
     public static RemoteVersion fetch(UpdateChannel channel, boolean preview, String url) throws IOException {
         try {
@@ -43,6 +47,37 @@ public record RemoteVersion(UpdateChannel channel, String version, String url, T
             } else {
                 throw new IOException("No download url is available");
             }
+        } catch (JsonParseException e) {
+            throw new IOException("Malformed response", e);
+        }
+    }
+
+    public static RemoteVersion fetchFromGitHub(UpdateChannel channel, boolean preview) throws IOException {
+        try {
+            JsonObject response = JsonUtils.fromNonNullJson(NetworkUtils.doGet(GITHUB_API_LATEST), JsonObject.class);
+
+            String tagName = Optional.ofNullable(response.get("tag_name")).map(JsonElement::getAsString)
+                    .orElseThrow(() -> new IOException("tag_name is missing"));
+            String version = tagName.startsWith("v") ? tagName.substring(1) : tagName;
+
+            JsonArray assets = Optional.ofNullable(response.get("assets")).map(JsonElement::getAsJsonArray)
+                    .orElseThrow(() -> new IOException("assets is missing"));
+
+            String jarUrl = null;
+            for (JsonElement assetElement : assets) {
+                JsonObject asset = assetElement.getAsJsonObject();
+                String name = Optional.ofNullable(asset.get("name")).map(JsonElement::getAsString).orElse("");
+                if (name.endsWith(".jar") && name.contains(Metadata.NAME)) {
+                    jarUrl = Optional.ofNullable(asset.get("browser_download_url")).map(JsonElement::getAsString).orElse(null);
+                    break;
+                }
+            }
+
+            if (jarUrl == null) {
+                throw new IOException("No JAR asset found in the latest release");
+            }
+
+            return new RemoteVersion(channel, version, jarUrl, Type.JAR, null, preview, false);
         } catch (JsonParseException e) {
             throw new IOException("Malformed response", e);
         }

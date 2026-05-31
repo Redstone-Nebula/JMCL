@@ -231,7 +231,7 @@ public final class UpdateHandler {
 
     private static Optional<Path> tryRename(Path path, String newVersion) {
         String filename = path.getFileName().toString();
-        Matcher matcher = Pattern.compile("^(?<prefix>[hH][mM][cC][lL][.-])(?<version>\\d+(?:\\.\\d+)*)(?<suffix>\\.[^.]+)$").matcher(filename);
+        Matcher matcher = Pattern.compile("^(?<prefix>JVM-MCL-)(?<version>[^./]+)(?<suffix>\\.[^.]+)$").matcher(filename);
         if (matcher.find()) {
             String newFilename = matcher.group("prefix") + newVersion + matcher.group("suffix");
             if (!newFilename.equals(filename)) {
@@ -244,7 +244,7 @@ public final class UpdateHandler {
     private static Path getCurrentLocation() throws IOException {
         Path path = JarUtils.thisJarPath();
         if (path == null) {
-            throw new IOException("Failed to find current HMCL location");
+            throw new IOException("Failed to find current application location");
         }
         return path;
     }

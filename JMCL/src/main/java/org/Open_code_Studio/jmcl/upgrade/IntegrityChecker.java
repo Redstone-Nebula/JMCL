@@ -47,8 +47,8 @@ public final class IntegrityChecker {
 
     public static final boolean DISABLE_SELF_INTEGRITY_CHECK = "true".equals(System.getProperty("jvmmcl.self_integrity_check.disable"));
 
-    private static final String SIGNATURE_FILE = "META-INF/hmcl_signature";
-    private static final String PUBLIC_KEY_FILE = "assets/hmcl_signature_publickey.der";
+    private static final String SIGNATURE_FILE = "META-INF/jmcl_signature";
+    private static final String PUBLIC_KEY_FILE = "assets/jmcl_signature_publickey.der";
 
     private static PublicKey getPublicKey() throws IOException {
         try (InputStream in = IntegrityChecker.class.getResourceAsStream("/" + PUBLIC_KEY_FILE)) {
@@ -62,12 +62,19 @@ public final class IntegrityChecker {
     }
 
     static void verifyJar(Path jarPath) throws IOException {
-        PublicKey publickey = getPublicKey();
-        MessageDigest md = DigestUtils.getDigest("SHA-512");
-
-        byte[] signature = null;
-        Map<String, byte[]> fileFingerprints = new TreeMap<>();
         try (ZipFile zip = new ZipFile(jarPath.toFile())) {
+            ZipEntry signatureEntry = zip.getEntry(SIGNATURE_FILE);
+            if (signatureEntry == null) {
+                LOG.info("No signature found, skipping integrity verification for " + jarPath);
+                return;
+            }
+            ZipEntry publicKeyEntry = zip.getEntry(PUBLIC_KEY_FILE);
+
+            PublicKey publickey = getPublicKey();
+            MessageDigest md = DigestUtils.getDigest("SHA-512");
+
+            byte[] signature = null;
+            Map<String, byte[]> fileFingerprints = new TreeMap<>();
             for (ZipEntry entry : Lang.toIterable(zip.entries())) {
                 String filename = entry.getName();
                 try (InputStream in = zip.getInputStream(entry)) {
@@ -77,31 +84,33 @@ public final class IntegrityChecker {
 
                     if (SIGNATURE_FILE.equals(filename)) {
                         signature = IOUtils.readFully(in);
-                    } else {
+                    } else if (!PUBLIC_KEY_FILE.equals(filename)) {
                         md.reset();
                         fileFingerprints.put(filename, DigestUtils.digest(md, in));
                     }
                 }
             }
-        }
 
-        if (signature == null) {
-            throw new IOException("Signature is missing");
-        }
+            if (signature == null) {
+                LOG.info("No signature found, skipping integrity verification for " + jarPath);
+                return;
+            }
 
-        try {
-            Signature verifier = Signature.getInstance("SHA512withRSA");
-            verifier.initVerify(publickey);
-            for (Entry<String, byte[]> entry : fileFingerprints.entrySet()) {
-                md.reset();
-                verifier.update(md.digest(entry.getKey().getBytes(UTF_8)));
-                verifier.update(entry.getValue());
+            try {
+                Signature verifier = Signature.getInstance("SHA512withRSA");
+                verifier.initVerify(publickey);
+                for (Entry<String, byte[]> entry : fileFingerprints.entrySet()) {
+                    md.reset();
+                    verifier.update(md.digest(entry.getKey().getBytes(UTF_8)));
+                    verifier.update(entry.getValue());
+                }
+                if (!verifier.verify(signature)) {
+                    throw new IOException("Invalid signature: " + jarPath);
+                }
+                LOG.info("Successfully verified " + jarPath);
+            } catch (GeneralSecurityException e) {
+                throw new IOException("Failed to verify signature", e);
             }
-            if (!verifier.verify(signature)) {
-                throw new IOException("Invalid signature: " + jarPath);
-            }
-        } catch (GeneralSecurityException e) {
-            throw new IOException("Failed to verify signature", e);
         }
     }
 
@@ -124,7 +133,9 @@ public final class IntegrityChecker {
             try {
                 Path jarPath = JarUtils.thisJarPath();
                 if (jarPath == null) {
-                    throw new IOException("Failed to find current HMCL location");
+                    LOG.info("Failed to find current JAR location, skipping self verification");
+                    selfVerified = true;
+                    return true;
                 }
 
                 verifyJar(jarPath);

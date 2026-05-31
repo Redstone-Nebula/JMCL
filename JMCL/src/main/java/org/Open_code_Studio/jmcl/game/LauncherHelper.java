@@ -18,6 +18,7 @@
 package org.Open_code_Studio.jmcl.game;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import org.Open_code_Studio.jmcl.Launcher;
 import org.Open_code_Studio.jmcl.auth.*;
@@ -199,6 +200,32 @@ public final class LauncherHelper {
                     );
                 }).withStage("launch.state.dependencies")
                 .thenComposeAsync(() -> gameVersion.map(s -> new GameVerificationFixTask(dependencyManager, s, version.get())).orElse(null))
+                .thenComposeAsync(() -> {
+                    if (account instanceof OfflineAccount) {
+                        int count = config().getOfflineLaunchCount() + 1;
+                        config().setOfflineLaunchCount(count);
+                        if (count >= 3 && !config().isOfflinePiracyPromptShown()) {
+                            CompletableFuture<Void> future = new CompletableFuture<>();
+                            runInFX(() -> {
+                                JFXButton buyButton = new JFXButton(i18n("instance.manager.buy_minecraft"));
+                                buyButton.setOnAction(e -> {
+                                    config().setOfflinePiracyPromptShown(true);
+                                    FXUtils.openLink("https://www.minecraft.net/zh-hans/store");
+                                });
+                                JFXButton laterButton = new JFXButton(i18n("instance.manager.remind_later"));
+                                buyButton.addEventHandler(ActionEvent.ACTION, e -> future.complete(null));
+                                laterButton.addEventHandler(ActionEvent.ACTION, e -> future.complete(null));
+                                Controllers.dialog(
+                                        new MessageDialogPane.Builder(i18n("instance.manager.piracy_warning"), i18n("instance.manager.piracy_warning.title"), MessageType.WARNING)
+                                                .addAction(buyButton)
+                                                .addAction(laterButton)
+                                                .build());
+                            });
+                            return Task.fromCompletableFuture(future);
+                        }
+                    }
+                    return Task.completed(null);
+                })
                 .thenComposeAsync(() -> {
                     if (config().getAllowAutoAgent()
                             || setting.isNoJVMArgs()

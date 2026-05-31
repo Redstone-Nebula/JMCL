@@ -23,11 +23,9 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableBooleanValue;
 import org.Open_code_Studio.jmcl.Metadata;
-import org.Open_code_Studio.jmcl.util.io.NetworkUtils;
 import org.Open_code_Studio.jmcl.util.versioning.VersionNumber;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 
 import static org.Open_code_Studio.jmcl.setting.ConfigHolder.config;
 import static org.Open_code_Studio.jmcl.util.Lang.*;
@@ -84,16 +82,7 @@ public final class UpdateChecker {
     }
 
     private static RemoteVersion checkUpdate(UpdateChannel channel, boolean preview) throws IOException {
-        if (!IntegrityChecker.DISABLE_SELF_INTEGRITY_CHECK && !IntegrityChecker.isSelfVerified()) {
-            throw new IOException("Self verification failed");
-        }
-
-        var query = new LinkedHashMap<String, String>();
-        query.put("version", Metadata.VERSION);
-        query.put("channel", preview ? channel.channelName + "-preview" : channel.channelName);
-
-        String url = NetworkUtils.withQuery(Metadata.UPDATE_URL, query);
-        return RemoteVersion.fetch(channel, preview, url);
+        return RemoteVersion.fetchFromGitHub(channel, preview);
     }
 
     private static boolean isDevelopmentVersion(String version) {

@@ -700,6 +700,36 @@ public final class Config extends ObservableSetting {
         this.selectedAccount.set(selectedAccount);
     }
 
+    @SerializedName("offlineLaunchCount")
+    private final IntegerProperty offlineLaunchCount = new SimpleIntegerProperty(0);
+
+    public IntegerProperty offlineLaunchCountProperty() {
+        return offlineLaunchCount;
+    }
+
+    public int getOfflineLaunchCount() {
+        return offlineLaunchCount.get();
+    }
+
+    public void setOfflineLaunchCount(int offlineLaunchCount) {
+        this.offlineLaunchCount.set(offlineLaunchCount);
+    }
+
+    @SerializedName("offlinePiracyPromptShown")
+    private final BooleanProperty offlinePiracyPromptShown = new SimpleBooleanProperty(false);
+
+    public BooleanProperty offlinePiracyPromptShownProperty() {
+        return offlinePiracyPromptShown;
+    }
+
+    public boolean isOfflinePiracyPromptShown() {
+        return offlinePiracyPromptShown.get();
+    }
+
+    public void setOfflinePiracyPromptShown(boolean offlinePiracyPromptShown) {
+        this.offlinePiracyPromptShown.set(offlinePiracyPromptShown);
+    }
+
     @SerializedName("accounts")
     private final ObservableList<Map<Object, Object>> accountStorages = FXCollections.observableArrayList();
 
