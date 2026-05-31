@@ -1,6 +1,6 @@
 /*
- * Hello Minecraft! Launcher
- * Copyright (C) 2025 huangyuhui <huanghongxun2008@126.com> and contributors
+ * JMCL
+ * Copyright (C) 2026 OCS
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,11 +147,11 @@ public abstract class ParseModDataTask extends DefaultTask {
 
         try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)) {
             writer.write("#\n" +
-                    "# Hello Minecraft! Launcher\n" +
-                    "# Copyright (C) 2025 huangyuhui <huanghongxun2008@126.com> and contributors\n" +
+                    "# JMCL\n" +
+                    "# Copyright (C) 2026 OCS\n" +
                     "#\n" +
                     "# mcmod.cn\n" +
-                    "# Copyright (C) 2025. All Rights Reserved.\n" +
+                    "# Copyright (C) 2026. All Rights Reserved.\n" +
                     "#\n");
             for (ModData mod : modDatas) {
                 String chineseName = parseName(mod.name.main);
