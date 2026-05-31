@@ -115,7 +115,12 @@ public final class UpdateChecker {
                     LOG.info("Latest version (" + channel + ", preview=" + preview + ") is " + result);
                 } catch (Throwable e) {
                     LOG.warning("Failed to check for update", e);
-                    showNotReleasedDialog();
+                    String errorMsg = e.getMessage();
+                    if (errorMsg != null && errorMsg.contains("rate limit")) {
+                        LOG.info("GitHub API rate limited, skipping update check for now");
+                    } else {
+                        showNotReleasedDialog();
+                    }
                 }
 
                 RemoteVersion finalResult = result;

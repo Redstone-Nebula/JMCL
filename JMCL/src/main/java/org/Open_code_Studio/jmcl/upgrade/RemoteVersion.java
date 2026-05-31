@@ -28,6 +28,8 @@ import org.Open_code_Studio.jmcl.util.io.NetworkUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URLConnection;
 import java.util.Optional;
 
 public record RemoteVersion(UpdateChannel channel, String version, String url, Type type, IntegrityCheck integrityCheck,
@@ -54,7 +56,18 @@ public record RemoteVersion(UpdateChannel channel, String version, String url, T
 
     public static RemoteVersion fetchFromGitHub(UpdateChannel channel, boolean preview) throws IOException {
         try {
-            JsonObject response = JsonUtils.fromNonNullJson(NetworkUtils.doGet(GITHUB_API_LATEST), JsonObject.class);
+            URLConnection connection = NetworkUtils.createConnection(URI.create(GITHUB_API_LATEST));
+            String token = System.getenv("GITHUB_TOKEN");
+            if (token != null && !token.isEmpty()) {
+                connection.setRequestProperty("Authorization", "Bearer " + token);
+            }
+            String responseText = NetworkUtils.readFullyAsString(connection);
+            JsonObject response = JsonUtils.fromNonNullJson(responseText, JsonObject.class);
+
+            String message = Optional.ofNullable(response.get("message")).map(JsonElement::getAsString).orElse(null);
+            if (message != null && message.contains("rate limit")) {
+                throw new IOException("GitHub API rate limit exceeded. Please try again later.");
+            }
 
             String tagName = Optional.ofNullable(response.get("tag_name")).map(JsonElement::getAsString)
                     .orElseThrow(() -> new IOException("tag_name is missing"));
