@@ -17,12 +17,25 @@
  */
 package org.Open_code_Studio.jmcl.upgrade;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableBooleanValue;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import org.Open_code_Studio.jmcl.Metadata;
+import org.Open_code_Studio.jmcl.ui.Controllers;
+import org.Open_code_Studio.jmcl.ui.FXUtils;
+import org.Open_code_Studio.jmcl.ui.SVG;
+import org.Open_code_Studio.jmcl.ui.SVGContainer;
+import org.Open_code_Studio.jmcl.ui.construct.DialogCloseEvent;
 import org.Open_code_Studio.jmcl.util.versioning.VersionNumber;
 
 import java.io.IOException;
@@ -86,8 +99,7 @@ public final class UpdateChecker {
     }
 
     private static boolean isDevelopmentVersion(String version) {
-        return version.contains("@") || // eg. @develop@
-                version.contains("SNAPSHOT"); // eg. 3.5.SNAPSHOT
+        return version.startsWith("DEV"); // eg. DEV2026.1.0
     }
 
     public static void requestCheckUpdate(UpdateChannel channel, boolean preview) {
@@ -103,6 +115,7 @@ public final class UpdateChecker {
                     LOG.info("Latest version (" + channel + ", preview=" + preview + ") is " + result);
                 } catch (Throwable e) {
                     LOG.warning("Failed to check for update", e);
+                    showNotReleasedDialog();
                 }
 
                 RemoteVersion finalResult = result;
@@ -113,6 +126,54 @@ public final class UpdateChecker {
                     }
                 });
             }, "Update Checker", true);
+        });
+    }
+
+    private static void showNotReleasedDialog() {
+        Platform.runLater(() -> {
+            SVGContainer rocketIcon = SVG.ROCKET_LAUNCH.createIcon(48);
+            rocketIcon.setStyle("-fx-fill: -monet-primary;");
+
+            Label titleLabel = new Label("E...不对，你是不是改了这个代码了？");
+            titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: -monet-primary;");
+
+            Label subtitleLabel = new Label("怎么查不到这个版本呢...");
+            subtitleLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: -monet-on-surface-variant;");
+
+            Label hintLabel = new Label("当前版本 " + Metadata.VERSION + " 好像没有在 GitHub 上找到呢。\n去瞧瞧正式版有什么新东西吧！");
+            hintLabel.setWrapText(true);
+            hintLabel.setTextAlignment(TextAlignment.CENTER);
+            hintLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: -monet-on-surface;");
+
+            VBox content = new VBox(12);
+            content.setAlignment(Pos.CENTER);
+            content.setPadding(new Insets(24));
+            content.getStyleClass().add("jfx-dialog-layout");
+
+            JFXButton goButton = new JFXButton("去 GitHub 看看");
+            goButton.getStyleClass().addAll("dialog-accept", "md3-contained-button");
+            goButton.setOnAction(e -> {
+                FXUtils.openLink(Metadata.DOWNLOAD_URL);
+            });
+
+            JFXButton closeButton = new JFXButton("知道了");
+            closeButton.getStyleClass().addAll("md3-text-button");
+            closeButton.setOnAction(e -> {
+                content.fireEvent(new DialogCloseEvent());
+            });
+
+            rocketIcon.getStyleClass().add("hbox");
+            titleLabel.getStyleClass().add("hbox");
+            subtitleLabel.getStyleClass().add("hbox");
+            hintLabel.getStyleClass().add("hbox");
+
+            HBox buttonBar = new HBox(8, goButton, closeButton);
+            buttonBar.setAlignment(Pos.CENTER);
+            buttonBar.getStyleClass().add("hbox");
+
+            content.getChildren().setAll(rocketIcon, titleLabel, subtitleLabel, hintLabel, buttonBar);
+
+            Controllers.dialog(content);
         });
     }
 }

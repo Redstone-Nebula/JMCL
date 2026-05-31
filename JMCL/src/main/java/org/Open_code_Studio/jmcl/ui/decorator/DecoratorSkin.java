@@ -34,8 +34,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.SkinBase;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -80,9 +78,15 @@ public class DecoratorSkin extends SkinBase<Decorator> {
         root = new StackPane();
         root.getStyleClass().add("window");
 
+        Rectangle rootClip = new Rectangle();
+        rootClip.widthProperty().bind(root.widthProperty());
+        rootClip.heightProperty().bind(root.heightProperty());
+        rootClip.setArcWidth(8);
+        rootClip.setArcHeight(8);
+        root.setClip(rootClip);
+
         StackPane shadowContainer = new StackPane();
         shadowContainer.getStyleClass().add("body");
-        shadowContainer.setEffect(new DropShadow(BlurType.ONE_PASS_BOX, Color.rgb(0, 0, 0, 0.4), 10, 0.3, 0.0, 0.0));
 
         parent = new StackPane();
         Rectangle clip = new Rectangle();

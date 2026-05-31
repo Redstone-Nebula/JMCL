@@ -89,8 +89,8 @@
     -fx-background-color: -monet-primary;
     -fx-text-fill: -monet-on-primary;
     -fx-background-radius: 999px;
-    -fx-padding: 10 24 10 24;
-    -fx-font-size: 14px;
+    -fx-padding: 12 28 12 28;
+    -fx-font-size: 15px;
     -fx-cursor: hand;
     -fx-font-weight: 500;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 2, 0, 0, 1);
@@ -116,8 +116,8 @@
     -fx-background-color: -monet-secondary-container;
     -fx-text-fill: -monet-on-secondary-container;
     -fx-background-radius: 999px;
-    -fx-padding: 10 24 10 24;
-    -fx-font-size: 14px;
+    -fx-padding: 12 28 12 28;
+    -fx-font-size: 15px;
     -fx-cursor: hand;
     -fx-font-weight: 500;
     -fx-effect: none;
@@ -138,8 +138,8 @@
     -fx-border-color: -monet-outline;
     -fx-border-width: 1px;
     -fx-border-radius: 999px;
-    -fx-padding: 9 23 9 23;
-    -fx-font-size: 14px;
+    -fx-padding: 11 27 11 27;
+    -fx-font-size: 15px;
     -fx-cursor: hand;
     -fx-font-weight: 500;
     -fx-effect: none;
@@ -155,7 +155,7 @@
 .md3-outlined-button:focused {
     -fx-border-color: -monet-primary;
     -fx-border-width: 2px;
-    -fx-padding: 8 22 8 22;
+    -fx-padding: 10 26 10 26;
 }
 .md3-outlined-button:disabled {
     -fx-border-color: -monet-on-surface-variant;
@@ -166,8 +166,8 @@
 .md3-text-button {
     -fx-background-color: transparent;
     -fx-text-fill: -monet-primary;
-    -fx-padding: 10 12 10 12;
-    -fx-font-size: 14px;
+    -fx-padding: 12 16 12 16;
+    -fx-font-size: 15px;
     -fx-cursor: hand;
     -fx-font-weight: 500;
     -fx-background-radius: 999px;
@@ -189,12 +189,12 @@
 .dialog-pane {
     -fx-background-color: -monet-surface-container-high;
     -fx-background-radius: 28px;
-    -fx-padding: 24px;
+    -fx-padding: 28px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 8);
 }
 .dialog-pane > .content {
-    -fx-padding: 24px 0;
-    -fx-font-size: 14px;
+    -fx-padding: 28px 0;
+    -fx-font-size: 15px;
     -fx-text-fill: -monet-on-surface-variant;
 }
 .dialog-pane .header-panel {
@@ -228,13 +228,13 @@
    ============================================================================= */
 .context-menu {
     -fx-background-color: -monet-surface-container;
-    -fx-background-radius: 8px;
+    -fx-background-radius: 12px;
     -fx-padding: 8 0 8 0;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4);
 }
 .menu-item {
-    -fx-padding: 10 16 10 16;
-    -fx-font-size: 14px;
+    -fx-padding: 12 20 12 20;
+    -fx-font-size: 15px;
     -fx-text-fill: -monet-on-surface;
 }
 .menu-item:hover {

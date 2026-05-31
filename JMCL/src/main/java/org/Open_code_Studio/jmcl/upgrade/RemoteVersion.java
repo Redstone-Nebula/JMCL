@@ -33,7 +33,7 @@ import java.util.Optional;
 public record RemoteVersion(UpdateChannel channel, String version, String url, Type type, IntegrityCheck integrityCheck,
                             boolean preview, boolean force) {
 
-    private static final String GITHUB_API_LATEST = "https://api.github.com/repos/Open-code-Studio/JVM-MCL/releases/latest";
+    private static final String GITHUB_API_LATEST = "https://api.github.com/repos/Open-code-Studio/JMCL/releases/latest";
 
     public static RemoteVersion fetch(UpdateChannel channel, boolean preview, String url) throws IOException {
         try {
