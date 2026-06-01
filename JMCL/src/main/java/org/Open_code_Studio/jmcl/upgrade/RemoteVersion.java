@@ -1,6 +1,6 @@
 /*
- * JMCL
- * Copyright (C) 2026  OCS
+ * Hello Minecraft! Launcher
+ * Copyright (C) 2020  huangyuhui <huanghongxun2008@126.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ import java.util.Optional;
 public record RemoteVersion(UpdateChannel channel, String version, String url, Type type, IntegrityCheck integrityCheck,
                             boolean preview, boolean force) {
 
-    private static final String GITHUB_API_LATEST = "https://api.github.com/repos/Open-code-Studio/JMCL/releases/latest";
+    private static final String GITHUB_API_RELEASES = "https://api.github.com/repos/Open-code-Studio/JMCL/releases";
 
     public static RemoteVersion fetch(UpdateChannel channel, boolean preview, String url) throws IOException {
         try {
@@ -56,24 +56,49 @@ public record RemoteVersion(UpdateChannel channel, String version, String url, T
 
     public static RemoteVersion fetchFromGitHub(UpdateChannel channel, boolean preview) throws IOException {
         try {
-            URLConnection connection = NetworkUtils.createConnection(URI.create(GITHUB_API_LATEST));
+            URLConnection connection = NetworkUtils.createConnection(URI.create(GITHUB_API_RELEASES));
             String token = System.getenv("GITHUB_TOKEN");
             if (token != null && !token.isEmpty()) {
                 connection.setRequestProperty("Authorization", "Bearer " + token);
             }
             String responseText = NetworkUtils.readFullyAsString(connection);
-            JsonObject response = JsonUtils.fromNonNullJson(responseText, JsonObject.class);
 
-            String message = Optional.ofNullable(response.get("message")).map(JsonElement::getAsString).orElse(null);
-            if (message != null && message.contains("rate limit")) {
-                throw new IOException("GitHub API rate limit exceeded. Please try again later.");
+            JsonArray releases;
+            try {
+                releases = JsonUtils.fromNonNullJson(responseText, JsonArray.class);
+            } catch (JsonParseException e) {
+                String message = Optional.ofNullable(JsonUtils.fromNonNullJson(responseText, JsonObject.class))
+                        .map(obj -> Optional.ofNullable(obj.get("message")).map(JsonElement::getAsString).orElse(null))
+                        .orElse(null);
+                if (message != null && message.contains("rate limit")) {
+                    throw new IOException("GitHub API rate limit exceeded. Please try again later.");
+                }
+                if (message != null && message.contains("Not Found")) {
+                    throw new IOException("Repository not found");
+                }
+                throw new IOException("Malformed response: " + responseText);
             }
 
-            String tagName = Optional.ofNullable(response.get("tag_name")).map(JsonElement::getAsString)
+            JsonObject latestRelease = null;
+            for (JsonElement element : releases) {
+                JsonObject release = element.getAsJsonObject();
+                JsonElement draftElement = release.get("draft");
+                if (draftElement != null && draftElement.getAsBoolean()) {
+                    continue;
+                }
+                latestRelease = release;
+                break;
+            }
+
+            if (latestRelease == null) {
+                throw new IOException("No published release found");
+            }
+
+            String tagName = Optional.ofNullable(latestRelease.get("tag_name")).map(JsonElement::getAsString)
                     .orElseThrow(() -> new IOException("tag_name is missing"));
             String version = tagName.startsWith("v") ? tagName.substring(1) : tagName;
 
-            JsonArray assets = Optional.ofNullable(response.get("assets")).map(JsonElement::getAsJsonArray)
+            JsonArray assets = Optional.ofNullable(latestRelease.get("assets")).map(JsonElement::getAsJsonArray)
                     .orElseThrow(() -> new IOException("assets is missing"));
 
             String jarUrl = null;

@@ -1,6 +1,6 @@
 /**
- * JMCL
- * Copyright (C) 2026  OCS
+ * JVM-MCL
+ * Copyright (C) 2026  huangyuhui <huanghongxun2008@126.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -2042,46 +2042,4 @@
 
 .instance-manager-collapsed:hover {
     -fx-background-color: -monet-primary-container;
-}
-
-/* =============================================================================
- * License Dialog
- * ============================================================================= */
-.license-dialog {
-    -fx-background-color: -monet-surface-container-high;
-    -fx-background-radius: 16;
-    -fx-padding: 4px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 16, 0.0, 0, 4);
-}
-
-.license-header {
-    -fx-padding: 8px 8px 0 8px;
-}
-
-.license-close-button {
-    -fx-min-width: 32px;
-    -fx-min-height: 32px;
-    -fx-max-width: 32px;
-    -fx-max-height: 32px;
-    -fx-background-radius: 16;
-}
-
-.license-close-button:hover {
-    -fx-background-color: -monet-surface-variant;
-}
-
-.license-text-area {
-    -fx-background-color: transparent;
-    -fx-control-inner-background: -monet-surface-container-high;
-    -fx-text-fill: -monet-on-surface;
-    -fx-font-size: 13px;
-    -fx-font-family: monospace;
-    -fx-padding: 12px;
-    -fx-background-radius: 12;
-    -fx-border-width: 0;
-}
-
-.license-text-area .content {
-    -fx-background-color: -monet-surface-container-high;
-    -fx-background-radius: 12;
 }

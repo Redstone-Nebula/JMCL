@@ -41,6 +41,9 @@ public final class ManagedProcess {
     private final List<Thread> relatedThreads = new ArrayList<>();
 
     public ManagedProcess(ProcessBuilder processBuilder) throws IOException {
+        if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
+            processBuilder.environment().put("_JAVA_OPTIONS", "-Djdk.lang.Process.launchMechanism=FORK");
+        }
         this.process = processBuilder.start();
         this.commands = processBuilder.command();
         this.classpath = null;

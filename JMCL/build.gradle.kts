@@ -250,21 +250,25 @@ tasks.processResources {
 fun artifactFile(ext: String) = jarPath.resolveSibling(jarPath.nameWithoutExtension + '.' + ext)
 
 val makeExecutables by tasks.registering {
-    val extensions = listOf("exe", "sh")
-
     dependsOn(tasks.jar)
 
     inputs.file(jarPath)
-    outputs.files(extensions.map { artifactFile(it) })
+    outputs.file(artifactFile("sh"))
+    outputs.file(artifactFile("exe"))
 
     doLast {
         val jarContent = jarPath.readBytes()
 
         ZipFile(jarPath).use { zipFile ->
-            for (extension in extensions) {
+            for (extension in listOf("exe", "sh")) {
                 val output = artifactFile(extension)
                 val entry = zipFile.getEntry("assets/JMCLauncher.$extension")
-                    ?: throw GradleException("JMCLauncher.$extension not found")
+                    ?: zipFile.getEntry("assets/HMCLauncher.$extension")
+                
+                if (entry == null) {
+                    logger.warn("Launcher.$extension not found, skipping")
+                    continue
+                }
 
                 output.outputStream().use { outputStream ->
                     zipFile.getInputStream(entry).use { it.copyTo(outputStream) }

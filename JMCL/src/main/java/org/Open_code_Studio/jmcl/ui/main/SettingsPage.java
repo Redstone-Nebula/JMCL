@@ -85,14 +85,14 @@ public final class SettingsPage extends ScrollPane {
             ComponentList updatePaneList = new ComponentList();
             {
                 ObjectProperty<UpdateChannel> updateChannel;
+                LineSelectButton<UpdateChannel> updatePane;
                 {
-
                     JFXButton updateButton = FXUtils.newToggleButton4(SVG.UPDATE, 20);
                     updateButton.setOnAction(e -> onUpdate());
                     updateButton.setPadding(Insets.EMPTY);
                     FXUtils.installFastTooltip(updateButton, i18n("update.tooltip"));
 
-                    var updatePane = new LineSelectButton<UpdateChannel>() {
+                    updatePane = new LineSelectButton<UpdateChannel>() {
 
                         {
                             getStyleClass().add("update-pane");
@@ -139,8 +139,9 @@ public final class SettingsPage extends ScrollPane {
                     updatePaneList.getContent().add(updatePane);
                 }
 
+                LineToggleButton previewPane;
                 {
-                    LineToggleButton previewPane = new LineToggleButton();
+                    previewPane = new LineToggleButton();
                     previewPane.setTitle(i18n("update.preview"));
                     previewPane.setSubtitle(i18n("update.preview.subtitle"));
                     previewPane.selectedProperty().bindBidirectional(config().acceptPreviewUpdateProperty());
@@ -152,6 +153,12 @@ public final class SettingsPage extends ScrollPane {
                     previewPane.selectedProperty().addListener(checkUpdateListener);
 
                     updatePaneList.getContent().add(previewPane);
+                }
+
+                if (Metadata.isDev()) {
+                    config().setAcceptPreviewUpdate(true);
+                    updatePane.setDisable(true);
+                    previewPane.setDisable(true);
                 }
 
                 {

@@ -1,6 +1,6 @@
 /*
- * JMCL
- * Copyright (C) 2026  OCS
+ * Hello Minecraft! Launcher
+ * Copyright (C) 2021  huangyuhui <huanghongxun2008@126.com> and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,8 +121,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
         setPadding(new Insets(20));
 
-        boolean isPreviewOrDev = Metadata.isNightly() || Metadata.isDev() || config().isAcceptPreviewUpdate();
-        if (isPreviewOrDev && !Objects.equals(Metadata.VERSION, config().getShownTips().get(ANNOUNCEMENT))) {
+        if (Metadata.isNightly() || (Metadata.isDev() && !Objects.equals(Metadata.VERSION, config().getShownTips().get(ANNOUNCEMENT)))) {
             String title;
             String content;
             if (Metadata.isNightly()) {
@@ -142,7 +141,9 @@ public final class MainPage extends StackPane implements DecoratorPage {
             JFXButton btnHide = new JFXButton();
             btnHide.setOnAction(e -> {
                 announcementPane.setContent(new StackPane(), ContainerAnimations.FADE);
-                config().getShownTips().put(ANNOUNCEMENT, Metadata.VERSION);
+                if (Metadata.isDev()) {
+                    config().getShownTips().put(ANNOUNCEMENT, Metadata.VERSION);
+                }
             });
             btnHide.getStyleClass().add("announcement-close-button");
             btnHide.setGraphic(SVG.CLOSE.createIcon(20));

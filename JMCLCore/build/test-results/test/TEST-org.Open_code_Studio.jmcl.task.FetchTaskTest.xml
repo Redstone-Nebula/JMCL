@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.Open_code_Studio.jmcl.task.FetchTaskTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-06-01T11:35:59.472Z" hostname="cangcangdeMacBook-Air.local" time="1.755">
+  <properties/>
+  <testcase name="changedStrongETagFallsBackToFullDownload(Path)" classname="org.Open_code_Studio.jmcl.task.FetchTaskTest" time="0.654"/>
+  <testcase name="validContentRangeCompletesResume(Path)" classname="org.Open_code_Studio.jmcl.task.FetchTaskTest" time="0.415"/>
+  <testcase name="fullRetryUsesLatestResponseMetadata(Path)" classname="org.Open_code_Studio.jmcl.task.FetchTaskTest" time="0.211"/>
+  <testcase name="checksumMismatchFailsWithoutReplacingTarget(Path)" classname="org.Open_code_Studio.jmcl.task.FetchTaskTest" time="0.003"/>
+  <testcase name="invalidContentRangeFallsBackToFullDownload(Path)" classname="org.Open_code_Studio.jmcl.task.FetchTaskTest" time="0.465"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

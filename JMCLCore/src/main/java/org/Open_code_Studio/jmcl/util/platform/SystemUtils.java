@@ -91,9 +91,26 @@ public final class SystemUtils {
     }
 
     public static <T> T run(List<String> command, ExceptionalFunction<InputStream, T, ?> convert, Duration maxWaitTime) throws Exception {
-        Process process = new ProcessBuilder(command)
-                .redirectError(ProcessBuilder.Redirect.DISCARD)
-                .start();
+        List<String> actualCommand = command;
+        
+        if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
+            List<String> wrappedCommand = new ArrayList<>();
+            wrappedCommand.add("/bin/bash");
+            wrappedCommand.add("-c");
+            wrappedCommand.add(String.join(" ", command));
+            actualCommand = wrappedCommand;
+        } else if (OperatingSystem.CURRENT_OS == OperatingSystem.WINDOWS) {
+            List<String> wrappedCommand = new ArrayList<>();
+            wrappedCommand.add("cmd.exe");
+            wrappedCommand.add("/c");
+            wrappedCommand.add(String.join(" ", command));
+            actualCommand = wrappedCommand;
+        }
+
+        ProcessBuilder processBuilder = new ProcessBuilder(actualCommand)
+                .redirectError(ProcessBuilder.Redirect.DISCARD);
+
+        Process process = processBuilder.start();
         try {
             InputStream inputStream = process.getInputStream();
             CompletableFuture<T> future = CompletableFuture.supplyAsync(

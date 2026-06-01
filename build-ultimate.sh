@@ -2,10 +2,10 @@
 
 # Ultimate build script - use FORK mechanism to bypass posix_spawn issues
 
-JAVA_HOME="/Users/cangcang/Documents/HMCL-main/jdk21"
+JAVA_HOME="/Users/cangcang/Documents/jdk21"
 export JAVA_HOME
 
-GRADLE_USER_HOME="/Users/cangcang/Documents/HMCL-main/.gradle-user-home"
+GRADLE_USER_HOME="/Users/cangcang/Documents/开发/JMCL/.gradle-user-home"
 export GRADLE_USER_HOME
 
 GRADLE_HOME="/Users/cangcang/.gradle/wrapper/dists/gradle-9.4.0-bin/lcvyxq3t37f6mx9miaydrrgs/gradle-9.4.0"

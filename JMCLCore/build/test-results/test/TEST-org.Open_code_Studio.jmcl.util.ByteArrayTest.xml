@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.Open_code_Studio.jmcl.util.ByteArrayTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-06-01T11:36:01.231Z" hostname="cangcangdeMacBook-Air.local" time="0.046">
+  <properties/>
+  <testcase name="testGetShort()" classname="org.Open_code_Studio.jmcl.util.ByteArrayTest" time="0.011"/>
+  <testcase name="testGetByte()" classname="org.Open_code_Studio.jmcl.util.ByteArrayTest" time="0.01"/>
+  <testcase name="testGetLong()" classname="org.Open_code_Studio.jmcl.util.ByteArrayTest" time="0.001"/>
+  <testcase name="testGetInt()" classname="org.Open_code_Studio.jmcl.util.ByteArrayTest" time="0.006"/>
+  <testcase name="testSetByte()" classname="org.Open_code_Studio.jmcl.util.ByteArrayTest" time="0.005"/>
+  <testcase name="testSetLong()" classname="org.Open_code_Studio.jmcl.util.ByteArrayTest" time="0.002"/>
+  <testcase name="testSetInt()" classname="org.Open_code_Studio.jmcl.util.ByteArrayTest" time="0.002"/>
+  <testcase name="testSetShort()" classname="org.Open_code_Studio.jmcl.util.ByteArrayTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -622,6 +622,10 @@ public class DefaultLauncher extends Launcher {
         env.put("INST_MC_DIR", FileUtils.getAbsolutePath(repository.getRunDirectory(version.getId())));
         env.put("INST_JAVA", options.getJava().getBinary().toString());
 
+        if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
+            env.put("_JAVA_OPTIONS", "-Djdk.lang.Process.launchMechanism=FORK");
+        }
+
         if (options.getRenderer() instanceof Renderer.Driver driver) {
             if (OperatingSystem.CURRENT_OS == OperatingSystem.WINDOWS) {
                 if (driver.mesaDriverName() != null) {

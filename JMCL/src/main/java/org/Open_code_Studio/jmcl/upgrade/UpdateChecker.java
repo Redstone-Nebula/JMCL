@@ -52,9 +52,13 @@ public final class UpdateChecker {
     private static final BooleanBinding outdated = Bindings.createBooleanBinding(
             () -> {
                 RemoteVersion latest = latestVersion.get();
-                if (latest == null || isDevelopmentVersion(Metadata.VERSION)) {
+                if (latest == null) {
                     return false;
-                } else if (latest.force()
+                }
+                if (isDevelopmentVersion(Metadata.VERSION) && !config().isAcceptPreviewUpdate()) {
+                    return false;
+                }
+                if (latest.force()
                         || Metadata.isNightly()
                         || latest.channel() == UpdateChannel.NIGHTLY
                         || latest.channel() != UpdateChannel.getChannel()) {
@@ -63,7 +67,7 @@ public final class UpdateChecker {
                     return VersionNumber.compare(Metadata.VERSION, latest.version()) < 0;
                 }
             },
-            latestVersion);
+            latestVersion, config().acceptPreviewUpdateProperty());
     private static final ReadOnlyBooleanWrapper checkingUpdate = new ReadOnlyBooleanWrapper(false);
 
     public static void init() {
@@ -116,9 +120,9 @@ public final class UpdateChecker {
                 } catch (Throwable e) {
                     LOG.warning("Failed to check for update", e);
                     String errorMsg = e.getMessage();
-                    if (errorMsg != null && errorMsg.contains("rate limit")) {
-                        LOG.info("GitHub API rate limited, skipping update check for now");
-                    } else {
+                    if (errorMsg != null && (errorMsg.contains("rate limit") || errorMsg.contains("Repository not found"))) {
+                        LOG.info("Update check skipped: " + errorMsg);
+                    } else if (preview && isDevelopmentVersion(Metadata.VERSION)) {
                         showNotReleasedDialog();
                     }
                 }
