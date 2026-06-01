@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.Open_code_Studio.jmcl.util.io.FileUtilsTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-06-01T11:36:08.957Z" hostname="cangcangdeMacBook-Air.local" time="0.003">
+<testsuite name="org.Open_code_Studio.jmcl.util.io.FileUtilsTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-06-01T11:43:25.814Z" hostname="cangcangdeMacBook-Air.local" time="0.003">
   <properties/>
   <testcase name="[1] WINDOWS" classname="org.Open_code_Studio.jmcl.util.io.FileUtilsTest" time="0.001"/>
-  <testcase name="[2] LINUX" classname="org.Open_code_Studio.jmcl.util.io.FileUtilsTest" time="0.001"/>
+  <testcase name="[2] LINUX" classname="org.Open_code_Studio.jmcl.util.io.FileUtilsTest" time="0.0"/>
   <testcase name="[3] MACOS" classname="org.Open_code_Studio.jmcl.util.io.FileUtilsTest" time="0.0"/>
-  <testcase name="[4] FREEBSD" classname="org.Open_code_Studio.jmcl.util.io.FileUtilsTest" time="0.0"/>
+  <testcase name="[4] FREEBSD" classname="org.Open_code_Studio.jmcl.util.io.FileUtilsTest" time="0.001"/>
   <testcase name="[5] UNKNOWN" classname="org.Open_code_Studio.jmcl.util.io.FileUtilsTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

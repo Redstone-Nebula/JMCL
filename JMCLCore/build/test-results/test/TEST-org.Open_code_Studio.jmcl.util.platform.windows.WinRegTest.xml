@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.Open_code_Studio.jmcl.util.platform.windows.WinRegTest" tests="2" skipped="2" failures="0" errors="0" timestamp="2026-06-01T11:36:09.005Z" hostname="cangcangdeMacBook-Air.local" time="0.0">
+<testsuite name="org.Open_code_Studio.jmcl.util.platform.windows.WinRegTest" tests="2" skipped="2" failures="0" errors="0" timestamp="2026-06-01T11:43:25.911Z" hostname="cangcangdeMacBook-Air.local" time="0.0">
   <properties/>
   <testcase name="testQueryValue()" classname="org.Open_code_Studio.jmcl.util.platform.windows.WinRegTest" time="0.0">
     <skipped/>
