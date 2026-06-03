@@ -45,7 +45,7 @@ import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 /**
  * A task that can download a file online.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class FileDownloadTask extends FetchTask<Void> {
 

@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * <b>Note</b>: Fabric should be installed first.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class FabricAPIInstallTask extends Task<Version> {
 

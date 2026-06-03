@@ -43,7 +43,7 @@ import static org.Open_code_Studio.jmcl.util.DataSizeUnit.MEGABYTES;
 import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @JsonAdapter(VersionSetting.Serializer.class)
 public final class VersionSetting implements Cloneable, Observable {

@@ -30,7 +30,7 @@ import java.util.Properties;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class MultiMCInstanceConfiguration implements ModpackManifest {
 

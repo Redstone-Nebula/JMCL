@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class Lang {
 

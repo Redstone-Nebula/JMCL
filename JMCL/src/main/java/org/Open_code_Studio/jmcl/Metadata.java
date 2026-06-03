@@ -1,6 +1,6 @@
 /*
- * Hello Minecraft! Launcher
- * Copyright (C) 2021  huangyuhui <huanghongxun2008@126.com> and contributors
+ * JMCL
+ * Copyright (C) 2021  Open Code Studio and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,8 +53,8 @@ public final class Metadata {
 
     public static final String DOCS_URL = "https://docs.jmcl.net";
     public static final String CONTACT_URL = DOCS_URL + "/help.html";
-    public static final String CHANGELOG_URL = DOCS_URL + "/changelog/";
-    public static final String EULA_URL = DOCS_URL + "/eula/hmcl.html";
+    public static final String CHANGELOG_URL = ORIGINAL_REPO_URL + "/releases";
+    public static final String EULA_URL = DOCS_URL + "/eula/jmcl.html";
 
     public static final String BUILD_CHANNEL = JarUtils.getAttribute("jvmmcl.version.type", "nightly");
     public static final String GITHUB_SHA = JarUtils.getAttribute("jvmmcl.version.hash", null);

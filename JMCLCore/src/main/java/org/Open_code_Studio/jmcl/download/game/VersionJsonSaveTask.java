@@ -28,7 +28,7 @@ import java.nio.file.Path;
 /**
  * This task is to save the version json.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class VersionJsonSaveTask extends Task<Version> {
 

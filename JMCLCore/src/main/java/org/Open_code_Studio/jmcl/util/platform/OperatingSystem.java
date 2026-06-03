@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 /**
  * Represents the operating system.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public enum OperatingSystem {
     /**

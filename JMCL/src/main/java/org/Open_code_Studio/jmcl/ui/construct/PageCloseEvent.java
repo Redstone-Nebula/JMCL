@@ -24,7 +24,7 @@ import javafx.event.EventType;
 /**
  * Indicates a close operation on the navigator page.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class PageCloseEvent extends Event {
 

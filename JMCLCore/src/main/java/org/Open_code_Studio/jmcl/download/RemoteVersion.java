@@ -29,7 +29,7 @@ import java.util.Objects;
 /**
  * The remote version.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class RemoteVersion implements Comparable<RemoteVersion> {
 

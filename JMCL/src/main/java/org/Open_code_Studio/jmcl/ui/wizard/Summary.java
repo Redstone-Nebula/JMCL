@@ -22,7 +22,7 @@ import com.jfoenix.controls.JFXTextArea;
 import javafx.scene.Node;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class Summary {
     private final Node component;

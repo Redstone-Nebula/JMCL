@@ -40,7 +40,7 @@ import static org.Open_code_Studio.jmcl.util.StringUtils.removeSuffix;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class ForgeInstallTask extends Task<Version> {
 

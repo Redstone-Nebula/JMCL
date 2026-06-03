@@ -31,7 +31,7 @@ import java.util.Locale;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class LowerCaseEnumTypeAdapterFactory implements TypeAdapterFactory {
 

@@ -90,7 +90,7 @@ public final class Controllers {
     public static final String SOFTWARE_RENDERING = "softwareRendering";
     public static final String APRIL_FOOLS = "aprilFools";
 
-    public static final int MIN_WIDTH = 800 + 2 + 16; // bg width + border width*2 + shadow width*2
+    public static final int MIN_WIDTH = 1100 + 2 + 16; // bg width + border width*2 + shadow width*2 + skin view pane
     public static final int MIN_HEIGHT = 450 + 2 + 40 + 16; // bg height + border width*2 + toolbar height + shadow width*2
     public static final Screen SCREEN = Screen.getPrimary();
     private static InvalidationListener stageSizeChangeListener;

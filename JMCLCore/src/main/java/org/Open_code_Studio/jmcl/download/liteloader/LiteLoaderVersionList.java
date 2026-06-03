@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class LiteLoaderVersionList extends VersionList<LiteLoaderRemoteVersion> {
 

@@ -35,7 +35,7 @@ import java.util.zip.ZipException;
 /**
  * Utilities of compressing
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class CompressingUtils {
 

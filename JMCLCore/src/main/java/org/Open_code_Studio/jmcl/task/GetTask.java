@@ -34,7 +34,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class GetTask extends FetchTask<String> {
 

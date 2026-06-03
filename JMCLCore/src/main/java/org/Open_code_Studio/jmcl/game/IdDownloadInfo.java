@@ -25,7 +25,7 @@ import org.Open_code_Studio.jmcl.util.gson.TolerableValidationException;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public class IdDownloadInfo extends DownloadInfo {

@@ -24,7 +24,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
-/// @author huangyuhui
+/// @author Open Code Studio
 public final class EventManager<T extends Event> {
 
     private static final int PRIORITY_COUNT = EventPriority.values().length;

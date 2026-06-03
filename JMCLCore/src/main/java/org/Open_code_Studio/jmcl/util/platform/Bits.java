@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
  * The platform that indicates which the platform of operating system is, 64-bit or 32-bit.
  * Of course, 128-bit and 16-bit is not supported.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @JsonAdapter(Bits.Serializer.class)
 public enum Bits {

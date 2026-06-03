@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @JsonAdapter(StringArgument.Serializer.class)
 @Immutable

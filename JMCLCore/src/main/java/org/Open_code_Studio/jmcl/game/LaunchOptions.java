@@ -26,7 +26,7 @@ import java.util.*;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class LaunchOptions implements Serializable {
 

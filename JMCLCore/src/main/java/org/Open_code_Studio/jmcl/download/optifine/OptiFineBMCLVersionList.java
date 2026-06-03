@@ -31,7 +31,7 @@ import java.util.Set;
 import static org.Open_code_Studio.jmcl.util.gson.JsonUtils.listTypeOf;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class OptiFineBMCLVersionList extends VersionList<OptiFineRemoteVersion> {
     private final String apiRoot;
@@ -99,7 +99,7 @@ public final class OptiFineBMCLVersionList extends VersionList<OptiFineRemoteVer
     }
 
     /**
-     * @author huangyuhui
+     * @author Open Code Studio
      */
     private static final class OptiFineVersion {
 

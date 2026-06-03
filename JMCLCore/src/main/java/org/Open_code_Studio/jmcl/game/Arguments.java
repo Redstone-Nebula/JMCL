@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public final class Arguments {

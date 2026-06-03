@@ -26,7 +26,7 @@ import org.Open_code_Studio.jmcl.util.CacheRepository;
  * Do everything that will connect to Internet.
  * Downloading Minecraft files.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public interface DependencyManager {
 

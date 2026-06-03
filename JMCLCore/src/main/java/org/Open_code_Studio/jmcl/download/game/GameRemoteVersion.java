@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public final class GameRemoteVersion extends RemoteVersion {

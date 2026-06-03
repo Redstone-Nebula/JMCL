@@ -28,7 +28,7 @@ import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class CrashReporter implements Thread.UncaughtExceptionHandler {
 

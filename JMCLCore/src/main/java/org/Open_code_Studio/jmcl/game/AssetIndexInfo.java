@@ -21,7 +21,7 @@ import org.Open_code_Studio.jmcl.util.Immutable;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public class AssetIndexInfo extends IdDownloadInfo {

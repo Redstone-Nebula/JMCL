@@ -24,7 +24,7 @@ import org.Open_code_Studio.jmcl.util.ToStringBuilder;
  * <br>
  * This event is fired on the {@link org.Open_code_Studio.jmcl.event.EventBus#EVENT_BUS}
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class RemoveVersionEvent extends Event {
 

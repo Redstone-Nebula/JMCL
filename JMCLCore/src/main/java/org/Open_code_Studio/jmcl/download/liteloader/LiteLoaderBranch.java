@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public final class LiteLoaderBranch {

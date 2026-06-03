@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 /**
  * Note: This class has no state.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class DefaultDependencyManager extends AbstractDependencyManager {
 

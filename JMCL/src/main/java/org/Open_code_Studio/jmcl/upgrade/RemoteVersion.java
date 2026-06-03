@@ -1,6 +1,6 @@
 /*
- * Hello Minecraft! Launcher
- * Copyright (C) 2020  huangyuhui <huanghongxun2008@126.com> and contributors
+ * JMCL
+ * Copyright (C) 2020  Open Code Studio and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ import java.net.URI;
 import java.net.URLConnection;
 import java.util.Optional;
 
-public record RemoteVersion(UpdateChannel channel, String version, String url, Type type, IntegrityCheck integrityCheck,
+public record RemoteVersion(UpdateChannel channel, String version, String tag, String url, Type type, IntegrityCheck integrityCheck,
                             boolean preview, boolean force) {
 
     private static final String GITHUB_API_RELEASES = "https://api.github.com/repos/Open-code-Studio/JMCL/releases";
@@ -45,7 +45,7 @@ public record RemoteVersion(UpdateChannel channel, String version, String url, T
             String jarHash = Optional.ofNullable(response.get("jarsha1")).map(JsonElement::getAsString).orElse(null);
             boolean force = Optional.ofNullable(response.get("force")).map(JsonElement::getAsBoolean).orElse(false);
             if (jarUrl != null && jarHash != null) {
-                return new RemoteVersion(channel, version, jarUrl, Type.JAR, new IntegrityCheck("SHA-1", jarHash), preview, force);
+                return new RemoteVersion(channel, version, version, jarUrl, Type.JAR, new IntegrityCheck("SHA-1", jarHash), preview, force);
             } else {
                 throw new IOException("No download url is available");
             }
@@ -82,9 +82,17 @@ public record RemoteVersion(UpdateChannel channel, String version, String url, T
             JsonObject latestRelease = null;
             for (JsonElement element : releases) {
                 JsonObject release = element.getAsJsonObject();
+                // Skip draft releases
                 JsonElement draftElement = release.get("draft");
                 if (draftElement != null && draftElement.getAsBoolean()) {
                     continue;
+                }
+                // If preview is not enabled, skip pre-releases too
+                if (!preview) {
+                    JsonElement prereleaseElement = release.get("prerelease");
+                    if (prereleaseElement != null && prereleaseElement.getAsBoolean()) {
+                        continue;
+                    }
                 }
                 latestRelease = release;
                 break;
@@ -94,8 +102,11 @@ public record RemoteVersion(UpdateChannel channel, String version, String url, T
                 throw new IOException("No published release found");
             }
 
+            // Preserve the original tag name as-is (e.g. "v2026.1.0" or "DEV2026.2.0")
             String tagName = Optional.ofNullable(latestRelease.get("tag_name")).map(JsonElement::getAsString)
                     .orElseThrow(() -> new IOException("tag_name is missing"));
+
+            // Strip leading "v" for the semantic version string only
             String version = tagName.startsWith("v") ? tagName.substring(1) : tagName;
 
             JsonArray assets = Optional.ofNullable(latestRelease.get("assets")).map(JsonElement::getAsJsonArray)
@@ -105,9 +116,23 @@ public record RemoteVersion(UpdateChannel channel, String version, String url, T
             for (JsonElement assetElement : assets) {
                 JsonObject asset = assetElement.getAsJsonObject();
                 String name = Optional.ofNullable(asset.get("name")).map(JsonElement::getAsString).orElse("");
-                if (name.endsWith(".jar") && name.contains(Metadata.NAME)) {
+                // Match JAR files that contain the project name (JVM-MCL)
+                // This matches: JVM-MCL-DEV2026.2.1.jar, JVM-MCL-2026.1.0.jar, etc.
+                if (name.endsWith(".jar") && name.startsWith(Metadata.NAME)) {
                     jarUrl = Optional.ofNullable(asset.get("browser_download_url")).map(JsonElement::getAsString).orElse(null);
                     break;
+                }
+            }
+
+            if (jarUrl == null) {
+                // Fallback: try any JAR file in the release
+                for (JsonElement assetElement : assets) {
+                    JsonObject asset = assetElement.getAsJsonObject();
+                    String name = Optional.ofNullable(asset.get("name")).map(JsonElement::getAsString).orElse("");
+                    if (name.endsWith(".jar")) {
+                        jarUrl = Optional.ofNullable(asset.get("browser_download_url")).map(JsonElement::getAsString).orElse(null);
+                        break;
+                    }
                 }
             }
 
@@ -115,7 +140,9 @@ public record RemoteVersion(UpdateChannel channel, String version, String url, T
                 throw new IOException("No JAR asset found in the latest release");
             }
 
-            return new RemoteVersion(channel, version, jarUrl, Type.JAR, null, preview, false);
+            // When fetching from GitHub, we don't have a pre-computed SHA-1 hash,
+            // so integrityCheck is null. The FileDownloadTask will handle this gracefully.
+            return new RemoteVersion(channel, version, tagName, jarUrl, Type.JAR, null, preview, false);
         } catch (JsonParseException e) {
             throw new IOException("Malformed response", e);
         }

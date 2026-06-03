@@ -21,7 +21,7 @@ package org.Open_code_Studio.jmcl.game;
  * Supports version accessing.
  *
  * @see Version#resolve
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public interface VersionProvider {
 

@@ -21,7 +21,7 @@ import java.util.EventListener;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public abstract class TaskListener implements EventListener {
 

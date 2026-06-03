@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * <b>Note</b>: Quilt should be installed first.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class QuiltAPIInstallTask extends Task<Version> {
 

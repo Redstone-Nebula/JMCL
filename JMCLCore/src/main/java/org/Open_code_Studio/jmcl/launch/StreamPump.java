@@ -30,7 +30,7 @@ import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 /**
  * Pump the given input stream.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class StreamPump implements Runnable {
 

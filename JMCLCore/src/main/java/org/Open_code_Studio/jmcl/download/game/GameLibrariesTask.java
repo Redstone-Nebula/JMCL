@@ -46,7 +46,7 @@ import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
  * This task is to download game libraries.
  * This task should be executed last(especially after game downloading, Forge, LiteLoader and OptiFine install task).
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class GameLibrariesTask extends Task<Void> {
 

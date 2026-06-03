@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public enum Log4jLevel {
     FATAL(1),

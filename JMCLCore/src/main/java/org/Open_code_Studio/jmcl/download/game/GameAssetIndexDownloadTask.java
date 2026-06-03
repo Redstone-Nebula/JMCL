@@ -39,7 +39,7 @@ import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 /**
  * This task is to download asset index file provided in minecraft.json.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class GameAssetIndexDownloadTask extends Task<Void> {
 

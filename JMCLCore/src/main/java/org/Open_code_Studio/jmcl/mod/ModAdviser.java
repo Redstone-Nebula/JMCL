@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public interface ModAdviser {
 

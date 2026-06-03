@@ -9,19 +9,15 @@
 
 ### Java 模块 (Gradle)
 
-| 模块 | 目录 | 说明 |
-|------|------|------|
-| `JVM-MCL` | `JMCL/` | 主模块：UI (JavaFX)、启动逻辑，shadow jar 打包 |
-| `JVM-MCLCore` | `JMCLCore/` | 核心库：Mod 管理、下载、任务系统 |
-| `JVM-MCLBoot` | `JMCLBoot/` | 引导模块 (target Java 8)，版本检测、自修复 |
-| `JVM-MCLTransformerDiscoveryService` | `minecraft/libraries/JMCLTransformerDiscoveryService/` | Minecraft 库 |
-| `JVM-MCLMultiMCBootstrap` | `minecraft/libraries/JMCLMultiMCBootstrap/` | Minecraft 库 |
+| 模块                                   | 目录                                                     | 说明                                 |
+| ------------------------------------ | ------------------------------------------------------ | ---------------------------------- |
+| `JVM-MCL`                            | `JMCL/`                                                | 主模块：UI (JavaFX)、启动逻辑，shadow jar 打包 |
+| `JVM-MCLCore`                        | `JMCLCore/`                                            | 核心库：Mod 管理、下载、任务系统                 |
+| `JVM-MCLBoot`                        | `JMCLBoot/`                                            | 引导模块 (target Java 8)，版本检测、自修复      |
+| `JVM-MCLTransformerDiscoveryService` | `minecraft/libraries/JMCLTransformerDiscoveryService/` | Minecraft 库                        |
+| `JVM-MCLMultiMCBootstrap`            | `minecraft/libraries/JMCLMultiMCBootstrap/`            | Minecraft 库                        |
 
 启动链：`JMCLBoot/Main.main()` → `JMCL/EntryPoint.main()` → `JMCL/Launcher.main()` (extends `javafx.application.Application`)
-
-### Flutter 前端 (jboot/)
-
-`jboot/` 是一个独立的 Flutter 项目，**当前与 Java 后端无代码桥接**。`JVM-MCL-DEV2026.2.0.jar` 文件放置在 `jboot/` 目录下。
 
 ## 构建命令
 
@@ -65,3 +61,4 @@ flutter build apk / ios / macos / linux / windows
 - 测试框架：JUnit 5 (Jupiter Platform)
 - `gradle.properties` 中的 `java.home` 指向 `/Users/cangcang/Documents/jdk21`
 - 自定义 buildSrc 任务在 `buildSrc/src/main/java/org/Open_code_Studio/jmcl/gradle/`
+

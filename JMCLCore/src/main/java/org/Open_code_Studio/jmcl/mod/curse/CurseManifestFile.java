@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-/// @author huangyuhui
+/// @author Open Code Studio
 @JsonSerializable
 public record CurseManifestFile(@SerializedName("projectID") int projectID,
                                 @SerializedName("fileID") int fileID,

@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
-/// @author huangyuhui
+/// @author Open Code Studio
 public final class AutoDownloadProvider implements DownloadProvider {
     private final List<DownloadProvider> versionListProviders;
     private final List<DownloadProvider> fileProviders;

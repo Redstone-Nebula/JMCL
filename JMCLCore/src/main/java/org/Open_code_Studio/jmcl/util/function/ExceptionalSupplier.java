@@ -21,7 +21,7 @@ import java.util.concurrent.Callable;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public interface ExceptionalSupplier<R, E extends Exception> {
     R get() throws E;

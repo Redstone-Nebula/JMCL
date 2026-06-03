@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 
 /// The managed process.
 ///
-/// @author huangyuhui
+/// @author Open Code Studio
 /// <!-- @see org.Open_code_Studio.jmcl.launch.ExitWaiter -->
 /// @see org.Open_code_Studio.jmcl.launch.StreamPump
 public final class ManagedProcess {

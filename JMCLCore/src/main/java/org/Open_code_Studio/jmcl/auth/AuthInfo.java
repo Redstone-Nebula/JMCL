@@ -26,7 +26,7 @@ import java.util.UUID;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public class AuthInfo implements AutoCloseable {

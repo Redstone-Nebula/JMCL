@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Note: LiteLoader must be installed after Forge.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class LiteLoaderInstallTask extends Task<Version> {
 

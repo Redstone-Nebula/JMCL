@@ -20,7 +20,7 @@ package org.Open_code_Studio.jmcl.game;
 /**
  * Determines where game runs in and game files such as mods.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public enum GameDirectoryType {
     /**

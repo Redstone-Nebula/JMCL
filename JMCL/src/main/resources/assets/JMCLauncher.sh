@@ -161,13 +161,13 @@ fi
 
 case "$_HMCL_OS-$_HMCL_ARCH" in
   windows-x86|windows-x86_64|windows-arm64)
-    _HMCL_JAVA_DOWNLOAD_PAGE="https://docs.hmcl.net/downloads/windows/$_HMCL_ARCH.html"
+    _HMCL_JAVA_DOWNLOAD_PAGE="https://docs.jmcl.net/downloads/windows/$_HMCL_ARCH.html"
     ;;
   linux-x86|linux-x86_64|linux-arm64|linux-arm32|linux-riscv64|linux-loongarch64)
-    _HMCL_JAVA_DOWNLOAD_PAGE="https://docs.hmcl.net/downloads/linux/$_HMCL_ARCH.html"
+    _HMCL_JAVA_DOWNLOAD_PAGE="https://docs.jmcl.net/downloads/linux/$_HMCL_ARCH.html"
     ;;
   macos-x86_64|macos-arm64)
-    _HMCL_JAVA_DOWNLOAD_PAGE="https://docs.hmcl.net/downloads/macos/$_HMCL_ARCH.html"
+    _HMCL_JAVA_DOWNLOAD_PAGE="https://docs.jmcl.net/downloads/macos/$_HMCL_ARCH.html"
     ;;
 esac
 

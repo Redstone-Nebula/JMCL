@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * A class that describes a Minecraft dependency.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public class Library implements Comparable<Library>, Validation {

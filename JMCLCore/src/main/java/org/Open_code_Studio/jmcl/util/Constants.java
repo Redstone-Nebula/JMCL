@@ -20,7 +20,7 @@ package org.Open_code_Studio.jmcl.util;
 /**
  * Constants.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class Constants {
 

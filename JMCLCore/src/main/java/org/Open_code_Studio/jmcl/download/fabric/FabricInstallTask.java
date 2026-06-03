@@ -39,7 +39,7 @@ import static org.Open_code_Studio.jmcl.download.UnsupportedInstallationExceptio
 /**
  * <b>Note</b>: Fabric should be installed first.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class FabricInstallTask extends Task<Version> {
 

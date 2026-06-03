@@ -44,7 +44,7 @@ import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 /**
  * Disposable task.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public abstract class Task<T> {
 
@@ -1132,7 +1132,7 @@ public abstract class Task<T> {
     /**
      * A task that combines two tasks and make sure [pred] runs before succ.
      *
-     * @author huangyuhui
+     * @author Open Code Studio
      */
     private final class UniCompose<U> extends Task<U> {
 

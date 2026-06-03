@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public abstract class AccountFactory<T extends Account> {
 

@@ -50,7 +50,7 @@ import static org.Open_code_Studio.jmcl.download.LibraryAnalyzer.LibraryType.*;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class InstallerItem extends Control {
     private final String id;

@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  * A simple implementation of Multimap.
  * Just a combination of map and set.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class SimpleMultimap<K, V, M extends Collection<V>> {
 

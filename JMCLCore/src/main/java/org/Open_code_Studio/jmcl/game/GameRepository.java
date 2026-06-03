@@ -35,7 +35,7 @@ import java.util.Set;
  * Note that game repository will not do any operations which need connection with Internet, if do,
  * see {@link org.Open_code_Studio.jmcl.download.DependencyManager}
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public interface GameRepository extends VersionProvider {
 

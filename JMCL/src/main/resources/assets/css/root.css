@@ -1,6 +1,6 @@
 /**
- * JVM-MCL
- * Copyright (C) 2026  huangyuhui <huanghongxun2008@126.com> and contributors
+ * JMCL
+ * Copyright (C) 2026  Open Code Studio and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -2042,4 +2042,64 @@
 
 .instance-manager-collapsed:hover {
     -fx-background-color: -monet-primary-container;
+}
+
+/* =============================================================================
+ * Skin View Pane — vertical skin preview panel
+ * ============================================================================= */
+.skin-view-pane {
+    -fx-background-color: -monet-surface-container-low;
+    -fx-background-radius: 12;
+    -fx-padding: 16px;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 6, 0.0, 0, 1);
+}
+
+/* =============================================================================
+ * Changelog Dialog — GitHub release notes rendering
+ * ============================================================================= */
+.changelog-container {
+    -fx-padding: 8px 16px;
+}
+
+.changelog-heading {
+    -fx-font-size: 1.3em;
+    -fx-font-weight: bold;
+    -fx-text-fill: -monet-primary;
+    -fx-padding: 12 0 4 0;
+}
+
+.changelog-subheading {
+    -fx-font-size: 1.1em;
+    -fx-font-weight: bold;
+    -fx-text-fill: -monet-on-surface;
+    -fx-padding: 8 0 4 0;
+}
+
+.changelog-paragraph {
+    -fx-padding: 2 0;
+}
+
+.changelog-list-item {
+    -fx-padding: 1 0 1 8;
+}
+
+.changelog-code-block {
+    -fx-background-color: -monet-surface-container-high;
+    -fx-background-radius: 6;
+    -fx-padding: 8 12;
+    -fx-margin: 4 0;
+}
+
+.changelog-code {
+    -fx-font-family: "SF Mono", "Menlo", "Consolas", monospace;
+    -fx-font-size: 0.9em;
+}
+
+.changelog-inline-code {
+    -fx-font-family: "SF Mono", "Menlo", "Consolas", monospace;
+    -fx-font-size: 0.9em;
+    -fx-background-color: -monet-surface-container-high;
+    -fx-background-radius: 3;
+    -fx-padding: 1 4;
 }

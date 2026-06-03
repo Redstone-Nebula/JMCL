@@ -25,7 +25,7 @@ import java.util.List;
 
 /// The service provider that provides Minecraft online file downloads.
 ///
-/// @author huangyuhui
+/// @author Open Code Studio
 public interface DownloadProvider {
 
     List<URI> getVersionListURLs();

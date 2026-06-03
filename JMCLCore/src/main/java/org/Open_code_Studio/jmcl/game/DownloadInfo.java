@@ -28,7 +28,7 @@ import java.nio.file.Path;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public class DownloadInfo implements Validation {

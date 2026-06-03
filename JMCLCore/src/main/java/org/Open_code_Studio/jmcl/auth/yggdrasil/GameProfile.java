@@ -28,7 +28,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.annotations.JsonAdapter;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public class GameProfile implements Validation {

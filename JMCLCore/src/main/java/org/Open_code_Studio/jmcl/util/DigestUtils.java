@@ -26,7 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class DigestUtils {
 

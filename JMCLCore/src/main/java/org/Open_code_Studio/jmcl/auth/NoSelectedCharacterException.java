@@ -22,7 +22,7 @@ package org.Open_code_Studio.jmcl.auth;
  * valid character.
  *
  * @see CharacterSelector
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class NoSelectedCharacterException extends AuthenticationException {
     public NoSelectedCharacterException() {

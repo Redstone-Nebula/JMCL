@@ -22,7 +22,7 @@ import org.Open_code_Studio.jmcl.util.Immutable;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public final class LiteLoaderGameVersions {

@@ -62,7 +62,11 @@ public final class UpdateChecker {
                         || Metadata.isNightly()
                         || latest.channel() == UpdateChannel.NIGHTLY
                         || latest.channel() != UpdateChannel.getChannel()) {
-                    return !latest.version().equals(Metadata.VERSION);
+                    // Cross-channel comparison: strip "DEV" prefix for fair version comparison
+                    // This prevents showing a DOWNGRADE (e.g. DEV2026.2.1 → stable 2026.2.0) as an update
+                    String currentVer = Metadata.VERSION.startsWith("DEV") ? Metadata.VERSION.substring(3) : Metadata.VERSION;
+                    String latestVer = latest.version().startsWith("DEV") ? latest.version().substring(3) : latest.version();
+                    return VersionNumber.compare(currentVer, latestVer) < 0;
                 } else {
                     return VersionNumber.compare(Metadata.VERSION, latest.version()) < 0;
                 }
@@ -117,6 +121,17 @@ public final class UpdateChecker {
                 try {
                     result = checkUpdate(channel, preview);
                     LOG.info("Latest version (" + channel + ", preview=" + preview + ") is " + result);
+
+                    // If we're on a DEV version that is newer than anything on GitHub,
+                    // show the "not released" dialog to inform the user
+                    if (result != null && preview && isDevelopmentVersion(Metadata.VERSION)) {
+                        String currentVer = Metadata.VERSION.startsWith("DEV") ? Metadata.VERSION.substring(3) : Metadata.VERSION;
+                        String latestVer = result.version().startsWith("DEV") ? result.version().substring(3) : result.version();
+                        if (VersionNumber.compare(currentVer, latestVer) > 0) {
+                            LOG.info("Current version " + Metadata.VERSION + " is newer than GitHub release " + result.version());
+                            showNotReleasedDialog();
+                        }
+                    }
                 } catch (Throwable e) {
                     LOG.warning("Failed to check for update", e);
                     String errorMsg = e.getMessage();

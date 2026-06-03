@@ -22,7 +22,7 @@ import org.Open_code_Studio.jmcl.util.Immutable;
 import org.Open_code_Studio.jmcl.util.gson.JsonSerializable;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 @JsonSerializable

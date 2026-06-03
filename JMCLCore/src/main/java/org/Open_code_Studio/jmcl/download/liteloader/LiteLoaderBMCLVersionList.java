@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class LiteLoaderBMCLVersionList extends VersionList<LiteLoaderRemoteVersion> {
     private final BMCLAPIDownloadProvider downloadProvider;

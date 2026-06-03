@@ -18,7 +18,7 @@
 package org.Open_code_Studio.jmcl.util.function;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public interface ExceptionalConsumer<T, E extends Exception> {
     void accept(T t) throws E;

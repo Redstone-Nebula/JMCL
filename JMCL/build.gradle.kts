@@ -203,7 +203,7 @@ tasks.shadowJar {
     }
 
     manifest.attributes(
-        "Created-By" to "Copyright(c) 2013-2025 huangyuhui.",
+        "Created-By" to "Copyright(c) 2013-2025 Open Code Studio.",
         "Implementation-Version" to project.version.toString(),
         "Main-Class" to "org.Open_code_Studio.jmcl.Main",
         "Multi-Release" to "true",

@@ -174,7 +174,7 @@ public final class ConfigHolder {
                         ConfigUpgrader.upgradeConfig(deserialized, content);
                     } else if (configVersion > Config.CURRENT_VERSION) {
                         unsupportedVersion = true;
-                        LOG.warning(String.format("Current HMCL only support the configuration version up to %d. However, the version now is %d.", Config.CURRENT_VERSION, configVersion));
+                        LOG.warning(String.format("Current JMCL only support the configuration version up to %d. However, the version now is %d.", Config.CURRENT_VERSION, configVersion));
                     }
 
                     return deserialized;

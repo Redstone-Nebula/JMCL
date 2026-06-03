@@ -38,7 +38,7 @@ import static org.Open_code_Studio.jmcl.util.StringUtils.*;
 import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class NetworkUtils {
     public static final String USER_AGENT = System.getProperty("http.agent", "JMCL");

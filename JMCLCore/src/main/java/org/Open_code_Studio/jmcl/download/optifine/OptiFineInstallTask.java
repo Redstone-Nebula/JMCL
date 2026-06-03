@@ -46,7 +46,7 @@ import static org.Open_code_Studio.jmcl.util.Lang.getOrDefault;
 /**
  * <b>Note</b>: OptiFine should be installed in the end.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class OptiFineInstallTask extends Task<Version> {
 

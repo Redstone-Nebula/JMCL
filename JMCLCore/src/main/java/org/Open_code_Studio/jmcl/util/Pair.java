@@ -20,7 +20,7 @@ package org.Open_code_Studio.jmcl.util;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public record Pair<K, V>(K key, V value) {
 

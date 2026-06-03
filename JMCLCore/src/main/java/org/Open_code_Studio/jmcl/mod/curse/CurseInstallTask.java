@@ -40,7 +40,7 @@ import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 /**
  * Install a downloaded CurseForge modpack.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class CurseInstallTask extends Task<Void> {
 

@@ -45,7 +45,7 @@ import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 /**
  * Complete the CurseForge version.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class CurseCompletionTask extends Task<Void> {
 

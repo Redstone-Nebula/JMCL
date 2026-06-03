@@ -23,7 +23,7 @@ import java.util.*;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public final class CompatibilityRule {

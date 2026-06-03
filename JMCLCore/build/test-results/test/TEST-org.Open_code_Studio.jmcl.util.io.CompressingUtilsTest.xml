@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.Open_code_Studio.jmcl.util.io.CompressingUtilsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-06-01T11:43:25.785Z" hostname="cangcangdeMacBook-Air.local" time="0.029">
-  <properties/>
-  <testcase name="[1] /Users/cangcang/Documents/开发/JMCL/JMCLCore/build/resources/test/zip/utf-8.zip, UTF-8" classname="org.Open_code_Studio.jmcl.util.io.CompressingUtilsTest" time="0.009"/>
-  <testcase name="[2] /Users/cangcang/Documents/开发/JMCL/JMCLCore/build/resources/test/zip/gbk.zip, GB18030" classname="org.Open_code_Studio.jmcl.util.io.CompressingUtilsTest" time="0.002"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

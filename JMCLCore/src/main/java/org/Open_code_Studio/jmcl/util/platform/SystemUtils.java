@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -91,9 +92,25 @@ public final class SystemUtils {
     }
 
     public static <T> T run(List<String> command, ExceptionalFunction<InputStream, T, ?> convert, Duration maxWaitTime) throws Exception {
-        List<String> actualCommand = command;
+        List<String> actualCommand = new ArrayList<>(command);
         
         if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
+            String executablePath = command.get(0);
+            Path exePath = Paths.get(executablePath);
+            
+            if (!Files.isExecutable(exePath)) {
+                try {
+                    Set<PosixFilePermission> perms = Files.getPosixFilePermissions(exePath);
+                    perms.add(PosixFilePermission.OWNER_EXECUTE);
+                    perms.add(PosixFilePermission.GROUP_EXECUTE);
+                    perms.add(PosixFilePermission.OTHERS_EXECUTE);
+                    Files.setPosixFilePermissions(exePath, perms);
+                    LOG.info("Fixed execute permission for: " + executablePath);
+                } catch (Exception e) {
+                    LOG.warning("Failed to set execute permission for: " + executablePath, e);
+                }
+            }
+
             List<String> wrappedCommand = new ArrayList<>();
             wrappedCommand.add("/bin/bash");
             wrappedCommand.add("-c");

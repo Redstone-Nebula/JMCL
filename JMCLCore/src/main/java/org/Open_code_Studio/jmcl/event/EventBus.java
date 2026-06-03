@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
-/// @author huangyuhui
+/// @author Open Code Studio
 public final class EventBus extends ClassValue<EventManager<?>> {
 
     public static final EventBus EVENT_BUS = new EventBus();

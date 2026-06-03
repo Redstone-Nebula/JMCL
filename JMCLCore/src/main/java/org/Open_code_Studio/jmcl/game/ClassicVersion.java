@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 /// The Minecraft version for 1.5.x and earlier.
 ///
-/// @author huangyuhui
+/// @author Open Code Studio
 public final class ClassicVersion extends Version {
 
     public ClassicVersion() {

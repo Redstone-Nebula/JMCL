@@ -24,7 +24,7 @@ import java.util.*;
 /**
  * The builder which provide a task to build Minecraft environment.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public abstract class GameBuilder {
 

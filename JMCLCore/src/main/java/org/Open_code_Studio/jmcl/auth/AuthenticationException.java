@@ -19,7 +19,7 @@ package org.Open_code_Studio.jmcl.auth;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class AuthenticationException extends Exception {
     public AuthenticationException() {

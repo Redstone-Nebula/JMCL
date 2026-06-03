@@ -19,7 +19,7 @@ package org.Open_code_Studio.jmcl.util.function;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public interface ExceptionalFunction<T, R, E extends Exception> {
     R apply(T t) throws E;

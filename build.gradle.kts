@@ -91,9 +91,9 @@ tasks.register<UpdateDocuments>("updateDocuments") {
 }
 
 tasks.register<CheckUpdate>("checkUpdateDev") {
-    uri.set("https://ci.huangyuhui.net/job/JMCL-nightly")
+    uri.set("https://github.com/Open-code-Studio/JMCL/releases")
 }
 
 tasks.register<CheckUpdate>("checkUpdateStable") {
-    uri.set("https://ci.huangyuhui.net/job/JMCL-stable")
+    uri.set("https://github.com/Open-code-Studio/JMCL/releases")
 }

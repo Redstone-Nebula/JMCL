@@ -28,7 +28,7 @@ import java.io.IOException;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class ValidationTypeAdapterFactory implements TypeAdapterFactory {
 

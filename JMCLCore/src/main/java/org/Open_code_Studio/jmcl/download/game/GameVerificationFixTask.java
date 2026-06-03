@@ -35,7 +35,7 @@ import java.util.List;
 
 /**
  * Remove class digital verification file in game jar
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class GameVerificationFixTask extends Task<Void> {
     private final DefaultDependencyManager dependencyManager;

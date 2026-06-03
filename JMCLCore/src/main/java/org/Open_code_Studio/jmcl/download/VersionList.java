@@ -27,7 +27,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * The remote version list.
  *
  * @param <T> The subclass of {@code RemoteVersion}, the type of RemoteVersion.
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public abstract class VersionList<T extends RemoteVersion> {
 

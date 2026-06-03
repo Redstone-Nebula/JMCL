@@ -28,7 +28,7 @@ import java.time.Instant;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @JsonSerializable
 public record GameRemoteVersionInfo(

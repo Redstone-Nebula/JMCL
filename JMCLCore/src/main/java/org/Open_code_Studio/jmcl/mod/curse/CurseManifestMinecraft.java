@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/// @author huangyuhui
+/// @author Open Code Studio
 @JsonSerializable
 public record CurseManifestMinecraft(@SerializedName("version") String gameVersion,
                                      @SerializedName("modLoaders") @Unmodifiable List<CurseManifestModLoader> modLoaders) implements Validation {

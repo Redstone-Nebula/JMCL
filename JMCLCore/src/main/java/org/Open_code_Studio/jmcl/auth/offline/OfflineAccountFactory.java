@@ -30,7 +30,7 @@ import static org.Open_code_Studio.jmcl.util.Lang.tryCast;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class OfflineAccountFactory extends AccountFactory<OfflineAccount> {
     private final AuthlibInjectorArtifactProvider downloader;

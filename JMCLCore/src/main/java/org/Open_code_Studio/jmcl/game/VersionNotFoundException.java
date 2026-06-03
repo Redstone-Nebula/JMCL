@@ -19,7 +19,7 @@ package org.Open_code_Studio.jmcl.game;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class VersionNotFoundException extends RuntimeException {
 

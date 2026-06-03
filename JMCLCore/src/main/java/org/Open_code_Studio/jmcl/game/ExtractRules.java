@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class ExtractRules {
 

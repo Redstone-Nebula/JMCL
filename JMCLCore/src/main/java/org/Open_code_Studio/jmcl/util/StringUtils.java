@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class StringUtils {
 

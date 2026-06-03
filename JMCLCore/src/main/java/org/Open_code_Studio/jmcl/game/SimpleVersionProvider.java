@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class SimpleVersionProvider implements VersionProvider {
 

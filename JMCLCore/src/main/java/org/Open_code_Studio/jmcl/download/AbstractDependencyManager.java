@@ -19,7 +19,7 @@ package org.Open_code_Studio.jmcl.download;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public abstract class AbstractDependencyManager implements DependencyManager {
 

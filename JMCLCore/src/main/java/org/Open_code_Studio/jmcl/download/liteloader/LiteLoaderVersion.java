@@ -25,7 +25,7 @@ import java.util.Collections;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public final class LiteLoaderVersion {

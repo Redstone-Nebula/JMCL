@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class VersionLibraryBuilder {
     private final Version version;

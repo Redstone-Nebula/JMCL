@@ -27,7 +27,7 @@ import java.util.Set;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public abstract class Modpack {
 

@@ -46,7 +46,7 @@ import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 /**
  * An implementation of classic Minecraft game repository.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class DefaultGameRepository implements GameRepository {
 

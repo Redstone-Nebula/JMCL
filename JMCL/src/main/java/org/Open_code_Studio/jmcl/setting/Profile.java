@@ -44,7 +44,7 @@ import static org.Open_code_Studio.jmcl.ui.FXUtils.runInFX;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @JsonAdapter(Profile.Serializer.class)
 public final class Profile implements Observable {

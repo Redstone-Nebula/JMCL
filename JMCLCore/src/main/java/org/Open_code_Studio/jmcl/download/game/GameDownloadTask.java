@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * Task to download Minecraft jar
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class GameDownloadTask extends Task<Void> {
     private final DefaultDependencyManager dependencyManager;

@@ -31,7 +31,7 @@ import java.util.Map;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class ForgeVersionList extends VersionList<ForgeRemoteVersion> {
     private final DownloadProvider downloadProvider;

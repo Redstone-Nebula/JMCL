@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class VersionJsonDownloadTask extends Task<String> {
     private final String gameVersion;

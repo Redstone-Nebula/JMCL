@@ -35,7 +35,7 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  * @see <a href="http://wiki.vg">http://wiki.vg</a>
  */
 public class MojangDownloadProvider implements DownloadProvider {

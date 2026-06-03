@@ -38,7 +38,7 @@ import static org.Open_code_Studio.jmcl.util.gson.JsonUtils.listTypeOf;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public final class ForgeOldModMetadata {

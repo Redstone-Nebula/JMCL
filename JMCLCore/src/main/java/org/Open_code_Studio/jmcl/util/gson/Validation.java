@@ -22,7 +22,7 @@ import com.google.gson.JsonParseException;
 /**
  * Check if the json object's fields automatically filled by Gson are in right format.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public interface Validation {
 

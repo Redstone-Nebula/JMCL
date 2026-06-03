@@ -34,7 +34,7 @@ import static org.Open_code_Studio.jmcl.util.platform.OperatingSystem.NATIVE_CHA
 /**
  * This utility class consists of some util methods operating on InputStream/OutputStream.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public final class IOUtils {
 

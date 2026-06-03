@@ -22,14 +22,17 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import org.Open_code_Studio.jmcl.ui.FXUtils;
 
 public class DecoratorAnimatedPage extends Control {
 
     protected final VBox left = new VBox();
     protected final StackPane center = new StackPane();
+    protected final StackPane leftCenter = new StackPane();
 
     {
         getStyleClass().add("gray-background");
@@ -43,12 +46,20 @@ public class DecoratorAnimatedPage extends Control {
         center.getChildren().setAll(children);
     }
 
+    protected void setLeftCenter(Node... children) {
+        leftCenter.getChildren().setAll(children);
+    }
+
     public VBox getLeft() {
         return left;
     }
 
     public StackPane getCenter() {
         return center;
+    }
+
+    public StackPane getLeftCenter() {
+        return leftCenter;
     }
 
     @Override
@@ -62,9 +73,25 @@ public class DecoratorAnimatedPage extends Control {
             super(control);
 
             BorderPane pane = new BorderPane();
+            
+            control.left.setPrefWidth(200);
+            control.left.setMinWidth(Region.USE_PREF_SIZE);
+            control.left.setMaxWidth(Region.USE_PREF_SIZE);
             pane.setLeft(control.left);
-            FXUtils.setLimitWidth(control.left, 200);
-            pane.setCenter(control.center);
+            
+            HBox centerContainer = new HBox();
+            centerContainer.setFillHeight(true);
+            
+            control.leftCenter.setPrefWidth(200);
+            control.leftCenter.setMinWidth(200);
+            control.leftCenter.setMaxWidth(400);
+            HBox.setHgrow(control.leftCenter, Priority.SOMETIMES);
+            centerContainer.getChildren().add(control.leftCenter);
+            
+            HBox.setHgrow(control.center, Priority.ALWAYS);
+            centerContainer.getChildren().add(control.center);
+            
+            pane.setCenter(centerContainer);
             getChildren().setAll(pane);
         }
 
@@ -76,6 +103,9 @@ public class DecoratorAnimatedPage extends Control {
             getSkinnable().setCenter(children);
         }
 
+        protected void setLeftCenter(Node... children) {
+            getSkinnable().setLeftCenter(children);
+        }
     }
 
 }

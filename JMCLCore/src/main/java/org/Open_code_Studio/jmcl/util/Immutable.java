@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 /**
  * Mark if instances of the class are immutable.
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Target(ElementType.TYPE)
 public @interface Immutable {

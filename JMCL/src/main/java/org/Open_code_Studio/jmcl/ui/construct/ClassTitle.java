@@ -26,7 +26,7 @@ import javafx.scene.text.Text;
 import org.Open_code_Studio.jmcl.util.Lang;
 
 /**
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class ClassTitle extends StackPane {
     private final Node content;

@@ -25,7 +25,7 @@ import org.Open_code_Studio.jmcl.util.gson.Validation;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 @Immutable
 public final class ForgeInstallProfile implements Validation {

@@ -23,7 +23,7 @@ import java.util.Objects;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public class Event {
 

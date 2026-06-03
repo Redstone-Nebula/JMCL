@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 
-/// @author huangyuhui
+/// @author Open Code Studio
 @JsonSerializable
 public record CurseManifest(@SerializedName("manifestType") String manifestType,
                             @SerializedName("manifestVersion") int manifestVersion,

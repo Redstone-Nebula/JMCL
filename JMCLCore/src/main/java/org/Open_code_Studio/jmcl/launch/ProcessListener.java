@@ -21,7 +21,7 @@ import org.Open_code_Studio.jmcl.util.platform.ManagedProcess;
 
 /**
  *
- * @author huangyuhui
+ * @author Open Code Studio
  */
 public interface ProcessListener {
 
