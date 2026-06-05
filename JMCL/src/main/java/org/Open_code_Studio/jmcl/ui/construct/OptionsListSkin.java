@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXListView;
+import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.beans.InvalidationListener;
 import javafx.beans.WeakInvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -35,13 +35,13 @@ import org.Open_code_Studio.jmcl.ui.FXUtils;
 /// @author Glavo
 public final class OptionsListSkin extends SkinBase<OptionsList> {
 
-    private final JFXListView<OptionsList.Element> listView;
+    private final MFXListView<OptionsList.Element> listView;
     private final ObjectBinding<ContentPaddings> contentPaddings;
 
     OptionsListSkin(OptionsList control) {
         super(control);
 
-        this.listView = new JFXListView<>();
+        this.listView = new MFXListView<>();
         listView.setItems(control.getElements());
         listView.setCellFactory(listView1 -> new Cell());
 

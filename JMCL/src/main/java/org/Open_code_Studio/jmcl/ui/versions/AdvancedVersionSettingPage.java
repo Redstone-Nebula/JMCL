@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXTextField;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -54,13 +54,13 @@ public final class AdvancedVersionSettingPage extends StackPane implements Decor
     private final String versionId;
     private final VersionSetting versionSetting;
 
-    private final JFXTextField txtJVMArgs;
-    private final JFXTextField txtGameArgs;
-    private final JFXTextField txtEnvironmentVariables;
-    private final JFXTextField txtMetaspace;
-    private final JFXTextField txtWrapper;
-    private final JFXTextField txtPreLaunchCommand;
-    private final JFXTextField txtPostExitCommand;
+    private final MFXTextField txtJVMArgs;
+    private final MFXTextField txtGameArgs;
+    private final MFXTextField txtEnvironmentVariables;
+    private final MFXTextField txtMetaspace;
+    private final MFXTextField txtWrapper;
+    private final MFXTextField txtPreLaunchCommand;
+    private final MFXTextField txtPostExitCommand;
     private final LineToggleButton noJVMArgsPane;
     private final LineToggleButton noOptimizingJVMArgsPane;
     private final LineToggleButton noGameCheckPane;
@@ -108,22 +108,22 @@ public final class AdvancedVersionSettingPage extends StackPane implements Decor
             pane.setVgap(8);
             pane.getColumnConstraints().setAll(new ColumnConstraints(), FXUtils.getColumnHgrowing());
 
-            txtGameArgs = new JFXTextField();
+            txtGameArgs = new MFXTextField();
             txtGameArgs.setPromptText(i18n("settings.advanced.minecraft_arguments.prompt"));
             txtGameArgs.getStyleClass().add("fit-width");
             pane.addRow(0, new Label(i18n("settings.advanced.minecraft_arguments")), txtGameArgs);
 
-            txtPreLaunchCommand = new JFXTextField();
+            txtPreLaunchCommand = new MFXTextField();
             txtPreLaunchCommand.setPromptText(i18n("settings.advanced.precall_command.prompt"));
             txtPreLaunchCommand.getStyleClass().add("fit-width");
             pane.addRow(1, new Label(i18n("settings.advanced.precall_command")), txtPreLaunchCommand);
 
-            txtWrapper = new JFXTextField();
+            txtWrapper = new MFXTextField();
             txtWrapper.setPromptText(i18n("settings.advanced.wrapper_launcher.prompt"));
             txtWrapper.getStyleClass().add("fit-width");
             pane.addRow(2, new Label(i18n("settings.advanced.wrapper_launcher")), txtWrapper);
 
-            txtPostExitCommand = new JFXTextField();
+            txtPostExitCommand = new MFXTextField();
             txtPostExitCommand.setPromptText(i18n("settings.advanced.post_exit_command.prompt"));
             txtPostExitCommand.getStyleClass().add("fit-width");
             pane.addRow(3, new Label(i18n("settings.advanced.post_exit_command")), txtPostExitCommand);
@@ -147,7 +147,7 @@ public final class AdvancedVersionSettingPage extends StackPane implements Decor
             pane.setVgap(8);
             pane.getColumnConstraints().setAll(title, value);
 
-            txtJVMArgs = new JFXTextField();
+            txtJVMArgs = new MFXTextField();
             txtJVMArgs.getStyleClass().add("fit-width");
             pane.addRow(0, new Label(i18n("settings.advanced.jvm_args")), txtJVMArgs);
 
@@ -156,14 +156,14 @@ public final class AdvancedVersionSettingPage extends StackPane implements Decor
             GridPane.setColumnSpan(hintPane, 2);
             pane.addRow(4, hintPane);
 
-            txtMetaspace = new JFXTextField();
+            txtMetaspace = new MFXTextField();
             txtMetaspace.setPromptText(i18n("settings.advanced.java_permanent_generation_space.prompt"));
             txtMetaspace.getStyleClass().add("fit-width");
             FXUtils.setValidateWhileTextChanged(txtMetaspace, true);
             txtMetaspace.setValidators(new NumberValidator(i18n("input.number"), true));
             pane.addRow(1, new Label(i18n("settings.advanced.java_permanent_generation_space")), txtMetaspace);
 
-            txtEnvironmentVariables = new JFXTextField();
+            txtEnvironmentVariables = new MFXTextField();
             txtEnvironmentVariables.getStyleClass().add("fit-width");
             pane.addRow(2, new Label(i18n("settings.advanced.environment_variables")), txtEnvironmentVariables);
 

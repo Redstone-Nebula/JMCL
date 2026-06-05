@@ -17,16 +17,20 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import com.jfoenix.controls.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.Open_code_Studio.jmcl.download.DownloadProvider;
@@ -111,7 +115,7 @@ public final class JavaDownloadDialog extends StackPane {
     }
 
     private final class DownloadMojangJava extends DialogPane {
-        private final List<JFXCheckBox> checkboxes = new ArrayList<>();
+        private final List<CheckBox> checkboxes = new ArrayList<>();
 
         DownloadMojangJava() {
             setTitle(i18n("java.download.title"));
@@ -122,7 +126,7 @@ public final class JavaDownloadDialog extends StackPane {
 
             setValid(false);
             InvalidationListener updateValidStatus = e -> {
-                for (JFXCheckBox box : checkboxes) {
+                for (CheckBox box : checkboxes) {
                     if (!box.isDisabled() && box.isSelected()) {
                         setValid(true);
                         return;
@@ -132,7 +136,7 @@ public final class JavaDownloadDialog extends StackPane {
             };
 
             for (GameJavaVersion version : supportedGameJavaVersions) {
-                JFXCheckBox button = new JFXCheckBox("Java " + version.majorVersion());
+                CheckBox button = new CheckBox("Java " + version.majorVersion());
                 button.setUserData(version);
 
                 if (JavaManager.REPOSITORY.isInstalled(platform, version)) {
@@ -161,7 +165,7 @@ public final class JavaDownloadDialog extends StackPane {
             fireEvent(new DialogCloseEvent());
 
             List<GameJavaVersion> selectedVersions = new ArrayList<>();
-            for (JFXCheckBox box : checkboxes) {
+            for (CheckBox box : checkboxes) {
                 if (!box.isDisabled() && box.isSelected()) {
                     selectedVersions.add((GameJavaVersion) box.getUserData());
                 }
@@ -205,13 +209,13 @@ public final class JavaDownloadDialog extends StackPane {
         }
     }
 
-    private final class DownloadDiscoJava extends JFXDialogLayout {
-        private final JFXComboBox<DiscoJavaDistribution> distributionBox;
-        private final JFXComboBox<DiscoJavaRemoteVersion> remoteVersionBox;
-        private final JFXComboBox<JavaPackageType> packageTypeBox;
+    private final class DownloadDiscoJava extends VBox {
+        private final ComboBox<DiscoJavaDistribution> distributionBox;
+        private final ComboBox<DiscoJavaRemoteVersion> remoteVersionBox;
+        private final ComboBox<JavaPackageType> packageTypeBox;
         private final Label warningLabel = new Label();
 
-        private final JFXButton downloadButton;
+        private final MFXButton downloadButton;
         private final StackPane downloadButtonPane = new StackPane();
 
         private final DownloadProvider downloadProvider = DownloadProviders.getDownloadProvider();
@@ -222,20 +226,20 @@ public final class JavaDownloadDialog extends StackPane {
         DownloadDiscoJava() {
             assert !distributions.isEmpty();
 
-            this.distributionBox = new JFXComboBox<>();
+            this.distributionBox = new ComboBox<>();
             this.distributionBox.setConverter(FXUtils.stringConverter(JavaDistribution::getDisplayName));
 
-            this.remoteVersionBox = new JFXComboBox<>();
+            this.remoteVersionBox = new ComboBox<>();
             this.remoteVersionBox.setConverter(FXUtils.stringConverter(JavaRemoteVersion::getDistributionVersion));
 
-            this.packageTypeBox = new JFXComboBox<>(FXCollections.observableArrayList());
+            this.packageTypeBox = new ComboBox<>(FXCollections.observableArrayList());
 
-            this.downloadButton = new JFXButton(i18n("download"));
+            this.downloadButton = new MFXButton(i18n("download"));
             downloadButton.setOnAction(e -> onDownload());
             downloadButton.getStyleClass().add("dialog-accept");
             downloadButton.disableProperty().bind(Bindings.isNull(remoteVersionBox.getSelectionModel().selectedItemProperty()));
 
-            JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
+            MFXButton cancelButton = new MFXButton(i18n("button.cancel"));
             cancelButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
             cancelButton.getStyleClass().add("dialog-cancel");
             onEscPressed(this, cancelButton::fire);
@@ -348,13 +352,15 @@ public final class JavaDownloadDialog extends StackPane {
             FXUtils.onChange(distributionBox.getSelectionModel().selectedItemProperty(),
                     it -> currentJavaVersionList.set(getJavaVersionList(it)));
 
-            setHeading(new Label(i18n("java.download.title")));
-            setBody(body);
-            setActions(warningLabel, downloadButtonPane, cancelButton);
+            Label heading = new Label(i18n("java.download.title"));
+            heading.getStyleClass().add("dialog-heading");
+            HBox actionsBox = new HBox(8, warningLabel, downloadButtonPane, cancelButton);
+            actionsBox.setAlignment(Pos.CENTER_RIGHT);
+            getChildren().setAll(heading, body, actionsBox);
             if (platform.getOperatingSystem() == OperatingSystem.LINUX && platform.getArchitecture() == Architecture.RISCV64) {
                 JFXHyperlink hyperlink = new JFXHyperlink(i18n("java.download.banshanjdk-8"));
                 hyperlink.setExternalLink("https://www.zthread.cn/#product");
-                getActions().add(0, hyperlink);
+                actionsBox.getChildren().add(0, hyperlink);
             }
         }
 

@@ -17,10 +17,12 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXRadioButton;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -29,12 +31,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.stage.Popup;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.ui.SVG;
 import org.Open_code_Studio.jmcl.ui.construct.*;
 import org.Open_code_Studio.jmcl.util.StringUtils;
 
-import static org.Open_code_Studio.jmcl.ui.FXUtils.determineOptimalPopupPosition;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
 public final class GameListCell extends ListCell<GameListItem> {
@@ -44,10 +46,10 @@ public final class GameListCell extends ListCell<GameListItem> {
     private final ImageContainer imageView;
     private final TwoLineListItem content;
 
-    private final JFXRadioButton chkSelected;
-    private final JFXButton btnUpgrade;
-    private final JFXButton btnLaunch;
-    private final JFXButton btnManage;
+    private final MFXRadioButton chkSelected;
+    private final MFXButton btnUpgrade;
+    private final MFXButton btnLaunch;
+    private final MFXButton btnManage;
 
     private final HBox right;
 
@@ -62,7 +64,7 @@ public final class GameListCell extends ListCell<GameListItem> {
         this.graphic = container;
 
         {
-            this.chkSelected = new JFXRadioButton() {
+            this.chkSelected = new MFXRadioButton() {
                 @Override
                 public void fire() {
                     if (!isDisable() && !isSelected()) {
@@ -131,9 +133,9 @@ public final class GameListCell extends ListCell<GameListItem> {
                 if (item == null)
                     return;
 
-                JFXPopup popup = getPopup(item);
-                JFXPopup.PopupVPosition vPosition = determineOptimalPopupPosition(root, popup);
-                popup.show(root, vPosition, JFXPopup.PopupHPosition.RIGHT, 0, vPosition == JFXPopup.PopupVPosition.TOP ? root.getHeight() : -root.getHeight());
+                Popup popup = getPopup(item);
+                Bounds bounds = root.localToScreen(root.getBoundsInLocal());
+                popup.show(root, bounds.getMaxX(), bounds.getMinY());
             });
             BorderPane.setAlignment(btnManage, Pos.CENTER);
             FXUtils.installFastTooltip(btnManage, i18n("settings.game.management"));
@@ -151,9 +153,9 @@ public final class GameListCell extends ListCell<GameListItem> {
                     item.modifyGameSettings();
                 }
             } else if (e.getButton() == MouseButton.SECONDARY) {
-                JFXPopup popup = getPopup(item);
-                JFXPopup.PopupVPosition vPosition = determineOptimalPopupPosition(root, popup);
-                popup.show(root, vPosition, JFXPopup.PopupHPosition.LEFT, e.getX(), vPosition == JFXPopup.PopupVPosition.TOP ? e.getY() : e.getY() - root.getHeight());
+                Popup popup = getPopup(item);
+                Bounds bounds = root.localToScreen(root.getBoundsInLocal());
+                popup.show(root, bounds.getMinX() + e.getX(), bounds.getMinY() + e.getY());
             }
         });
     }
@@ -185,9 +187,11 @@ public final class GameListCell extends ListCell<GameListItem> {
         }
     }
 
-    private static JFXPopup getPopup(GameListItem item) {
+    private static Popup getPopup(GameListItem item) {
         PopupMenu menu = new PopupMenu();
-        JFXPopup popup = new JFXPopup(menu);
+        Popup popup = new Popup();
+        popup.getContent().add(menu);
+        popup.setAutoHide(true);
 
         menu.getContent().setAll(
                 new IconedMenuItem(SVG.ROCKET_LAUNCH, i18n("version.launch.test"), item::testGame, popup),

@@ -17,13 +17,17 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import com.jfoenix.controls.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import org.Open_code_Studio.jmcl.setting.DownloadProviders;
@@ -130,13 +134,13 @@ public class DownloadSettingsPage extends StackPane {
                                             .orElse(i18n("launcher.cache_directory.disabled")),
                                     config().commonDirectoryProperty(), config().commonDirTypeProperty()));
 
-                    JFXButton cleanButton = FXUtils.newBorderButton(i18n("launcher.cache_directory.clean"));
+                    MFXButton cleanButton = FXUtils.newBorderButton(i18n("launcher.cache_directory.clean"));
                     cleanButton.setOnAction(e -> clearCacheDirectory());
                     fileCommonLocationSublist.setHeaderRight(cleanButton);
                 }
 
                 {
-                    JFXCheckBox chkAutoDownloadThreads = new JFXCheckBox(i18n("settings.launcher.download.threads.auto"));
+                    CheckBox chkAutoDownloadThreads = new CheckBox(i18n("settings.launcher.download.threads.auto"));
                     VBox.setMargin(chkAutoDownloadThreads, new Insets(8, 0, 0, 0));
                     chkAutoDownloadThreads.selectedProperty().bindBidirectional(config().autoDownloadThreadsProperty());
                     downloadThreads.getChildren().add(chkAutoDownloadThreads);
@@ -156,10 +160,10 @@ public class DownloadSettingsPage extends StackPane {
                     hbox.disableProperty().bind(config().autoDownloadThreadsProperty());
                     Label label = new Label(i18n("settings.launcher.download.threads"));
 
-                    JFXSlider slider = new JFXSlider(1, 256, 64);
+                    Slider slider = new Slider(1, 256, 64);
                     HBox.setHgrow(slider, Priority.ALWAYS);
 
-                    JFXTextField threadsField = new JFXTextField();
+                    MFXTextField threadsField = new MFXTextField();
                     FXUtils.setLimitWidth(threadsField, 60);
                     FXUtils.bindInt(threadsField, config().downloadThreadsProperty());
 
@@ -201,20 +205,20 @@ public class DownloadSettingsPage extends StackPane {
 
                 ToggleGroup proxyConfigurationGroup = new ToggleGroup();
 
-                JFXRadioButton chkProxyDefault = new JFXRadioButton(i18n("settings.launcher.proxy.default"));
+                RadioButton chkProxyDefault = new RadioButton(i18n("settings.launcher.proxy.default"));
                 chkProxyDefault.setUserData(null);
                 chkProxyDefault.setToggleGroup(proxyConfigurationGroup);
 
-                JFXRadioButton chkProxyNone = new JFXRadioButton(i18n("settings.launcher.proxy.none"));
+                RadioButton chkProxyNone = new RadioButton(i18n("settings.launcher.proxy.none"));
                 chkProxyNone.setUserData(Proxy.Type.DIRECT);
                 chkProxyNone.setToggleGroup(proxyConfigurationGroup);
 
-                JFXRadioButton chkProxyHttp = new JFXRadioButton(i18n("settings.launcher.proxy.http"));
+                RadioButton chkProxyHttp = new RadioButton(i18n("settings.launcher.proxy.http"));
                 chkProxyHttp.setUserData(Proxy.Type.HTTP);
                 chkProxyHttp.setToggleGroup(proxyConfigurationGroup);
 
 
-                JFXRadioButton chkProxySocks = new JFXRadioButton(i18n("settings.launcher.proxy.socks"));
+                RadioButton chkProxySocks = new RadioButton(i18n("settings.launcher.proxy.socks"));
                 chkProxySocks.setUserData(Proxy.Type.SOCKS);
                 chkProxySocks.setToggleGroup(proxyConfigurationGroup);
 
@@ -276,7 +280,7 @@ public class DownloadSettingsPage extends StackPane {
                     }
 
                     {
-                        JFXTextField txtProxyHost = new JFXTextField();
+                        MFXTextField txtProxyHost = new MFXTextField();
                         GridPane.setRowIndex(txtProxyHost, 1);
                         GridPane.setColumnIndex(txtProxyHost, 1);
                         gridPane.getChildren().add(txtProxyHost);
@@ -291,7 +295,7 @@ public class DownloadSettingsPage extends StackPane {
                     }
 
                     {
-                        JFXTextField txtProxyPort = new JFXTextField();
+                        MFXTextField txtProxyPort = new MFXTextField();
                         GridPane.setFillWidth(txtProxyPort, false);
                         txtProxyPort.setMaxWidth(200);
                         GridPane.setRowIndex(txtProxyPort, 2);
@@ -311,7 +315,7 @@ public class DownloadSettingsPage extends StackPane {
                 {
                     chkProxyAuthenticationPane.setPadding(new Insets(20, 0, 20, 5));
 
-                    JFXCheckBox chkProxyAuthentication = new JFXCheckBox(i18n("settings.launcher.proxy.authentication"));
+                    CheckBox chkProxyAuthentication = new CheckBox(i18n("settings.launcher.proxy.authentication"));
                     chkProxyAuthenticationPane.getChildren().add(chkProxyAuthentication);
                     chkProxyAuthentication.selectedProperty().bindBidirectional(config().hasProxyAuthProperty());
 
@@ -335,7 +339,7 @@ public class DownloadSettingsPage extends StackPane {
                     }
 
                     {
-                        JFXTextField txtProxyUsername = new JFXTextField();
+                        MFXTextField txtProxyUsername = new MFXTextField();
                         GridPane.setRowIndex(txtProxyUsername, 0);
                         GridPane.setColumnIndex(txtProxyUsername, 1);
                         authPane.getChildren().add(txtProxyUsername);
@@ -350,7 +354,7 @@ public class DownloadSettingsPage extends StackPane {
                     }
 
                     {
-                        JFXPasswordField txtProxyPassword = new JFXPasswordField();
+                        PasswordField txtProxyPassword = new PasswordField();
                         GridPane.setRowIndex(txtProxyPassword, 1);
                         GridPane.setColumnIndex(txtProxyPassword, 1);
                         authPane.getChildren().add(txtProxyPassword);

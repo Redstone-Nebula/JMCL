@@ -17,13 +17,13 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXPopup;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -35,6 +35,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import org.Open_code_Studio.jmcl.game.World;
 import org.Open_code_Studio.jmcl.setting.Profile;
 import org.Open_code_Studio.jmcl.task.Schedulers;
@@ -220,7 +221,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
 
         @Override
         protected List<Node> initializeToolbar(WorldListPage skinnable) {
-            JFXCheckBox chkShowAll = new JFXCheckBox(i18n("world.show_all"));
+            MFXCheckbox chkShowAll = new MFXCheckbox(i18n("world.show_all"));
             chkShowAll.selectedProperty().bindBidirectional(skinnable.showAllProperty());
 
             return Arrays.asList(
@@ -232,7 +233,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
         }
 
         @Override
-        protected ListCell<World> createListCell(JFXListView<World> listView) {
+        protected ListCell<World> createListCell(MFXListView<World> listView) {
             return new WorldListCell(getSkinnable());
         }
     }
@@ -245,7 +246,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
         private final ImageContainer imageView;
         private final Tooltip leftTooltip;
         private final TwoLineListItem content;
-        private final JFXButton btnLaunch;
+        private final MFXButton btnLaunch;
 
         public WorldListCell(WorldListPage page) {
             this.page = page;
@@ -287,12 +288,14 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
                         page.launch(world);
                 });
 
-                JFXButton btnMore = FXUtils.newToggleButton4(SVG.MORE_VERT);
+                MFXButton btnMore = FXUtils.newToggleButton4(SVG.MORE_VERT);
                 right.getChildren().add(btnMore);
                 btnMore.setOnAction(event -> {
                     World world = getItem();
-                    if (world != null)
-                        showPopupMenu(world, page.supportQuickPlayProperty().get(), JFXPopup.PopupHPosition.RIGHT, 0, root.getHeight());
+                    if (world != null) {
+                        Bounds bounds = root.localToScreen(root.getBoundsInLocal());
+                        showPopupMenu(world, page.supportQuickPlayProperty().get(), bounds.getMaxX(), bounds.getMinY());
+                    }
                 });
             }
 
@@ -307,8 +310,10 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
 
                 if (event.getButton() == MouseButton.PRIMARY)
                     page.showManagePage(world);
-                else if (event.getButton() == MouseButton.SECONDARY)
-                    showPopupMenu(world, page.supportQuickPlayProperty().get(), JFXPopup.PopupHPosition.LEFT, event.getX(), event.getY());
+                else if (event.getButton() == MouseButton.SECONDARY) {
+                    Bounds bounds = root.localToScreen(root.getBoundsInLocal());
+                    showPopupMenu(world, page.supportQuickPlayProperty().get(), bounds.getMinX() + event.getX(), bounds.getMinY() + event.getY());
+                }
             });
         }
 
@@ -346,11 +351,13 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
 
         // Popup Menu
 
-        public void showPopupMenu(World world, boolean supportQuickPlay, JFXPopup.PopupHPosition hPosition, double initOffsetX, double initOffsetY) {
+        public void showPopupMenu(World world, boolean supportQuickPlay, double anchorX, double anchorY) {
             boolean worldLocked = world.isLocked();
 
             PopupMenu popupMenu = new PopupMenu();
-            JFXPopup popup = new JFXPopup(popupMenu);
+            Popup popup = new Popup();
+            popup.getContent().add(popupMenu);
+            popup.setAutoHide(true);
 
             if (supportQuickPlay) {
 
@@ -400,8 +407,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
                     new IconedMenuItem(SVG.FOLDER_OPEN, i18n("folder.world"), () -> page.reveal(world), popup)
             );
 
-            JFXPopup.PopupVPosition vPosition = determineOptimalPopupPosition(this, popup);
-            popup.show(this, vPosition, hPosition, initOffsetX, vPosition == JFXPopup.PopupVPosition.TOP ? initOffsetY : -initOffsetY);
+            popup.show(this, anchorX, anchorY);
         }
     }
 }

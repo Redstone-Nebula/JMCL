@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXToggleButton;
+import io.github.palexdev.materialfx.controls.MFXToggleButton;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
@@ -25,14 +25,13 @@ import org.Open_code_Studio.jmcl.ui.FXUtils;
 public final class LineToggleButton extends LineButtonBase {
     private static final String DEFAULT_STYLE_CLASS = "line-toggle-button";
 
-    private final JFXToggleButton toggleButton;
+    private final MFXToggleButton toggleButton;
 
     public LineToggleButton() {
         this.getStyleClass().add(DEFAULT_STYLE_CLASS);
 
-        this.toggleButton = new JFXToggleButton();
+        this.toggleButton = new MFXToggleButton();
         toggleButton.selectedProperty().bindBidirectional(selectedProperty());
-        toggleButton.setSize(8);
         FXUtils.setLimitHeight(toggleButton, 30);
         setNode(IDX_TRAILING, toggleButton);
     }

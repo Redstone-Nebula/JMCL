@@ -113,7 +113,7 @@
     -fx-text-fill: -fx-hyperlink-fill;
 }
 
-.skin-pane .jfx-text-field {
+.skin-pane .mfx-text-field {
     -fx-pref-width: 200;
 }
 
@@ -190,11 +190,11 @@
  * MD3 Ripple — circular, contained
  * ============================================================================= */
 .rippler-container {
-    -jfx-rippler-fill: -monet-on-surface-variant;
+    
 }
 
 .advanced-list-item .rippler-container {
-    -jfx-rippler-fill: -monet-on-secondary-container;
+    
 }
 
 /* =============================================================================
@@ -315,7 +315,7 @@
 }
 
 .iconed-item {
-    -jfx-rippler-fill: -monet-secondary-container;
+    
 }
 
 .iconed-item .iconed-item-container {
@@ -326,7 +326,7 @@
 }
 
 .iconed-menu-item {
-    -jfx-rippler-fill: -monet-secondary-container;
+    
 }
 
 .iconed-menu-item .iconed-item-container {
@@ -498,7 +498,7 @@
     -fx-min-width: 280px;
 }
 
-.launch-pane > .jfx-button {
+.launch-pane > .mfx-button {
     -fx-translate-y: 1px;
     -fx-max-height: 70px;
     -fx-min-height: 70px;
@@ -508,7 +508,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 8, 0.0, 0, 2);
 }
 
-.launch-pane > .jfx-button.launch-button {
+.launch-pane > .mfx-button.launch-button {
     -fx-max-width: 250px;
     -fx-min-width: 250px;
     -fx-border-width: 0 3px 0 0;
@@ -516,20 +516,20 @@
     -fx-background-radius: 32px 0 0 32px;
 }
 
-.launch-pane > .jfx-button.menu-button {
+.launch-pane > .mfx-button.menu-button {
     -fx-max-width: 24px;
     -fx-min-width: 24px;
     -fx-font-size: 15px;
     -fx-background-radius: 0 28px 28px 0;
 }
 
-.launch-pane > .jfx-button > StackPane > .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-primary-container;
-    -jfx-mask-type: CIRCLE;
+.launch-pane > .mfx-button > StackPane > .mfx-ripple-generator {
+    
+    
     -fx-padding: 0;
 }
 
-.launch-pane > .jfx-button, .jfx-button * {
+.launch-pane > .mfx-button, .mfx-button * {
     -fx-text-fill: -monet-on-primary-container;
     -fx-font-size: 16px;
     -fx-font-weight: 600;
@@ -552,11 +552,11 @@
 }
 
 .tab-rippler {
-    -jfx-rippler-fill: -monet-primary-container;
+    
 }
 
-.jfx-tab-pane .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-surface-variant-transparent-20;
+.mfx-tab-pane .mfx-ripple-generator {
+    
 }
 
 .tab-label {
@@ -577,40 +577,7 @@
  * ============================================================================= */
 .dialog-trigger {
     -fx-background-color: WHITE;
-    -jfx-button-type: RAISED;
     -fx-font-size: 14.0px;
-}
-
-.jfx-dialog-layout {
-    -fx-background-radius: 28px;
-    -fx-padding: 24px;
-    -fx-background-color: -monet-surface-container-high;
-    -fx-text-fill: -monet-on-surface;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 20, 0.0, 0, 3);
-}
-
-.jfx-layout-heading {
-    -fx-font-weight: 400;
-    -fx-font-size: 22px;
-    -fx-alignment: center-left;
-    -fx-padding: 0 0 16px 0;
-}
-
-.jfx-layout-body {
-    -fx-pref-width: 400px;
-    -fx-wrap-text: true;
-    -fx-font-size: 14px;
-}
-
-.jfx-layout-body Text {
-    -fx-fill: -monet-on-surface;
-}
-
-.jfx-layout-actions {
-    -fx-pref-width: 400;
-    -fx-padding: 24px 0 0 0;
-    -fx-alignment: center-right;
-    -fx-spacing: 8px;
 }
 
 /* MD3 dialog buttons — text style */
@@ -676,15 +643,6 @@
 /* =============================================================================
  * MD3 Popup
  * ============================================================================= */
-.jfx-popup-overlay-pane {
-    -fx-background-color: transparent;
-}
-
-.jfx-popup-container {
-    -fx-background-color: -monet-surface;
-    -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 12, 0.0, 0, 3);
-}
 
 .popup-list-view {
     -fx-pref-width: 150.0px;
@@ -693,19 +651,19 @@
 /* =============================================================================
  * MD3 Snackbar
  * ============================================================================= */
-.jfx-snackbar-content {
+.mfx-snackbar-content {
     -fx-background-color: -monet-inverse-surface;
     -fx-background-radius: 8;
     -fx-padding: 8 16 8 16;
     -fx-spacing: 8;
 }
 
-.jfx-snackbar-toast {
+.mfx-snackbar-toast {
     -fx-text-fill: -monet-inverse-on-surface;
     -fx-font-size: 13px;
 }
 
-.jfx-snackbar-action {
+.mfx-snackbar-action {
     -fx-text-fill: -monet-inverse-primary;
     -fx-font-weight: 600;
 }
@@ -722,7 +680,7 @@
 /* =============================================================================
  * MD3 Toolbar — Top App Bar
  * ============================================================================= */
-.jfx-tool-bar {
+.mfx-tool-bar {
     -fx-font-size: 14px;
     -fx-pref-width: 100%;
     -fx-min-height: 56px;
@@ -730,16 +688,16 @@
     -fx-pref-height: 56px;
 }
 
-.jfx-tool-bar .jfx-decorator-title {
+.mfx-tool-bar .mfx-decorator-title {
     -fx-font-weight: 400;
     -fx-font-size: 18px;
 }
 
-.jfx-tool-bar.background {
+.mfx-tool-bar.background {
     -fx-background-color: -monet-primary-container;
 }
 
-.jfx-tool-bar .jfx-decorator-button {
+.mfx-tool-bar .mfx-decorator-button {
     -fx-min-width: 48px;
     -fx-max-width: 48px;
     -fx-pref-width: 48px;
@@ -749,31 +707,31 @@
     -fx-cursor: hand;
 }
 
-.jfx-tool-bar .jfx-decorator-button .svg {
+.mfx-tool-bar .mfx-decorator-button .svg {
     -fx-fill: -monet-on-primary-container;
 }
 
-.jfx-tool-bar Label {
+.mfx-tool-bar Label {
     -fx-text-fill: -monet-on-surface;
 }
 
-.jfx-tool-bar.gray-background Label {
+.mfx-tool-bar.gray-background Label {
     -fx-text-fill: BLACK;
 }
 
-.jfx-tool-bar .jfx-options-burger {
+.mfx-tool-bar .mfx-options-burger {
     -fx-padding: 22px;
 }
 
-.jfx-tool-bar .jfx-options-burger StackPane {
+.mfx-tool-bar .mfx-options-burger StackPane {
     -fx-pref-width: 4px;
 }
 
-.jfx-tool-bar .jfx-rippler {
+.mfx-tool-bar .mfx-ripple-generator {
     -fx-text-fill: -monet-on-surface;
 }
 
-.jfx-tool-bar-second {
+.mfx-tool-bar-second {
     -fx-pref-height: 48;
     -fx-padding: 4 8 4 8;
     -fx-background-color: -monet-primary-container;
@@ -781,17 +739,17 @@
     -fx-spacing: 12;
 }
 
-.jfx-tool-bar-second .label {
+.mfx-tool-bar-second .label {
     -fx-text-fill: -monet-on-primary-container;
     -fx-font-size: 16;
     -fx-font-weight: 700;
 }
 
-.jfx-tool-bar-second .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-surface;
+.mfx-tool-bar-second .mfx-ripple-generator {
+    
 }
 
-.jfx-tool-bar-button {
+.mfx-tool-bar-button {
     -fx-text-fill: -monet-on-surface;
     -fx-toggle-icon4-size: 37px;
     -fx-pref-height: -fx-toggle-icon4-size;
@@ -799,38 +757,38 @@
     -fx-min-height: -fx-toggle-icon4-size;
     -fx-background-radius: 10px;
     -fx-background-color: transparent;
-    -jfx-toggle-color: -monet-on-surface;
-    -jfx-untoggle-color: transparent;
+    
+    
 }
 
-.jfx-tool-bar-button .icon {
+.mfx-tool-bar-button .icon {
     -fx-fill: rgb(204.0, 204.0, 51.0);
     -fx-padding: 10.0;
 }
 
-.jfx-decorator-button {
+.mfx-decorator-button {
     -fx-max-width: 48px;
     -fx-background-radius: 10px;
     -fx-max-height: 48px;
     -fx-background-color: transparent;
 }
 
-.jfx-decorator-button .icon {
+.mfx-decorator-button .icon {
     -fx-fill: rgb(204.0, 204.0, 51.0);
     -fx-padding: 0.0;
 }
 
-.jfx-decorator-button .jfx-rippler {
-    -jfx-mask-type: CIRCLE;
+.mfx-decorator-button .mfx-ripple-generator {
+    
     -fx-padding: 0.0;
 }
 
 /* =============================================================================
  * MD3 Radio Button
  * ============================================================================= */
-.jfx-radio-button {
-    -jfx-selected-color: -monet-primary;
-    -jfx-unselected-color: -monet-on-surface-variant;
+.mfx-radio-button {
+    
+    
     -fx-text-fill: -monet-on-surface;
     -fx-font-size: 14px;
 }
@@ -838,8 +796,8 @@
 /* =============================================================================
  * MD3 Slider
  * ============================================================================= */
-.jfx-slider .track,
-.jfx-slider:vertical .track {
+.mfx-slider .track,
+.mfx-slider:vertical .track {
     -fx-background-color: -monet-secondary-container;
     -fx-background-radius: 5;
     -fx-background-insets: 0;
@@ -847,25 +805,25 @@
     -fx-pref-height: 2px;
 }
 
-.jfx-slider .thumb,
-.jfx-slider:focused .thumb {
+.mfx-slider .thumb,
+.mfx-slider:focused .thumb {
     -fx-background-color: -monet-primary;
     -fx-background-radius: 20;
     -fx-background-insets: 0;
 }
 
-.jfx-slider .colored-track {
+.mfx-slider .colored-track {
     -fx-background-color: -monet-primary;
     -fx-background-radius: 5 0 0 5;
     -fx-background-insets: 0;
 }
 
-.jfx-slider .slider-value {
+.mfx-slider .slider-value {
     -fx-stroke: -monet-inverse-on-surface;
     -fx-font-size: 10;
 }
 
-.jfx-slider .animated-thumb {
+.mfx-slider .animated-thumb {
     -fx-pref-width: 30px;
     -fx-pref-height: 30px;
     -fx-background-color: -monet-inverse-surface;
@@ -876,46 +834,46 @@
 /* =============================================================================
  * MD3 Ripple Effect
  * ============================================================================= */
-.jfx-rippler:hover {
+.mfx-ripple-generator:hover {
     -fx-cursor: hand;
 }
 
 /* =============================================================================
  * MD3 Buttons — pill-shaped, elevated/layered
  * ============================================================================= */
-.jfx-button {
-    -jfx-disable-visual-focus: true;
+.mfx-button {
+    
     -fx-cursor: hand;
 }
 
-.jfx-button .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-surface;
-    -jfx-mask-type: CIRCLE;
+.mfx-button .mfx-ripple-generator {
+    
+    
     -fx-padding: 0.0;
 }
 
 /* MD3 Filled / Elevated Button */
-.jfx-button-raised {
+.mfx-button-raised {
     -fx-background-color: -monet-primary;
     -fx-background-radius: 100px;
     -fx-padding: 10 24 10 24;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0.0, 0, 2);
 }
 
-.jfx-button-raised .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-primary;
-    -jfx-mask-type: CIRCLE;
+.mfx-button-raised .mfx-ripple-generator {
+    
+    
     -fx-padding: 0.0;
 }
 
-.jfx-button-raised, .jfx-button-raised * {
+.mfx-button-raised, .mfx-button-raised * {
     -fx-text-fill: -monet-on-primary;
     -fx-font-size: 14px;
     -fx-font-weight: 500;
 }
 
 /* MD3 Outlined Button */
-.jfx-button-border {
+.mfx-button-border {
     -fx-background-color: transparent;
     -fx-border-color: -monet-outline;
     -fx-border-radius: 100px;
@@ -923,19 +881,19 @@
     -fx-padding: 10 24 10 24;
 }
 
-.jfx-button-border, .jfx-button-border * {
+.mfx-button-border, .mfx-button-border * {
     -fx-text-fill: -monet-primary;
     -fx-font-weight: 500;
 }
 
 /* MD3 Filled Tonal Button (rounded container) */
-.jfx-button-raised-round {
+.mfx-button-raised-round {
     -fx-background-color: -monet-primary-container;
     -fx-background-radius: 100px;
     -fx-padding: 10 24 10 24;
 }
 
-.jfx-button-raised-round, .jfx-button-raised-round * {
+.mfx-button-raised-round, .mfx-button-raised-round * {
     -fx-font-weight: 500;
 }
 
@@ -946,27 +904,27 @@
 /* =============================================================================
  * MD3 Checkbox
  * ============================================================================= */
-.jfx-check-box {
+.mfx-checkbox {
     -fx-font-weight: 500;
     -fx-text-fill: -monet-on-surface;
     -fx-font-size: 14px;
-    -jfx-checked-color: -monet-primary;
-    -jfx-unchecked-color: transparent;
+    
+    
 }
 
-.table-view .jfx-check-box .jfx-rippler {
-    -jfx-rippler-disabled: true;
+.table-view .mfx-checkbox .mfx-ripple-generator {
+    
 }
 
 /* =============================================================================
  * MD3 Progress Bar
  * ============================================================================= */
-.jfx-progress-bar > .track {
+.mfx-progress-bar > .track {
     -fx-background-color: -monet-secondary-container;
     -fx-background-radius: 4px;
 }
 
-.jfx-progress-bar > .bar {
+.mfx-progress-bar > .bar {
     -fx-background-color: -monet-primary;
     -fx-background-radius: 4px;
     -fx-padding: 3px;
@@ -975,7 +933,7 @@
 /* =============================================================================
  * MD3 Text Field — Outlined style
  * ============================================================================= */
-.jfx-text-field, .jfx-password-field, .jfx-text-area {
+.mfx-text-field, .mfx-password-field, .mfx-text-area {
     -fx-background-color: -monet-surface-container-highest;
     -fx-highlight-fill: -monet-primary;
     -fx-text-fill: -monet-on-surface;
@@ -984,18 +942,18 @@
     -fx-prompt-text-fill: -monet-on-surface-variant;
     -fx-alignment: top-left;
     -fx-max-width: 1000000000;
-    -jfx-focus-color: -monet-primary;
+    
     -fx-padding: 12;
-    -jfx-unfocus-color: transparent;
+    
     -fx-background-radius: 8;
 }
 
-.jfx-text-field .context-menu {
+.mfx-text-field .context-menu {
     -fx-background-color: -monet-surface-container;
     -fx-text-fill: -monet-on-surface;
 }
 
-.jfx-text-field .context-menu .menu-item:focused {
+.mfx-text-field .context-menu .menu-item:focused {
     -fx-background-color: -monet-secondary-container;
     -fx-text-fill: -monet-on-secondary-container;
 }
@@ -1007,42 +965,42 @@
     -fx-padding: 0;
 }
 
-.jfx-list-cell, .list-cell {
+.mfx-list-cell, .list-cell {
     -fx-background-color: transparent;
 }
 
-.list-cell:selected, .jfx-list-cell:selected,
-.list-cell:hover, .jfx-list-cell:hover {
+.list-cell:selected, .mfx-list-cell:selected,
+.list-cell:hover, .mfx-list-cell:hover {
     -fx-text-fill: black;
 }
 
-.jfx-list-cell .jfx-rippler {
-    -jfx-rippler-fill: -monet-primary-container;
+.mfx-list-cell .mfx-ripple-generator {
+    
 }
 
-.jfx-list-view {
+.mfx-list-view {
     -fx-background-insets: 0.0;
-    -jfx-cell-horizontal-margin: 0.0;
-    -jfx-cell-vertical-margin: 5.0;
-    -jfx-vertical-gap: 10.0;
-    -jfx-expanded: false;
+    
+    
+    
+    
     -fx-background-color: transparent;
 }
 
-.jfx-list-view .scroll-bar {
+.mfx-list-view .scroll-bar {
     -fx-skin: "org.Open_code_Studio.jmcl.ui.construct.FloatScrollBarSkin";
 }
 
-.jfx-list-view .scroll-bar .track {
+.mfx-list-view .scroll-bar .track {
     -fx-fill: transparent;
 }
 
-.jfx-list-view-float {
+.mfx-list-view-float {
     -fx-background-insets: 0.0;
-    -jfx-cell-horizontal-margin: 0.0;
-    -jfx-cell-vertical-margin: 5.0;
-    -jfx-vertical-gap: 10.0;
-    -jfx-expanded: false;
+    
+    
+    
+    
     -fx-background-color: transparent;
 }
 
@@ -1208,46 +1166,42 @@
 /* =============================================================================
  * MD3 Toggle Button (Switch)
  * ============================================================================= */
-.jfx-toggle-button,
-.jfx-toggle-button:armed,
-.jfx-toggle-button:hover,
-.jfx-toggle-button:focused,
-.jfx-toggle-button:selected,
-.jfx-toggle-button:focused:selected {
+.mfx-toggle-button,
+.mfx-toggle-button:armed,
+.mfx-toggle-button:hover,
+.mfx-toggle-button:focused,
+.mfx-toggle-button:selected,
+.mfx-toggle-button:focused:selected {
     -fx-background-color: TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT;
     -fx-background-radius: 3px;
     -fx-background-insets: 0px;
 
-    -jfx-toggle-color: -monet-primary;
-    -jfx-toggle-line-color: -monet-secondary-container;
-    -jfx-untoggle-color: -monet-outline;
-    -jfx-untoggle-line-color: -monet-surface-container-highest;
-    -jfx-size: 10;
+    
 }
 
 
-.jfx-toggle-button Line {
-    -fx-stroke: -jfx-untoggle-line-color;
+.mfx-toggle-button Line {
+    -fx-stroke: -monet-surface-container-highest;
 }
 
-.jfx-toggle-button:selected Line {
-    -fx-stroke: -jfx-toggle-line-color;
+.mfx-toggle-button:selected Line {
+    -fx-stroke: -monet-secondary-container;
 }
 
-.jfx-toggle-button Circle {
-    -fx-fill: -jfx-untoggle-color;
+.mfx-toggle-button Circle {
+    -fx-fill: -monet-outline;
 }
 
-.jfx-toggle-button:selected Circle {
-    -fx-fill: -jfx-toggle-color;
+.mfx-toggle-button:selected Circle {
+    -fx-fill: -monet-primary;
 }
 
-.jfx-toggle-button .jfx-rippler {
-    -jfx-rippler-fill: -jfx-untoggle-line-color;
+.mfx-toggle-button .mfx-ripple-generator {
+    
 }
 
-.jfx-toggle-button:selected .jfx-rippler {
-    -jfx-rippler-fill: -jfx-toggle-line-color;
+.mfx-toggle-button:selected .mfx-ripple-generator {
+    
 }
 
 
@@ -1266,16 +1220,16 @@
     -fx-background-radius: 80px;
     -fx-pref-height: 80px;
     -fx-background-color: transparent;
-    -jfx-toggle-color: rgba(66.0, 133.0, 244.0, 0.29885056614875793);
-    -jfx-untoggle-color: transparent;
+    
+    
 }
 
-.toggle-icon1 .jfx-rippler {
-    -jfx-rippler-fill: rgba(66.0, 133.0, 244.0, 0.29885056614875793);
-    -jfx-mask-type: CIRCLE;
+.toggle-icon1 .mfx-ripple-generator {
+    
+    
 }
 
-.toggle-icon2, .toggle-icon3, .jfx-decorator-button {
+.toggle-icon2, .toggle-icon3, .mfx-decorator-button {
     -fx-pref-width: 48px;
     -fx-background-radius: 48px;
     -fx-pref-height: 48px;
@@ -1287,9 +1241,9 @@
     -fx-fill: RED;
 }
 
-.toggle-icon2 .jfx-rippler {
-    -jfx-rippler-fill: RED;
-    -jfx-mask-type: CIRCLE;
+.toggle-icon2 .mfx-ripple-generator {
+    
+    
 }
 
 /* unused */
@@ -1303,8 +1257,8 @@
     -fx-min-height: -fx-toggle-icon4-size;
     -fx-background-radius: 50px;
     -fx-background-color: transparent;
-    -jfx-toggle-color: white;
-    -jfx-untoggle-color: transparent;
+    
+    
 }
 
 .toggle-icon3 .icon {
@@ -1312,9 +1266,9 @@
     -fx-padding: 10.0;
 }
 
-.toggle-icon3 .jfx-rippler {
-    -jfx-rippler-fill: white;
-    -jfx-mask-type: CIRCLE;
+.toggle-icon3 .mfx-ripple-generator {
+    
+    
 }
 
 /* =============================================================================
@@ -1330,19 +1284,15 @@
     -fx-min-height: -fx-toggle-icon4-size;
     -fx-background-radius: 50px;
     -fx-background-color: transparent;
-    -jfx-toggle-color: -monet-primary;
-    -jfx-untoggle-color: transparent;
-}
+    
 
 .toggle-icon4 .icon {
     -fx-fill: rgb(204.0, 204.0, 51.0);
     -fx-padding: 10.0;
 }
 
-.toggle-icon4 .jfx-rippler {
-    -jfx-rippler-fill: -monet-primary;
-    -jfx-mask-type: CIRCLE;
-}
+.toggle-icon4 .mfx-ripple-generator {
+    
 
 .toggle-icon-tiny {
     -fx-toggle-icon-tiny-size: 15px;
@@ -1354,19 +1304,15 @@
     -fx-min-height: -fx-toggle-icon-tiny-size;
     -fx-background-radius: 25px;
     -fx-background-color: transparent;
-    -jfx-toggle-color: -monet-primary;
-    -jfx-untoggle-color: transparent;
-}
+    
 
 .toggle-icon-tiny .icon {
     -fx-fill: rgb(204.0, 204.0, 51.0);
     -fx-padding: 5.0;
 }
 
-.toggle-icon-tiny .jfx-rippler {
-    -jfx-rippler-fill: -monet-primary;
-    -jfx-mask-type: CIRCLE;
-}
+.toggle-icon-tiny .mfx-ripple-generator {
+    
 
 .announcement-close-button {
     -fx-announcement-close-button-size: 24px;
@@ -1380,10 +1326,8 @@
     -fx-background-color: transparent;
 }
 
-.announcement-close-button .jfx-rippler {
-    -jfx-rippler-fill: -monet-primary;
-    -jfx-mask-type: CIRCLE;
-}
+.announcement-close-button .mfx-ripple-generator {
+    
 
 .transparent {
     -fx-background-color: null;
@@ -1443,7 +1387,7 @@
     -fx-fill: -monet-surface-tint;
 }
 
-.log-window .jfx-button {
+.log-window .mfx-button {
     -fx-text-fill: -monet-on-surface;
 }
 
@@ -1499,20 +1443,20 @@
 /* =============================================================================
  * MD3 Spinner
  * ============================================================================= */
-.jfx-spinner .arc {
+.mfx-spinner .arc {
     -fx-stroke: -monet-primary;
 }
 
 .small-spinner {
-    -jfx-radius: 9;
+    
 }
 
 .small-spinner .arc {
     -fx-stroke-width: 3.0;
 }
 
-.small-spinner-pane .jfx-spinner {
-    -jfx-radius: 9;
+.small-spinner-pane .mfx-spinner {
+    
 }
 
 .spinner-pane .spinner-pane-content {
@@ -1523,25 +1467,25 @@
 /* =============================================================================
  * MD3 Combo Box
  * ============================================================================= */
-.jfx-combo-box {
-    -jfx-focus-color: transparent;
-    -jfx-unfocus-color: transparent;
+.mfx-combo-box {
+    
+    
     -fx-background-color: -monet-surface-container-highest;
     -fx-padding: 6;
     -fx-max-width: 1000000000;
     -fx-background-radius: 8;
 }
 
-.jfx-combo-box .arrow {
+.mfx-combo-box .arrow {
     -fx-background-color: -monet-on-surface-variant;
     -fx-shape: "M12 15 7 10H17L12 15Z";
 }
 
-.jfx-combo-box .text {
+.mfx-combo-box .text {
     -fx-fill: -monet-on-surface;
 }
 
-.jfx-combo-box .text-field {
+.mfx-combo-box .text-field {
     -fx-text-fill: -monet-on-surface;
 }
 
@@ -1550,40 +1494,39 @@
     -fx-background-radius: 12;
 }
 
-.combo-box-popup .list-view .jfx-list-cell {
+.combo-box-popup .list-view .mfx-list-cell {
     -fx-background-color: -monet-surface-container;
     -fx-text-fill: -monet-on-surface;
     -fx-cursor: hand;
     -fx-background-insets: 0.0;
 }
 
-.combo-box-popup .list-view .list-cell:odd:selected > .jfx-rippler > StackPane,
-.combo-box-popup .list-view .list-cell:even:selected > .jfx-rippler > StackPane {
+.combo-box-popup .list-view .list-cell:odd:selected > .mfx-ripple-generator > StackPane,
+.combo-box-popup .list-view .list-cell:even:selected > .mfx-ripple-generator > StackPane {
     -fx-background-color: -monet-secondary-container;
     -fx-text-fill: -monet-on-secondary-container;
     -fx-background-radius: 8;
 }
 
-.combo-box-popup .list-view .list-cell:hover > .jfx-rippler > StackPane {
+.combo-box-popup .list-view .list-cell:hover > .mfx-ripple-generator > StackPane {
     -fx-background-color: -monet-secondary-container-transparent-50;
 }
 
-.jfx-combo-box-warning {
-    -jfx-focus-color: #D34336;
-    -jfx-unfocus-color: #D34336;
+.mfx-combo-box-warning {
+    
 }
 
-.jfx-combo-box-warning .text {
+.mfx-combo-box-warning .text {
     -fx-fill: #D34336;
 }
 
 /* =============================================================================
  * MD3 Color Picker
  * ============================================================================= */
-.jfx-color-picker:armed,
-.jfx-color-picker:hover,
-.jfx-color-picker:focused,
-.jfx-color-picker {
+.mfx-color-picker:armed,
+.mfx-color-picker:hover,
+.mfx-color-picker:focused,
+.mfx-color-picker {
     -fx-background-color: TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT;
     -fx-background-radius: 8px;
     -fx-background-insets: 0px;
@@ -1593,7 +1536,7 @@
 .color-palette-region {
 }
 
-.color-palette-region .jfx-button {
+.color-palette-region .mfx-button {
     -fx-text-fill: -monet-on-surface;
 }
 
@@ -1601,12 +1544,12 @@
     -fx-background-color: -monet-surface;
 }
 
-.custom-color-dialog .jfx-tab-pane {
+.custom-color-dialog .mfx-tab-pane {
     -fx-background-color: -monet-surface;
 }
 
 .custom-color-dialog .custom-color-field {
-    -jfx-unfocus-color: -monet-on-surface;
+    
     -fx-background-color: TRANSPARENT;
     -fx-font-weight: 400;
     -fx-alignment: top-left;
@@ -1617,26 +1560,26 @@
     -fx-text-fill: -monet-on-surface;
 }
 
-.custom-color-dialog .tab .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-surface;
+.custom-color-dialog .tab .mfx-ripple-generator {
+    
 }
 
 .custom-color-dialog .tab-selected-line {
     -fx-background-color: -monet-on-surface;
 }
 
-.custom-color-dialog .jfx-color-dialog-actions {
+.custom-color-dialog .mfx-color-dialog-actions {
     -fx-background-color: -monet-surface;
     -fx-padding: 0.0 10.0 5.0 0.0;
     -fx-alignment: center-right;
 }
 
-.custom-color-dialog .jfx-color-dialog-accept {
+.custom-color-dialog .mfx-color-dialog-accept {
     -fx-padding: 0.7em 0.8em;
     -fx-font-weight: 600;
 }
 
-.custom-color-dialog .jfx-color-dialog-cancel {
+.custom-color-dialog .mfx-color-dialog-cancel {
     -fx-text-fill: -monet-on-surface-variant;
     -fx-padding: 0.7em 0.8em;
     -fx-font-weight: 600;
@@ -1722,8 +1665,8 @@
     -fx-background-color: -monet-on-surface;
 }
 
-.tree-cell .jfx-rippler {
-    -jfx-rippler-disabled: true;
+.tree-cell .mfx-ripple-generator {
+    
 }
 
 .tree-view > .virtual-flow > .scroll-bar {
@@ -1737,15 +1680,15 @@
 /* =============================================================================
  * MD3 Decorator / Window
  * ============================================================================= */
-.jfx-decorator {
+.mfx-decorator {
     -fx-decorator-color: -monet-primary-container;
 }
 
-.jfx-decorator-drawer {
+.mfx-decorator-drawer {
     -fx-background-color: rgba(244, 244, 244, 0.5);
 }
 
-.jfx-decorator-title {
+.mfx-decorator-title {
     -fx-font-size: 15;
     -fx-font-weight: 600;
 }
@@ -1803,11 +1746,11 @@
     -fx-shape: "M298 598l214-214 214 214h-428z";
 }
 
-.jfx-combo-box .scroll-bar {
+.mfx-combo-box .scroll-bar {
     -fx-skin: "org.Open_code_Studio.jmcl.ui.construct.FloatScrollBarSkin";
 }
 
-.jfx-combo-box .scroll-bar .track {
+.mfx-combo-box .scroll-bar .track {
     -fx-fill: transparent;
 }
 
@@ -1855,17 +1798,16 @@
     -fx-font-size: 1.0em;
 }
 
-.jfx-text-field:error, .jfx-password-field:error, .jfx-text-area:error, .jfx-combo-box:error {
-    -jfx-focus-color: -monet-error;
-    -jfx-unfocus-color: -monet-error;
+.mfx-text-field:error, .mfx-password-field:error, .mfx-text-area:error, .mfx-combo-box:error {
+    
 }
 
-.jfx-text-field .error-label, .jfx-password-field .error-label, .jfx-text-area .error-label {
+.mfx-text-field .error-label, .mfx-password-field .error-label, .mfx-text-area .error-label {
     -fx-text-fill: -monet-error;
     -fx-font-size: 12px;
 }
 
-.jfx-text-field .error-icon, .jfx-password-field .error-icon, .jfx-text-area .error-icon {
+.mfx-text-field .error-icon, .mfx-password-field .error-icon, .mfx-text-area .error-icon {
     -fx-fill: -monet-error;
     -fx-font-size: 1.0em;
 }
@@ -1980,7 +1922,7 @@
     -fx-text-fill: -monet-primary-container;
 }
 
-.line-toggle-button .jfx-toggle-button {
+.line-toggle-button .mfx-toggle-button {
     -fx-padding: 0;
 }
 

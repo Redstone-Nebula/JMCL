@@ -17,10 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.base.ValidatorBase;
+import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
@@ -38,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
 
 import static org.Open_code_Studio.jmcl.ui.FXUtils.runInFX;
 
@@ -61,14 +61,12 @@ public class PromptDialogPane extends DialogPane {
         for (Builder.Question<?> question : builder.questions) {
             if (question instanceof Builder.StringQuestion) {
                 Builder.StringQuestion stringQuestion = (Builder.StringQuestion) question;
-                JFXTextField textField = new JFXTextField();
+                MFXTextField textField = new MFXTextField();
                 textField.textProperty().addListener((a, b, newValue) -> stringQuestion.value = textField.getText());
                 textField.setText(stringQuestion.value);
-                textField.setValidators(((Builder.StringQuestion) question).validators.toArray(new ValidatorBase[0]));
                 if (stringQuestion.promptText != null) {
                     textField.setPromptText(stringQuestion.promptText);
                 }
-                bindings.add(Bindings.createBooleanBinding(textField::validate, textField.textProperty()));
 
                 if (StringUtils.isNotBlank(question.question.get())) {
                     body.addRow(rowIndex++, new Label(question.question.get()), textField);
@@ -80,7 +78,7 @@ public class PromptDialogPane extends DialogPane {
             } else if (question instanceof Builder.BooleanQuestion) {
                 HBox hBox = new HBox();
                 GridPane.setColumnSpan(hBox, 1);
-                JFXCheckBox checkBox = new JFXCheckBox();
+                MFXCheckbox checkBox = new MFXCheckbox();
                 hBox.getChildren().setAll(checkBox);
                 HBox.setMargin(checkBox, new Insets(0, 0, 0, -10));
                 checkBox.setSelected(((Builder.BooleanQuestion) question).value);
@@ -88,7 +86,7 @@ public class PromptDialogPane extends DialogPane {
                 checkBox.setText(question.question.get());
                 body.addRow(rowIndex++, hBox);
             } else if (question instanceof Builder.CandidatesQuestion) {
-                JFXComboBox<String> comboBox = new JFXComboBox<>();
+                MFXComboBox<String> comboBox = new MFXComboBox<>();
                 comboBox.getItems().setAll(((Builder.CandidatesQuestion) question).candidates);
                 comboBox.getSelectionModel().selectedIndexProperty().addListener((a, b, newValue) ->
                         ((Builder.CandidatesQuestion) question).value = newValue.intValue());
@@ -111,6 +109,10 @@ public class PromptDialogPane extends DialogPane {
                 () -> bindings.stream().allMatch(BooleanBinding::get),
                 bindings.toArray(new BooleanBinding[0])
         ));
+    }
+
+    public void setBody(GridPane body) {
+        getChildren().add(body);
     }
 
     @Override
@@ -182,10 +184,10 @@ public class PromptDialogPane extends DialogPane {
         }
 
         public static class StringQuestion extends Question<String> {
-            protected final List<ValidatorBase> validators;
+            protected final List<Predicate<String>> validators;
             protected String promptText;
 
-            public StringQuestion(String question, String defaultValue, ValidatorBase... validators) {
+            public StringQuestion(String question, String defaultValue, Predicate<String>... validators) {
                 super(question);
                 this.value = defaultValue;
                 this.validators = Arrays.asList(validators);

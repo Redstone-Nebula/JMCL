@@ -17,9 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTextField;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXListView;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.animation.PauseTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
@@ -197,7 +197,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
             private final HBox searchBar;
             private final HBox toolbarNormal;
 
-            private final JFXTextField searchField;
+            private final MFXTextField searchField;
 
             public GameListSkin(GameList skinnable) {
                 super(skinnable);
@@ -208,7 +208,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
 
                 ComponentList root = new ComponentList();
                 root.getStyleClass().add("no-padding");
-                JFXListView<GameListItem> listView = new JFXListView<>();
+                MFXListView<GameListItem> listView = new MFXListView<>();
 
                 {
                     toolbarPane = new TransitionPane();
@@ -218,7 +218,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
 
                     searchBar.setAlignment(Pos.CENTER);
                     searchBar.setPadding(new Insets(0, 5, 0, 5));
-                    searchField = new JFXTextField();
+                    searchField = new MFXTextField();
                     searchField.setPromptText(i18n("search"));
                     HBox.setHgrow(searchField, Priority.ALWAYS);
                     PauseTransition pause = new PauseTransition(Duration.millis(100));
@@ -228,7 +228,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
                         pause.playFromStart();
                     });
 
-                    JFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE, () -> {
+                    MFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE, () -> {
                         changeToolbar(toolbarNormal);
                         searchField.clear();
                     });

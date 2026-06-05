@@ -17,9 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXListView;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -33,6 +32,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.Open_code_Studio.jmcl.schematic.LitematicFile;
 import org.Open_code_Studio.jmcl.setting.Profile;
@@ -459,7 +459,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
             }
         }
 
-        private final class LitematicInfoDialog extends JFXDialogLayout {
+        private final class LitematicInfoDialog extends VBox {
             private final ComponentList details;
 
             private void addDetailItem(String key, Object detail) {
@@ -494,6 +494,9 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
             }
 
             LitematicInfoDialog() {
+                setSpacing(8);
+                setPadding(new Insets(16));
+
                 HBox titleBox = new HBox(8);
                 {
                     Node icon = getIcon(40);
@@ -503,7 +506,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                     title.setSubtitle(file.getFile().getFileName().toString());
 
                     titleBox.getChildren().setAll(icon, title);
-                    setHeading(titleBox);
+                    getChildren().add(titleBox);
                 }
 
                 {
@@ -511,15 +514,20 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                     StackPane detailsContainer = new StackPane();
                     detailsContainer.setPadding(new Insets(10, 0, 0, 0));
                     detailsContainer.getChildren().add(details);
-                    setBody(detailsContainer);
+                    getChildren().add(detailsContainer);
                 }
 
                 {
-                    JFXButton okButton = new JFXButton();
+                    HBox actionsBox = new HBox();
+                    actionsBox.setAlignment(Pos.CENTER_RIGHT);
+                    actionsBox.setPadding(new Insets(8, 0, 0, 0));
+
+                    MFXButton okButton = new MFXButton();
                     okButton.getStyleClass().add("dialog-accept");
                     okButton.setText(i18n("button.ok"));
                     okButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
-                    getActions().add(okButton);
+                    actionsBox.getChildren().add(okButton);
+                    getChildren().add(actionsBox);
 
                     onEscPressed(this, okButton::fire);
                 }
@@ -567,7 +575,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                 this.right = new HBox(8);
                 right.setAlignment(Pos.CENTER_RIGHT);
 
-                JFXButton btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
+                MFXButton btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
                 FXUtils.installFastTooltip(btnReveal, i18n("reveal.in_file_manager"));
                 btnReveal.setOnAction(event -> {
                     Item item = getItem();
@@ -575,7 +583,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                         item.onReveal();
                 });
 
-                JFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
+                MFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
                 btnDelete.setOnAction(event -> {
                     Item item = getItem();
                     if (item != null && !(item instanceof BackItem)) {
@@ -648,7 +656,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
         }
 
         @Override
-        protected ListCell<Item> createListCell(JFXListView<Item> listView) {
+        protected ListCell<Item> createListCell(MFXListView<Item> listView) {
             return new Cell();
         }
     }

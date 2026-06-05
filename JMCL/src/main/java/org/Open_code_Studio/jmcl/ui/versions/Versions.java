@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXButton;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
 import org.Open_code_Studio.jmcl.auth.Account;
@@ -118,7 +118,7 @@ public final class Versions {
         String message = isIndependent ? i18n("version.manage.remove.confirm.independent", version) :
                 i18n("version.manage.remove.confirm.trash", version, version + "_removed");
 
-        JFXButton deleteButton = new JFXButton(i18n("button.delete"));
+        MFXButton deleteButton = new MFXButton(i18n("button.delete"));
         deleteButton.getStyleClass().add("dialog-error");
         deleteButton.setOnAction(e -> {
             Task.supplyAsync(Schedulers.io(), () -> profile.getRepository().removeVersionFromDisk(version))
@@ -322,7 +322,7 @@ public final class Versions {
 
     private static boolean checkVersionForLaunching(Profile profile, String id) {
         if (id == null || !profile.getRepository().isLoaded() || !profile.getRepository().hasVersion(id)) {
-            JFXButton gotoDownload = new JFXButton(i18n("version.empty.launch.goto_download"));
+            MFXButton gotoDownload = new MFXButton(i18n("version.empty.launch.goto_download"));
             gotoDownload.getStyleClass().add("dialog-accept");
             gotoDownload.setOnAction(e -> Controllers.navigate(Controllers.getDownloadPage()));
 

@@ -51,7 +51,7 @@ val embedResources by configurations.registering
 dependencies {
     implementation(project(":JVM-MCLCore"))
     implementation(project(":JVM-MCLBoot"))
-    implementation("libs:JFoenix")
+    implementation("io.github.palexdev:materialfx:21.18.0-alpha")
     implementation(libs.jwebp)
     implementation(libs.fxsvgimage)
     implementation(libs.java.info)
@@ -198,7 +198,7 @@ tasks.shadowJar {
     minimize {
         exclude(dependency("com.google.code.gson:.*:.*"))
         exclude(dependency("net.java.dev.jna:jna:.*"))
-        exclude(dependency("libs:JFoenix:.*"))
+        exclude(dependency("io.github.palexdev:materialfx:.*"))
         exclude(project(":JVM-MCLBoot"))
     }
 

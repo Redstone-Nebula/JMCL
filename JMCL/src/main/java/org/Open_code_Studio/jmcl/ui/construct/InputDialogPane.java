@@ -17,10 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.base.ValidatorBase;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -33,42 +31,35 @@ import java.util.concurrent.CompletableFuture;
 import static org.Open_code_Studio.jmcl.ui.FXUtils.onEscPressed;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
-public class InputDialogPane extends JFXDialogLayout implements DialogAware {
+public class InputDialogPane extends VBox implements DialogAware {
     private final CompletableFuture<String> future = new CompletableFuture<>();
 
-    private final JFXTextField textField;
+    private final MFXTextField textField;
     private final Label lblCreationWarning;
     private final SpinnerPane acceptPane;
-    private final JFXButton acceptButton;
-
-    public InputDialogPane(String text, String initialValue, FutureCallback<String> onResult, ValidatorBase... validators) {
-        this(text, initialValue, onResult);
-        if (validators != null && validators.length > 0) {
-            textField.getValidators().addAll(validators);
-            FXUtils.setValidateWhileTextChanged(textField, true);
-            acceptButton.disableProperty().bind(textField.activeValidatorProperty().isNotNull());
-        }
-    }
+    private final MFXButton acceptButton;
 
     public InputDialogPane(String text, String initialValue, FutureCallback<String> onResult) {
-        textField = new JFXTextField(initialValue);
-
-        this.setHeading(new HBox(new Label(text)));
-        this.setBody(new VBox(textField));
+        textField = new MFXTextField(initialValue);
 
         lblCreationWarning = new Label();
         lblCreationWarning.setPadding(new Insets(0, 5, 0, 0));
 
         acceptPane = new SpinnerPane();
         acceptPane.getStyleClass().add("small-spinner-pane");
-        acceptButton = new JFXButton(i18n("button.ok"));
+        acceptButton = new MFXButton(i18n("button.ok"));
         acceptButton.getStyleClass().add("dialog-accept");
         acceptPane.setContent(acceptButton);
 
-        JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
+        MFXButton cancelButton = new MFXButton(i18n("button.cancel"));
         cancelButton.getStyleClass().add("dialog-cancel");
 
-        this.setActions(lblCreationWarning, acceptPane, cancelButton);
+        HBox heading = new HBox(new Label(text));
+        HBox actions = new HBox(lblCreationWarning, acceptPane, cancelButton);
+        VBox body = new VBox(textField);
+
+        getChildren().setAll(heading, body, actions);
+        setSpacing(8);
 
         cancelButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
         acceptButton.setOnAction(e -> {

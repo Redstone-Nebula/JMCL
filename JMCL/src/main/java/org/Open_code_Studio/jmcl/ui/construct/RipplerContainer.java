@@ -17,7 +17,6 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXRippler;
 import javafx.animation.Transition;
 import javafx.css.*;
 import javafx.css.converter.PaintConverter;
@@ -47,21 +46,6 @@ public class RipplerContainer extends StackPane {
     private final Node container;
 
     private final StackPane buttonContainer = new StackPane();
-    private final JFXRippler buttonRippler = new JFXRippler(new StackPane()) {
-        private static final Background DEFAULT_MASK_BACKGROUND = new Background(new BackgroundFill(Color.WHITE, DEFAULT_RADII, Insets.EMPTY));
-
-        @Override
-        protected Node getMask() {
-            StackPane mask = new StackPane();
-            mask.shapeProperty().bind(buttonContainer.shapeProperty());
-            mask.setBackground(DEFAULT_MASK_BACKGROUND);
-            mask.resize(
-                    buttonContainer.getWidth() - buttonContainer.snappedRightInset() - buttonContainer.snappedLeftInset(),
-                    buttonContainer.getHeight() - buttonContainer.snappedBottomInset() - buttonContainer.snappedTopInset()
-            );
-            return mask;
-        }
-    };
 
     private Transition coverAnimation;
 
@@ -69,17 +53,7 @@ public class RipplerContainer extends StackPane {
         this.container = container;
 
         getStyleClass().add(DEFAULT_STYLE_CLASS);
-        buttonRippler.setPosition(JFXRippler.RipplerPos.BACK);
-        buttonContainer.getChildren().add(buttonRippler);
-        focusedProperty().addListener((a, b, newValue) -> {
-            if (newValue) {
-                if (!isPressed())
-                    buttonRippler.showOverlay();
-            } else {
-                buttonRippler.hideOverlay();
-            }
-        });
-        pressedProperty().addListener(o -> buttonRippler.hideOverlay());
+        buttonContainer.getChildren().add(container);
         setPickOnBounds(false);
 
         buttonContainer.setPickOnBounds(false);
@@ -149,22 +123,7 @@ public class RipplerContainer extends StackPane {
 
     protected void updateChildren() {
         Node container = getContainer();
-        if (buttonRippler.getPosition() == JFXRippler.RipplerPos.BACK) {
-            getChildren().setAll(buttonContainer, container);
-            container.setPickOnBounds(false);
-        } else {
-            getChildren().setAll(container, buttonContainer);
-            buttonContainer.setPickOnBounds(false);
-        }
-    }
-
-    public void setPosition(JFXRippler.RipplerPos pos) {
-        buttonRippler.setPosition(pos);
-        updateChildren();
-    }
-
-    public JFXRippler getRippler() {
-        return buttonRippler;
+        getChildren().setAll(buttonContainer);
     }
 
     public Node getContainer() {
@@ -189,7 +148,6 @@ public class RipplerContainer extends StackPane {
 
         @Override
         protected void invalidated() {
-            buttonRippler.setRipplerFill(get());
         }
     };
 

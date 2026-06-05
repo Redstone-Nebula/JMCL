@@ -17,15 +17,15 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.NamedArg;
-import javafx.scene.control.TextInputControl;
 import org.glavo.url.WebURL;
 import org.Open_code_Studio.jmcl.util.StringUtils;
 
+import java.util.function.Predicate;
+
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
-public class URLValidator extends ValidatorBase {
+public class URLValidator implements Predicate<String> {
     private final boolean nullable;
 
     public URLValidator() {
@@ -33,28 +33,15 @@ public class URLValidator extends ValidatorBase {
     }
 
     public URLValidator(@NamedArg("nullable") boolean nullable) {
-        this(i18n("input.url"), nullable);
-    }
-
-    public URLValidator(@NamedArg("message") String message, @NamedArg("nullable") boolean nullable) {
-        super(message);
         this.nullable = nullable;
     }
 
     @Override
-    protected void eval() {
-        if (srcControl.get() instanceof TextInputControl) {
-            evalTextInputField();
-        }
-    }
-
-    private void evalTextInputField() {
-        TextInputControl textField = ((TextInputControl) srcControl.get());
-
-        if (StringUtils.isBlank(textField.getText()))
-            hasErrors.set(!nullable);
+    public boolean test(String text) {
+        if (StringUtils.isBlank(text))
+            return nullable;
         else {
-            hasErrors.set(WebURL.tryParseBrowserInput(textField.getText()) == null);
+            return WebURL.tryParseBrowserInput(text) != null;
         }
     }
 }

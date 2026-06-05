@@ -17,9 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXProgressBar;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXListView;
+import io.github.palexdev.materialfx.controls.MFXProgressBar;
 import javafx.application.Platform;
 import javafx.beans.WeakListener;
 import javafx.beans.binding.Bindings;
@@ -91,7 +91,7 @@ public final class TaskListPane extends StackPane {
     private static final Insets STAGED_PROGRESS_NODE_PADDING = new Insets(0, 0, 4, 26);
 
     private TaskExecutor executor;
-    private final JFXListView<Node> listView = new JFXListView<>();
+    private final MFXListView<Node> listView = new MFXListView<>();
     private final Map<Task<?>, ProgressListNode> nodes = new HashMap<>();
     private final Map<String, StageNode> stageNodes = new HashMap<>();
     private final ObjectProperty<Insets> progressNodePadding = new SimpleObjectProperty<>(Insets.EMPTY);
@@ -106,7 +106,7 @@ public final class TaskListPane extends StackPane {
             cellWidth.set(w <= 12.0 ? w : w - 12.0);
         });
 
-        JFXButton viewLogButton = new JFXButton(i18n("log.viewer.view_logs"));
+        MFXButton viewLogButton = new MFXButton(i18n("log.viewer.view_logs"));
         viewLogButton.getStyleClass().add("jfx-button-border");
         viewLogButton.setMaxWidth(Double.MAX_VALUE);
         viewLogButton.visibleProperty().bind(ConfigHolder.globalConfig().showInstallationLogProperty());
@@ -308,7 +308,7 @@ public final class TaskListPane extends StackPane {
         private final StackPane left = new StackPane();
         private final Label title = new Label();
         private final Label message = new Label();
-        private final JFXProgressBar bar = new JFXProgressBar();
+        private final MFXProgressBar bar = new MFXProgressBar();
 
         private WeakReference<StageNode> prevStageNodeRef;
         private StatusChangeListener statusChangeListener;
@@ -351,7 +351,6 @@ public final class TaskListPane extends StackPane {
             title.textProperty().unbind();
             message.textProperty().unbind();
 
-            bar.setSmoothProgress(false);
             bar.progressProperty().unbind();
             StageNode prevStageNode;
             if (prevStageNodeRef != null && (prevStageNode = prevStageNodeRef.get()) != null)
@@ -390,8 +389,6 @@ public final class TaskListPane extends StackPane {
                 pane.setRight(null);
                 pane.setBottom(null);
             }
-
-            bar.setSmoothProgress(true);
         }
     }
 

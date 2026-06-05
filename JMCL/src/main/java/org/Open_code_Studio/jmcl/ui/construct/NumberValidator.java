@@ -17,13 +17,13 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.NamedArg;
-import javafx.scene.control.TextInputControl;
 import org.Open_code_Studio.jmcl.util.Lang;
 import org.Open_code_Studio.jmcl.util.StringUtils;
 
-public class NumberValidator extends ValidatorBase {
+import java.util.function.Predicate;
+
+public class NumberValidator implements Predicate<String> {
     private final boolean nullable;
 
     public NumberValidator() {
@@ -34,24 +34,11 @@ public class NumberValidator extends ValidatorBase {
         this.nullable = nullable;
     }
 
-    public NumberValidator(@NamedArg("message") String message, @NamedArg("nullable") boolean nullable) {
-        super(message);
-        this.nullable = nullable;
-    }
-
     @Override
-    protected void eval() {
-        if (srcControl.get() instanceof TextInputControl) {
-            evalTextInputField();
-        }
-    }
-
-    private void evalTextInputField() {
-        TextInputControl textField = ((TextInputControl) srcControl.get());
-
-        if (StringUtils.isBlank(textField.getText()))
-            hasErrors.set(!nullable);
+    public boolean test(String text) {
+        if (StringUtils.isBlank(text))
+            return nullable;
         else
-            hasErrors.set(Lang.toIntOrNull(textField.getText()) == null);
+            return Lang.toIntOrNull(text) != null;
     }
 }

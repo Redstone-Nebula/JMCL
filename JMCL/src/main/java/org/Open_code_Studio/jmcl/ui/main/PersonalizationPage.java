@@ -17,9 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import com.jfoenix.controls.*;
-import com.jfoenix.effects.JFXDepthManager;
-import javafx.application.Platform;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -78,11 +77,10 @@ public class PersonalizationPage extends StackPane {
             themeColorPickerContainer.setMinHeight(30);
             themePane.setRight(themeColorPickerContainer);
 
-            ColorPicker picker = new JFXColorPicker();
+            ColorPicker picker = new ColorPicker();
             picker.getCustomColors().setAll(ThemeColor.STANDARD_COLORS.stream().map(ThemeColor::color).toList());
             ThemeColor.bindBidirectional(picker, config().themeColorProperty());
             themeColorPickerContainer.getChildren().setAll(picker);
-            Platform.runLater(() -> JFXDepthManager.setDepth(picker, 0));
         }
         {
             LineToggleButton titleTransparentButton = new LineToggleButton();
@@ -123,14 +121,14 @@ public class PersonalizationPage extends StackPane {
                         FontComboBox cboLogFont = new FontComboBox();
                         cboLogFont.valueProperty().bindBidirectional(config().fontFamilyProperty());
 
-                        JFXTextField txtLogFontSize = new JFXTextField();
+                        MFXTextField txtLogFontSize = new MFXTextField();
                         FXUtils.setLimitWidth(txtLogFontSize, 50);
                         FXUtils.bind(txtLogFontSize, config().fontSizeProperty(), SafeStringConverter.fromFiniteDouble()
                                 .restrict(it -> it > 0)
                                 .fallbackTo(12.0)
                                 .asPredicate(Validator.addTo(txtLogFontSize)));
 
-                        JFXButton clearButton = FXUtils.newToggleButton4(SVG.RESTORE);
+                        MFXButton clearButton = FXUtils.newToggleButton4(SVG.RESTORE);
                         clearButton.setOnAction(e -> cboLogFont.setValue(null));
 
                         FXUtils.installFastTooltip(clearButton, i18n("button.reset"));
@@ -178,7 +176,7 @@ public class PersonalizationPage extends StackPane {
                         cboFont.setValue(config().getLauncherFontFamily());
                         FXUtils.onChange(cboFont.valueProperty(), FontManager::setFontFamily);
 
-                        JFXButton clearButton = FXUtils.newToggleButton4(SVG.RESTORE);
+                        MFXButton clearButton = FXUtils.newToggleButton4(SVG.RESTORE);
                         clearButton.setOnAction(e -> cboFont.setValue(null));
 
                         FXUtils.installFastTooltip(clearButton, i18n("button.reset"));

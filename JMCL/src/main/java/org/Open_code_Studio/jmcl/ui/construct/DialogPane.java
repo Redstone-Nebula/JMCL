@@ -17,9 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXProgressBar;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXProgressBar;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,31 +26,36 @@ import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import static org.Open_code_Studio.jmcl.ui.FXUtils.onEscPressed;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
-public class DialogPane extends JFXDialogLayout {
+public class DialogPane extends VBox {
     private final StringProperty title = new SimpleStringProperty();
     private final BooleanProperty valid = new SimpleBooleanProperty(true);
     protected final SpinnerPane acceptPane = new SpinnerPane();
-    protected final JFXButton cancelButton = new JFXButton();
+    protected final MFXButton cancelButton = new MFXButton();
     protected final Label warningLabel = new Label();
-    private final JFXProgressBar progressBar = new JFXProgressBar();
+    private final MFXProgressBar progressBar = new MFXProgressBar();
+    private final HBox headingBox;
+    private final HBox actionsBox;
 
     public DialogPane() {
+        setSpacing(8);
+
         Label titleLabel = new Label();
         titleLabel.textProperty().bind(title);
-        setHeading(titleLabel);
-        getChildren().add(progressBar);
+        headingBox = new HBox(titleLabel);
 
         progressBar.setVisible(false);
         StackPane.setMargin(progressBar, new Insets(-24.0D, -24.0D, -16.0D, -24.0D));
         StackPane.setAlignment(progressBar, Pos.TOP_CENTER);
         progressBar.setMaxWidth(Double.MAX_VALUE);
 
-        JFXButton acceptButton = new JFXButton(i18n("button.ok"));
+        MFXButton acceptButton = new MFXButton(i18n("button.ok"));
         acceptButton.setOnAction(e -> onAccept());
         acceptButton.disableProperty().bind(valid.not());
         acceptButton.getStyleClass().add("dialog-accept");
@@ -63,10 +67,12 @@ public class DialogPane extends JFXDialogLayout {
         cancelButton.getStyleClass().add("dialog-cancel");
         onEscPressed(this, cancelButton::fire);
 
-        setActions(warningLabel, acceptPane, cancelButton);
+        actionsBox = new HBox(warningLabel, acceptPane, cancelButton);
+
+        getChildren().setAll(headingBox, actionsBox);
     }
 
-    protected JFXProgressBar getProgressBar() {
+    protected MFXProgressBar getProgressBar() {
         return progressBar;
     }
 

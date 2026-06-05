@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import com.jfoenix.controls.JFXButton;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.scene.Node;
@@ -93,7 +93,7 @@ public class DownloadPage extends DecoratorAnimatedPage implements DecoratorPage
                 Versions.downloadModpackImpl(downloadProvider, profile, uploadVersion, mod, file);
             }, false);
 
-            JFXButton installLocalModpackButton = FXUtils.newRaisedButton(i18n("install.modpack"));
+            MFXButton installLocalModpackButton = FXUtils.newRaisedButton(i18n("install.modpack"));
             installLocalModpackButton.setOnAction(e -> Versions.importModpack());
 
             page.getActions().add(installLocalModpackButton);

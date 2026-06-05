@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import com.jfoenix.controls.JFXPopup;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.geometry.Side;
 import javafx.scene.layout.Region;
 import org.Open_code_Studio.jmcl.Metadata;
 import org.Open_code_Studio.jmcl.event.EventBus;
@@ -150,7 +150,7 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
 
             AccountAdvancedListItem accountListItem = new AccountAdvancedListItem();
             accountListItem.setOnAction(e -> Controllers.navigate(Controllers.getAccountListPage()));
-            FXUtils.onSecondaryButtonClicked(accountListItem, () -> AccountListPopupMenu.show(accountListItem, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, accountListItem.getWidth(), 0));
+            FXUtils.onSecondaryButtonClicked(accountListItem, () -> AccountListPopupMenu.show(accountListItem, Side.TOP, Side.LEFT, accountListItem.getWidth(), 0));
             accountListItem.accountProperty().bind(Accounts.selectedAccountProperty());
 
             GameAdvancedListItem gameListItem = new GameAdvancedListItem();
@@ -250,8 +250,8 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
 
         public void showGameListPopupMenu(Region gameListItem) {
             GameListPopupMenu.show(gameListItem,
-                    JFXPopup.PopupVPosition.TOP,
-                    JFXPopup.PopupHPosition.LEFT,
+                    Side.TOP,
+                    Side.LEFT,
                     gameListItem.getWidth(),
                     0,
                     getSkinnable().getMainPage().getProfile(),

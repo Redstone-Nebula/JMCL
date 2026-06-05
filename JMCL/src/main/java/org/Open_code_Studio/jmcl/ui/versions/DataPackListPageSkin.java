@@ -17,11 +17,10 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXListView;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -76,12 +75,12 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
     private final HBox selectingToolbar;
     InvalidationListener updateBarByStateWeakListener;
 
-    private final JFXListView<DataPackInfoObject> listView;
+    private final MFXListView<DataPackInfoObject> listView;
     private final FilteredList<DataPackInfoObject> filteredList;
 
     private final BooleanProperty isSearching = new SimpleBooleanProperty(false);
     private final BooleanProperty isSelecting = new SimpleBooleanProperty(false);
-    private final JFXTextField searchField;
+    private final MFXTextField searchField;
 
     private static final AtomicInteger lastShiftClickIndex = new AtomicInteger(-1);
     final Consumer<Integer> toggleSelect;
@@ -95,7 +94,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
 
         ComponentList root = new ComponentList();
         root.getStyleClass().add("no-padding");
-        listView = new JFXListView<>();
+        listView = new MFXListView<>();
         filteredList = new FilteredList<>(skinnable.getItems());
 
         // reason for not using selectAll() is that selectAll() first clears all selected then selects all, causing the toolbar to flicker
@@ -119,14 +118,14 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
                     createToolbarButton2(i18n("search"), SVG.SEARCH, () -> isSearching.set(true))
             );
 
-            JFXButton removeButton = createToolbarButton2(i18n("button.remove"), SVG.DELETE_FOREVER, () -> {
+            MFXButton removeButton = createToolbarButton2(i18n("button.remove"), SVG.DELETE_FOREVER, () -> {
                 Controllers.confirm(i18n("button.remove.confirm"), i18n("button.remove"), () -> {
                     skinnable.removeSelected(listView.getSelectionModel().getSelectedItems());
                 }, null);
             });
-            JFXButton enableButton = createToolbarButton2(i18n("mods.enable"), SVG.CHECK, () ->
+            MFXButton enableButton = createToolbarButton2(i18n("mods.enable"), SVG.CHECK, () ->
                     skinnable.enableSelected(listView.getSelectionModel().getSelectedItems()));
-            JFXButton disableButton = createToolbarButton2(i18n("mods.disable"), SVG.CLOSE, () ->
+            MFXButton disableButton = createToolbarButton2(i18n("mods.disable"), SVG.CLOSE, () ->
                     skinnable.disableSelected(listView.getSelectionModel().getSelectedItems()));
             removeButton.disableProperty().bind(getSkinnable().readOnly);
             enableButton.disableProperty().bind(getSkinnable().readOnly);
@@ -145,7 +144,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
 
             searchBar.setAlignment(Pos.CENTER);
             searchBar.setPadding(new Insets(0, 5, 0, 5));
-            searchField = new JFXTextField();
+            searchField = new MFXTextField();
             searchField.setPromptText(i18n("search"));
             HBox.setHgrow(searchField, Priority.ALWAYS);
             PauseTransition pause = new PauseTransition(Duration.millis(100));
@@ -154,7 +153,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
                 pause.setRate(1);
                 pause.playFromStart();
             });
-            JFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE,
+            MFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE,
                     () -> {
                         isSearching.set(false);
                         searchField.clear();
@@ -227,7 +226,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
         }
     }
 
-    static class DataPackInfoObject extends RecursiveTreeObject<DataPackInfoObject> {
+    static class DataPackInfoObject {
         private final BooleanProperty activeProperty;
         private final DataPack.Pack packInfo;
 
@@ -310,12 +309,12 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
     }
 
     private final class DataPackInfoListCell extends MDListCell<DataPackInfoObject> {
-        final JFXCheckBox checkBox = new JFXCheckBox();
+        final MFXCheckbox checkBox = new MFXCheckbox();
         ImageContainer imageContainer = new ImageContainer(32);
         final TwoLineListItem content = new TwoLineListItem();
         BooleanProperty booleanProperty;
 
-        DataPackInfoListCell(JFXListView<DataPackInfoObject> listView, BooleanProperty isReadOnlyProperty) {
+        DataPackInfoListCell(MFXListView<DataPackInfoObject> listView, BooleanProperty isReadOnlyProperty) {
             super(listView);
 
             HBox container = new HBox(8);

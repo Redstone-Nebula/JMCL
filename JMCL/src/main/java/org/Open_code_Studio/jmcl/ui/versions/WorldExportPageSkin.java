@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
 import javafx.scene.control.SkinBase;
@@ -56,7 +56,7 @@ public class WorldExportPageSkin extends SkinBase<WorldExportPage> {
 
         var worldNamePane = new LinePane();
         worldNamePane.setTitle(i18n("world.name"));
-        JFXTextField txtWorldName = new JFXTextField();
+        MFXTextField txtWorldName = new MFXTextField();
         txtWorldName.textProperty().bindBidirectional(skinnable.worldNameProperty());
         txtWorldName.setPrefWidth(300);
         worldNamePane.setRight(txtWorldName);
@@ -72,7 +72,7 @@ public class WorldExportPageSkin extends SkinBase<WorldExportPage> {
                 list
         );
 
-        JFXButton btnExport = FXUtils.newRaisedButton(i18n("button.export"));
+        MFXButton btnExport = FXUtils.newRaisedButton(i18n("button.export"));
         btnExport.disableProperty().bind(Bindings.createBooleanBinding(() -> txtWorldName.getText().isEmpty() || Files.exists(Paths.get(chooseFileButton.getLocation())),
                 txtWorldName.textProperty().isEmpty(), chooseFileButton.locationProperty()));
         btnExport.setOnAction(e -> skinnable.export());

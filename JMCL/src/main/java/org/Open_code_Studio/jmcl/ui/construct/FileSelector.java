@@ -1,6 +1,6 @@
 /*
  * JMCL
- * Copyright (C) 2026  OCS
+ * Copyright (C) 2026 OCS
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,15 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPopup;
-import com.jfoenix.controls.JFXTextField;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -44,7 +45,7 @@ public class FileSelector extends HBox {
     private SelectionMode selectionMode = SelectionMode.FILE;
     private final ObservableList<FileChooser.ExtensionFilter> extensionFilters = FXCollections.observableArrayList();
 
-    JFXButton selectButton = FXUtils.newToggleButton4(SVG.FOLDER_OPEN, 15);
+    MFXButton selectButton = FXUtils.newToggleButton4(SVG.FOLDER_OPEN, 15);
 
     public enum SelectionMode {
         FILE,
@@ -87,7 +88,7 @@ public class FileSelector extends HBox {
     }
 
     public FileSelector() {
-        JFXTextField customField = new JFXTextField();
+        MFXTextField customField = new MFXTextField();
         FXUtils.bindString(customField, valueProperty());
 
         selectButton.setOnAction(e -> {
@@ -95,15 +96,14 @@ public class FileSelector extends HBox {
                 case FILE -> openFileChooser(customField);
                 case DIRECTORY -> openDirectoryChooser(customField);
                 case FILE_OR_DIRECTORY -> {
-                    PopupMenu selectPopupMenu = new PopupMenu();
-                    JFXPopup selectModePopup = new JFXPopup(selectPopupMenu);
+                    ContextMenu selectPopupMenu = new ContextMenu();
+                    CustomMenuItem fileItem = new CustomMenuItem(
+                            new IconedMenuItem(SVG.FILE_OPEN, i18n("selector.choose_file"), () -> openFileChooser(customField), null));
+                    CustomMenuItem dirItem = new CustomMenuItem(
+                            new IconedMenuItem(SVG.FOLDER_OPEN, i18n("selector.choose_directory"), () -> openDirectoryChooser(customField), null));
+                    selectPopupMenu.getItems().addAll(fileItem, dirItem);
 
-                    selectPopupMenu.getContent().addAll(
-                            new IconedMenuItem(SVG.FILE_OPEN, i18n("selector.choose_file"), () -> openFileChooser(customField), selectModePopup),
-                            new IconedMenuItem(SVG.FOLDER_OPEN, i18n("selector.choose_directory"), () -> openDirectoryChooser(customField), selectModePopup)
-                    );
-
-                    selectModePopup.show(selectButton, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, -selectButton.getWidth(), 0);
+                    selectPopupMenu.show(selectButton, javafx.geometry.Side.RIGHT, -selectButton.getWidth(), 0);
                 }
             }
         });
@@ -113,7 +113,7 @@ public class FileSelector extends HBox {
         getChildren().addAll(customField, selectButton);
     }
 
-    private void openFileChooser(JFXTextField customField) {
+    private void openFileChooser(MFXTextField customField) {
         FileChooser chooser = new FileChooser();
         chooser.getExtensionFilters().addAll(getExtensionFilters());
         chooser.setTitle(StringUtils.isBlank(chooserTitle) ? i18n("selector.choose_file") : chooserTitle);
@@ -125,7 +125,7 @@ public class FileSelector extends HBox {
         }
     }
 
-    private void openDirectoryChooser(JFXTextField customField) {
+    private void openDirectoryChooser(MFXTextField customField) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(StringUtils.isBlank(chooserTitle) ? i18n("selector.choose_directory") : chooserTitle);
         Path dir = FileUtils.toPath(chooser.showDialog(Controllers.getStage()));

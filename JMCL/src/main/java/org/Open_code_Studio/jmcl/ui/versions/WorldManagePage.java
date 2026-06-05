@@ -17,13 +17,14 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXPopup;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.geometry.Insets;
+import javafx.geometry.Bounds;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import org.Open_code_Studio.jmcl.game.World;
 import org.Open_code_Studio.jmcl.setting.Profile;
 import org.Open_code_Studio.jmcl.ui.Controllers;
@@ -237,7 +238,9 @@ public final class WorldManagePage extends DecoratorAnimatedPage implements Deco
 
                 if (ChunkBaseApp.isSupported(getSkinnable().world)) {
                     PopupMenu chunkBasePopupMenu = new PopupMenu();
-                    JFXPopup chunkBasePopup = new JFXPopup(chunkBasePopupMenu);
+                    Popup chunkBasePopup = new Popup();
+                    chunkBasePopup.getContent().add(chunkBasePopupMenu);
+                    chunkBasePopup.setAutoHide(true);
 
                     chunkBasePopupMenu.getContent().addAll(
                             new IconedMenuItem(SVG.EXPLORE, i18n("world.chunkbase.seed_map"), () -> ChunkBaseApp.openSeedMap(getSkinnable().world), chunkBasePopup),
@@ -251,17 +254,19 @@ public final class WorldManagePage extends DecoratorAnimatedPage implements Deco
                     }
 
                     toolbar.addNavigationDrawerItem(i18n("world.chunkbase"), SVG.EXPLORE, null, chunkBaseMenuItem ->
-                            chunkBaseMenuItem.setOnAction(e ->
-                                    chunkBasePopup.show(chunkBaseMenuItem,
-                                            JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT,
-                                            chunkBaseMenuItem.getWidth(), 0)));
+                            chunkBaseMenuItem.setOnAction(e -> {
+                                Bounds bounds = chunkBaseMenuItem.localToScreen(chunkBaseMenuItem.getBoundsInLocal());
+                                chunkBasePopup.show(chunkBaseMenuItem, bounds.getMaxX(), bounds.getMinY());
+                            }));
                 }
 
                 toolbar.addNavigationDrawerItem(i18n("settings.game.exploration"), SVG.FOLDER_OPEN, () -> FXUtils.openFolder(getSkinnable().world.getFile()));
 
                 {
                     PopupMenu managePopupMenu = new PopupMenu();
-                    JFXPopup managePopup = new JFXPopup(managePopupMenu);
+                    Popup managePopup = new Popup();
+                    managePopup.getContent().add(managePopupMenu);
+                    managePopup.setAutoHide(true);
 
                     if (getSkinnable().supportQuickPlay) {
                         managePopupMenu.getContent().addAll(
@@ -279,10 +284,10 @@ public final class WorldManagePage extends DecoratorAnimatedPage implements Deco
 
                     toolbar.addNavigationDrawerItem(i18n("settings.game.management"), SVG.MENU, null, managePopupMenuItem ->
                     {
-                        managePopupMenuItem.setOnAction(e ->
-                                managePopup.show(managePopupMenuItem,
-                                        JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT,
-                                        managePopupMenuItem.getWidth(), 0));
+                        managePopupMenuItem.setOnAction(e -> {
+                            Bounds bounds = managePopupMenuItem.localToScreen(managePopupMenuItem.getBoundsInLocal());
+                            managePopup.show(managePopupMenuItem, bounds.getMaxX(), bounds.getMinY());
+                        });
                         managePopupMenuItem.disableProperty().bind(getSkinnable().readOnlyProperty());
                     });
                 }
