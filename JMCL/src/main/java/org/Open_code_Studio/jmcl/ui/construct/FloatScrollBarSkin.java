@@ -17,7 +17,6 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.utils.JFXNodeUtils;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -231,7 +230,7 @@ public class FloatScrollBarSkin implements Skin<ScrollBar> {
                 return;
             }
 
-            if (AnimationUtils.isAnimationEnabled() && JFXNodeUtils.isTreeVisible(thumb)) {
+            if (AnimationUtils.isAnimationEnabled() && thumb.isVisible() && thumb.getScene() != null) {
                 thumbHoverAnimation = new Timeline(
                         new KeyFrame(Duration.ZERO, new KeyValue(thumb.opacityProperty(), currentOpacity)),
                         new KeyFrame(Motion.SHORT2, new KeyValue(thumb.opacityProperty(), targetOpacity))

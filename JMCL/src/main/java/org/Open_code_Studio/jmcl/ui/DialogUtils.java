@@ -70,9 +70,12 @@ public final class DialogUtils {
         JFXDialogPane dialogPane = (JFXDialogPane) container.getProperties().get(PROPERTY_DIALOG_PANE_INSTANCE);
 
         if (dialog == null) {
-            dialog = new JFXDialog(AnimationUtils.isAnimationEnabled()
-                    ? JFXDialog.DialogTransition.CENTER
-                    : JFXDialog.DialogTransition.NONE);
+            dialog = new JFXDialog();
+            if (AnimationUtils.isAnimationEnabled()) {
+                dialog.setTransitionType(JFXDialog.DialogTransition.CENTER);
+            } else {
+                dialog.setTransitionType(JFXDialog.DialogTransition.NONE);
+            }
             dialogPane = new JFXDialogPane();
 
             dialog.setContent(dialogPane);

@@ -81,8 +81,8 @@ public class DecoratorSkin extends SkinBase<Decorator> {
         Rectangle rootClip = new Rectangle();
         rootClip.widthProperty().bind(root.widthProperty());
         rootClip.heightProperty().bind(root.heightProperty());
-        rootClip.setArcWidth(8);
-        rootClip.setArcHeight(8);
+        rootClip.setArcWidth(12);
+        rootClip.setArcHeight(12);
         root.setClip(rootClip);
 
         StackPane shadowContainer = new StackPane();
@@ -92,8 +92,8 @@ public class DecoratorSkin extends SkinBase<Decorator> {
         Rectangle clip = new Rectangle();
         clip.widthProperty().bind(parent.widthProperty());
         clip.heightProperty().bind(parent.heightProperty());
-        clip.setArcWidth(8);
-        clip.setArcHeight(8);
+        clip.setArcWidth(12);
+        clip.setArcHeight(12);
         parent.setClip(clip);
 
         skinnable.getSnackbar().registerSnackbarContainer(parent);

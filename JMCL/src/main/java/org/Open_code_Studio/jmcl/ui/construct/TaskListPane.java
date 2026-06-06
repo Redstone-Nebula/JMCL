@@ -351,7 +351,6 @@ public final class TaskListPane extends StackPane {
             title.textProperty().unbind();
             message.textProperty().unbind();
 
-            bar.setSmoothProgress(false);
             bar.progressProperty().unbind();
             StageNode prevStageNode;
             if (prevStageNodeRef != null && (prevStageNode = prevStageNodeRef.get()) != null)
@@ -390,8 +389,6 @@ public final class TaskListPane extends StackPane {
                 pane.setRight(null);
                 pane.setBottom(null);
             }
-
-            bar.setSmoothProgress(true);
         }
     }
 

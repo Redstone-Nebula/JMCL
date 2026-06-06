@@ -6,8 +6,11 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.setting.StyleSheets;
@@ -24,15 +27,26 @@ public final class TaskLogDialog extends Stage {
     public TaskLogDialog() {
         setTitle(i18n("log.viewer"));
         initModality(Modality.NONE);
+        initStyle(StageStyle.UNDECORATED);
 
         logArea = new TextArea();
         logArea.setEditable(false);
         logArea.setWrapText(true);
         logArea.setStyle("-fx-font-family: 'Menlo', 'Monaco', 'Courier New', monospace; -fx-font-size: 11px;");
 
-        BorderPane root = new BorderPane(logArea);
-        root.setPadding(new Insets(8));
-        Scene scene = new Scene(root, 700, 500);
+        BorderPane contentPane = new BorderPane(logArea);
+        contentPane.setPadding(new Insets(8));
+        contentPane.getStyleClass().add("task-log-window");
+
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(12);
+        clip.setArcHeight(12);
+        clip.widthProperty().bind(contentPane.widthProperty());
+        clip.heightProperty().bind(contentPane.heightProperty());
+        contentPane.setClip(clip);
+
+        Scene scene = new Scene(contentPane, 700, 500);
+        scene.setFill(null);
         StyleSheets.init(scene);
         setScene(scene);
 

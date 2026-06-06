@@ -17,44 +17,73 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.concurrent.Worker;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
 import javafx.scene.layout.StackPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import org.Open_code_Studio.jmcl.auth.Account;
 import org.Open_code_Studio.jmcl.auth.yggdrasil.TextureModel;
 import org.Open_code_Studio.jmcl.game.TexturesLoader;
-import org.Open_code_Studio.jmcl.game.TexturesLoader.LoadedTexture;
 import org.Open_code_Studio.jmcl.setting.Accounts;
-import org.Open_code_Studio.jmcl.ui.skin.SkinCanvas;
-import org.Open_code_Studio.jmcl.ui.skin.animation.SkinAniRunning;
-import org.Open_code_Studio.jmcl.ui.skin.animation.SkinAniWavingArms;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
+import java.util.Base64;
+
+import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
 public class SkinViewPane extends StackPane {
-    private final SkinCanvas skinCanvas;
+    private final WebView webView;
+    private final WebEngine engine;
+    private String pendingDataUrl;
+    private boolean pendingSlim;
 
     public SkinViewPane() {
         getStyleClass().add("skin-view-pane");
 
-        skinCanvas = new SkinCanvas(TexturesLoader.getDefaultSkinImage(), 180, 280, true);
-        skinCanvas.enableRotation(0.5);
+        webView = new WebView();
+        webView.getStyleClass().add("skin-view-webview");
 
-        skinCanvas.getAnimationPlayer().addSkinAnimation(
-                new SkinAniWavingArms(100, 2000, 7.5, skinCanvas),
-                new SkinAniRunning(100, 100, 30, skinCanvas)
-        );
+        engine = webView.getEngine();
 
-        getChildren().add(skinCanvas);
+        URL url = getClass().getResource("/assets/skinview3d.html");
+        if (url != null) {
+            engine.load(url.toExternalForm());
+        }
 
+        getChildren().add(webView);
+
+        // Bind WebView size to StackPane size
+        webView.prefWidthProperty().bind(widthProperty());
+        webView.prefHeightProperty().bind(heightProperty());
+
+        // Initialize skinview3d when the page is loaded
+        engine.getLoadWorker().stateProperty().addListener((obs, old, state) -> {
+            if (state == Worker.State.SUCCEEDED) {
+                engine.executeScript(String.format(
+                        "initViewer(%d, %d)", (int) getWidth(), (int) getHeight()
+                ));
+                // Flush any pending skin update
+                if (pendingDataUrl != null) {
+                    pushSkin(pendingDataUrl, pendingSlim);
+                    pendingDataUrl = null;
+                }
+            }
+        });
+
+        // React to account selection changes
         InvalidationListener updateSkinListener = obs -> {
             Account selectedAccount = Accounts.selectedAccountProperty().get();
             if (selectedAccount != null) {
                 updateSkinForAccount(selectedAccount);
             } else {
-                skinCanvas.updateSkin(
-                        TexturesLoader.getDefaultSkinImage(),
-                        false,
-                        null
-                );
+                updateSkinFromImage(TexturesLoader.getDefaultSkinImage(), false);
             }
         };
 
@@ -67,8 +96,51 @@ public class SkinViewPane extends StackPane {
             if (val != null) {
                 Image skin = val.getImage();
                 boolean isSlim = TextureModel.SLIM.modelName.equals(val.getMetadata().get("model"));
-                skinCanvas.updateSkin(skin, isSlim, null);
+                updateSkinFromImage(skin, isSlim);
             }
         });
+    }
+
+    private void updateSkinFromImage(Image fxImage, boolean isSlim) {
+        String dataUrl = imageToDataUrl(fxImage);
+        if (dataUrl == null) return;
+
+        Platform.runLater(() -> {
+            if (engine.getLoadWorker().getState() == Worker.State.SUCCEEDED) {
+                pushSkin(dataUrl, isSlim);
+            } else {
+                // Page not loaded yet — queue for later
+                pendingDataUrl = dataUrl;
+                pendingSlim = isSlim;
+            }
+        });
+    }
+
+    private void pushSkin(String dataUrl, boolean isSlim) {
+        // Escape single quotes in base64 data URL (safe for this format)
+        engine.executeScript("updateSkin('" + dataUrl + "', " + isSlim + ")");
+    }
+
+    private static String imageToDataUrl(Image fxImage) {
+        try {
+            int w = (int) fxImage.getWidth();
+            int h = (int) fxImage.getHeight();
+            BufferedImage bufferedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+            PixelReader reader = fxImage.getPixelReader();
+            if (reader != null) {
+                for (int y = 0; y < h; y++) {
+                    for (int x = 0; x < w; x++) {
+                        bufferedImage.setRGB(x, y, reader.getArgb(x, y));
+                    }
+                }
+            }
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", baos);
+            byte[] bytes = baos.toByteArray();
+            return "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
+        } catch (Exception e) {
+            LOG.warning("Failed to convert skin image to data URL", e);
+            return null;
+        }
     }
 }

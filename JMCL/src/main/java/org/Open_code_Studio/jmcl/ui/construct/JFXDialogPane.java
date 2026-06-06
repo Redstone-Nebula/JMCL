@@ -19,6 +19,7 @@ package org.Open_code_Studio.jmcl.ui.construct;
 
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -27,6 +28,18 @@ import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
 public class JFXDialogPane extends StackPane {
     private final ArrayList<Node> stack = new ArrayList<>();
+
+    public JFXDialogPane() {
+        getStyleClass().add("jfx-dialog-pane");
+
+        // Clip to 12px rounded corners to match MD3 dialog shape
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(12);
+        clip.setArcHeight(12);
+        clip.widthProperty().bind(widthProperty());
+        clip.heightProperty().bind(heightProperty());
+        setClip(clip);
+    }
 
     public int size() {
         return stack.size();

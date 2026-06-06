@@ -19,7 +19,9 @@ package org.Open_code_Studio.jmcl.ui.main;
 
 import com.jfoenix.controls.JFXPopup;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import org.Open_code_Studio.jmcl.Metadata;
 import org.Open_code_Studio.jmcl.event.EventBus;
 import org.Open_code_Studio.jmcl.event.RefreshedVersionsEvent;
@@ -148,10 +150,14 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
         protected Skin(RootPage control) {
             super(control);
 
+            // Compact icon-only sidebar: narrow width
+            control.left.setPrefWidth(72);
+
             AccountAdvancedListItem accountListItem = new AccountAdvancedListItem();
             accountListItem.setOnAction(e -> Controllers.navigate(Controllers.getAccountListPage()));
             FXUtils.onSecondaryButtonClicked(accountListItem, () -> AccountListPopupMenu.show(accountListItem, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, accountListItem.getWidth(), 0));
             accountListItem.accountProperty().bind(Accounts.selectedAccountProperty());
+            accountListItem.getStyleClass().add("account-header-item");
 
             GameAdvancedListItem gameListItem = new GameAdvancedListItem();
             gameListItem.setOnAction(e -> {
@@ -224,8 +230,6 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
             });
 
             AdvancedListBox sideBar = new AdvancedListBox()
-                    .startCategory(i18n("account").toUpperCase(Locale.ROOT))
-                    .add(accountListItem)
                     .startCategory(i18n("version").toUpperCase(Locale.ROOT))
                     .add(gameListItem)
                     .add(gameItem)
@@ -240,11 +244,18 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
 
             SkinViewPane skinViewPane = new SkinViewPane();
 
+            // Account header above skin preview
+            VBox leftCenterContent = new VBox();
+            leftCenterContent.getStyleClass().add("left-center-content");
+            leftCenterContent.getChildren().addAll(accountListItem, skinViewPane);
+            VBox.setVgrow(skinViewPane, Priority.ALWAYS);
+
             sideBar.getStyleClass().addAll("card", "elev-2", "md3-sidebar");
-            skinViewPane.getStyleClass().addAll("card", "elev-2");
+            skinViewPane.getStyleClass().addAll("skin-view-pane");
+            getSkinnable().getMainPage().getStyleClass().add("md3-content-area");
 
             setLeft(sideBar);
-            setLeftCenter(skinViewPane);
+            setLeftCenter(leftCenterContent);
             setCenter(getSkinnable().getMainPage());
         }
 

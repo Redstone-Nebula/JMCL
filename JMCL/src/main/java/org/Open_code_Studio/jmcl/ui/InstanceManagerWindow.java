@@ -22,6 +22,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.Open_code_Studio.jmcl.game.JMCLGameRepository;
@@ -109,6 +110,15 @@ public final class InstanceManagerWindow extends Stage {
         root.getStyleClass().add("instance-manager");
         root.setPadding(new Insets(6));
         root.setAlignment(Pos.TOP_CENTER);
+
+        // Clip rounded corners for the undecorated transparent stage
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(12);
+        clip.setArcHeight(12);
+        clip.widthProperty().bind(root.widthProperty());
+        clip.heightProperty().bind(root.heightProperty());
+        root.setClip(clip);
+
         this.root = root;
 
         btnCollapse = new IconButton(SVG.KEYBOARD_ARROW_UP, this::toggleCollapse);

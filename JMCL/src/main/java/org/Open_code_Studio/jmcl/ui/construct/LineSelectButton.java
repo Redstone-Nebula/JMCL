@@ -136,8 +136,7 @@ public class LineSelectButton<T extends @UnknownNullability Object> extends Line
             JFXPopup.PopupVPosition vPosition = determineOptimalPopupPosition(this, popup);
             popup.show(this, vPosition, JFXPopup.PopupHPosition.RIGHT,
                     0,
-                    vPosition == JFXPopup.PopupVPosition.TOP ? this.getHeight() : -this.getHeight(),
-                    true);
+                    vPosition == JFXPopup.PopupVPosition.TOP ? this.getHeight() : -this.getHeight());
         }
     }
 
