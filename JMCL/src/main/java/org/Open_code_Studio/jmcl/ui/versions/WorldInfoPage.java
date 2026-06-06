@@ -19,6 +19,8 @@ package org.Open_code_Studio.jmcl.ui.versions;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.validation.Constraint;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -484,7 +486,12 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
             }
         });
         FXUtils.setValidateWhileTextChanged(mfxTextField, true);
-        mfxTextField.setValidators(new NumberValidator(true));
+        mfxTextField.getValidator().constraint(Constraint.of(
+                "Must be a valid integer",
+                Bindings.createBooleanBinding(
+                        () -> mfxTextField.getText().isEmpty() || mfxTextField.getText().matches("-?\\d+"),
+                        mfxTextField.textProperty())
+        ));
     }
 
     private void bindTagAndTextField(FloatTag floatTag, MFXTextField mfxTextField) {
