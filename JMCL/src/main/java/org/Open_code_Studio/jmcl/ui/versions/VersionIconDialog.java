@@ -52,7 +52,7 @@ public class VersionIconDialog extends DialogPane {
 
         setTitle(i18n("settings.icon"));
         FlowPane pane = new FlowPane();
-        setBody(pane);
+        getChildren().add(1, pane);
 
         pane.getChildren().setAll(
                 createCustomIcon(),

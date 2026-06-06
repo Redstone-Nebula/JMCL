@@ -60,7 +60,7 @@ class AdditionalInstallersPage extends AbstractInstallersPage {
             });
         }
 
-        installable.bind(Bindings.createBooleanBinding(() -> compatible.get() && txtName.validate(), txtName.textProperty(), compatible));
+        installable.bind(Bindings.createBooleanBinding(() -> compatible.get() && txtName.validate().isEmpty(), txtName.textProperty(), compatible));
     }
 
     @Override

@@ -17,7 +17,6 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
@@ -34,6 +33,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Popup;
+import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.game.Version;
 import org.Open_code_Studio.jmcl.setting.Profile;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
@@ -62,14 +62,14 @@ public final class GameListPopupMenu extends StackPane {
         popup.show(owner, screenX, screenY);
     }
 
-    private final MFXListView<GameItem, ?> listView = new MFXListView<>();
+    private final ListView<GameItem> listView = new ListView<>();
     private final BooleanBinding isEmpty = Bindings.isEmpty(listView.getItems());
 
     public GameListPopupMenu() {
         this.setMaxHeight(365);
         this.getStyleClass().add("popup-menu-content");
 
-        listView.setCellFactory(Cell::new);
+        listView.setCellFactory((Callback<ListView<GameItem>, ListCell<GameItem>>) Cell::new);
         listView.setFixedCellSize(60);
         listView.setPrefWidth(300);
 

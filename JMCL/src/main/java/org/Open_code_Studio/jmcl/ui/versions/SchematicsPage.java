@@ -18,12 +18,12 @@
 package org.Open_code_Studio.jmcl.ui.versions;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Skin;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -656,7 +656,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
         }
 
         @Override
-        protected ListCell<Item> createListCell(MFXListView<Item, ?> listView) {
+        protected ListCell<Item> createListCell(ListView<Item> listView) {
             return new Cell();
         }
     }

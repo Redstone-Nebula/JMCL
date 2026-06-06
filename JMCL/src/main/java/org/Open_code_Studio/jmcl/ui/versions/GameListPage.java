@@ -18,7 +18,6 @@
 package org.Open_code_Studio.jmcl.ui.versions;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.animation.PauseTransition;
 import javafx.beans.binding.Bindings;
@@ -29,6 +28,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
@@ -208,7 +208,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
 
                 ComponentList root = new ComponentList();
                 root.getStyleClass().add("no-padding");
-                MFXListView<GameListItem> listView = new MFXListView<>();
+                ListView<GameListItem> listView = new ListView<>();
 
                 {
                     toolbarPane = new TransitionPane();

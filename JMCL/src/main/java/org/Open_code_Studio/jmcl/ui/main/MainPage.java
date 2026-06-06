@@ -254,8 +254,8 @@ public final class MainPage extends StackPane implements DecoratorPage {
             menuButton.getStyleClass().addAll("menu-button", "md3-text-button");
             menuButton.setOnAction(e -> GameListPopupMenu.show(
                     menuButton,
-                    Side.BOTTOM,
-                    Side.RIGHT,
+                    false,
+                    true,
                     0,
                     -menuButton.getHeight(),
                     profile, versions

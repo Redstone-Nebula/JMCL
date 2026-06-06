@@ -18,7 +18,6 @@
 package org.Open_code_Studio.jmcl.ui.download;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
@@ -33,6 +32,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import org.Open_code_Studio.jmcl.download.DownloadProvider;
+import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.download.RemoteVersion;
 import org.Open_code_Studio.jmcl.download.VersionList;
 import org.Open_code_Studio.jmcl.download.cleanroom.CleanroomRemoteVersion;
@@ -291,7 +291,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
     }
 
     private static final class VersionsPageSkin extends SkinBase<VersionsPage> {
-        private final MFXListView<RemoteVersion, ?> list;
+        private final ListView<RemoteVersion> list;
 
         private final TransitionPane transitionPane;
         private final ProgressIndicator spinner;
@@ -384,13 +384,13 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                     ComponentList centrePane = new ComponentList();
                     centrePane.getStyleClass().add("no-padding");
                     {
-                        list = new MFXListView<>();
+                        list = new ListView<>();
                         list.getStyleClass().add("jfx-list-view-float");
                         VBox.setVgrow(list, Priority.ALWAYS);
 
                         control.versions.addListener((InvalidationListener) o -> updateList());
 
-                        list.setCellFactory(listView -> new RemoteVersionListCell(control));
+                        list.setCellFactory((Callback<ListView<RemoteVersion>, ListCell<RemoteVersion>>) listView -> new RemoteVersionListCell(control));
 
                         ComponentList.setVgrow(list, Priority.ALWAYS);
 

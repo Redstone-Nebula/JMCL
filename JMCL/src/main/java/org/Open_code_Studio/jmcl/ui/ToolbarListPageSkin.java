@@ -18,12 +18,12 @@
 package org.Open_code_Studio.jmcl.ui;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SkinBase;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -31,13 +31,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import org.Open_code_Studio.jmcl.ui.construct.ComponentList;
+import org.Open_code_Studio.jmcl.ui.construct.MDListCell;
 import org.Open_code_Studio.jmcl.ui.construct.SpinnerPane;
 
 import java.util.List;
 
 public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends SkinBase<P> {
 
-    protected final MFXListView<E, ?> listView;
+    protected final ListView<E> listView;
 
     public ToolbarListPageSkin(P skinnable) {
         super(skinnable);
@@ -66,9 +67,9 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
         ComponentList.setVgrow(spinnerPane, Priority.ALWAYS);
 
         {
-            this.listView = new MFXListView<>();
+            this.listView = new ListView<>();
             this.listView.setPadding(Insets.EMPTY);
-            this.listView.setCellFactory(listView -> createListCell((MFXListView<E, ?>) listView));
+            this.listView.setCellFactory(this::createListCell);
             this.listView.getStyleClass().add("no-horizontal-scrollbar");
             Bindings.bindContent(this.listView.getItems(), skinnable.itemsProperty());
             FXUtils.ignoreEvent(listView, KeyEvent.KEY_PRESSED, e -> e.getCode() == KeyCode.ESCAPE);
@@ -101,17 +102,14 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
 
     protected abstract List<Node> initializeToolbar(P skinnable);
 
-    protected ListCell<E> createListCell(MFXListView<E, ?> listView) {
-        return new ListCell<>() {
+    protected ListCell<E> createListCell(ListView<E> listView) {
+        return new MDListCell<>(listView) {
             @Override
-            protected void updateItem(E item, boolean empty) {
-                super.updateItem(item, empty);
+            protected void updateControl(E item, boolean empty) {
                 if (!empty && item instanceof Node node) {
-                    setGraphic(node);
-                    setText(null);
+                    getContainer().getChildren().setAll(node);
                 } else {
-                    setGraphic(null);
-                    setText(null);
+                    getContainer().getChildren().clear();
                 }
             }
         };

@@ -32,7 +32,10 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.*;
+import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.auth.AccountFactory;
 import org.Open_code_Studio.jmcl.auth.CharacterSelector;
 import org.Open_code_Studio.jmcl.auth.NoSelectedCharacterException;
@@ -373,7 +376,7 @@ public class CreateAccountPane extends VBox implements DialogAware {
                 add(lblServers, 0, rowIndex);
 
                 cboServers = new MFXComboBox<>();
-                cboServers.setCellFactory(jfxListCellFactory(server -> new TwoLineListItem(server.getName(), server.getUrl())));
+                cboServers.setCellFactory((Callback<ListView<AuthlibInjectorServer>, ListCell<AuthlibInjectorServer>>) jfxListCellFactory(server -> new TwoLineListItem(server.getName(), server.getUrl())));
                 cboServers.setConverter(stringConverter(AuthlibInjectorServer::getName));
                 bindContent(cboServers.getItems(), config().getAuthlibInjectorServers());
                 cboServers.getItems().addListener(onInvalidating(

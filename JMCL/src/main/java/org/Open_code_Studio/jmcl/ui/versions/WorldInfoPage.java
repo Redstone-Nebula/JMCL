@@ -484,7 +484,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
             }
         });
         FXUtils.setValidateWhileTextChanged(mfxTextField, true);
-        mfxTextField.setValidators(new NumberValidator(i18n("input.number"), true));
+        mfxTextField.setValidators(new NumberValidator(true));
     }
 
     private void bindTagAndTextField(FloatTag floatTag, MFXTextField mfxTextField) {
@@ -505,7 +505,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
             }
         });
         FXUtils.setValidateWhileTextChanged(mfxTextField, true);
-        mfxTextField.setValidators(new DoubleValidator(i18n("input.number"), true));
+        mfxTextField.setValidators(new DoubleValidator(true));
     }
 
     private void saveWorldData() {

@@ -19,15 +19,12 @@ package org.Open_code_Studio.jmcl.ui.versions;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Skin;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
@@ -233,7 +230,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
         }
 
         @Override
-        protected ListCell<World> createListCell(MFXListView<World, ?> listView) {
+        protected ListCell<World> createListCell(ListView<World> listView) {
             return new WorldListCell(getSkinnable());
         }
     }

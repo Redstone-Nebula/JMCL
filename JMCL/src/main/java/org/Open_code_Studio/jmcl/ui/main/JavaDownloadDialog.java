@@ -150,14 +150,25 @@ public final class JavaDownloadDialog extends StackPane {
                 checkboxes.add(button);
             }
 
-            setBody(vbox);
+            // Insert body between headingBox and actionsBox
+            int bodyIndex = getChildren().indexOf(getChildren().stream()
+                    .filter(c -> c instanceof HBox)
+                    .findFirst().orElse(null));
+            if (bodyIndex >= 0) {
+                getChildren().add(bodyIndex, vbox);
+            } else {
+                getChildren().add(1, vbox);
+            }
 
             if (!distributions.isEmpty()) {
                 JFXHyperlink more = new JFXHyperlink(i18n("java.download.more"));
                 more.setOnAction(event -> JavaDownloadDialog.this.getChildren().setAll(new DownloadDiscoJava()));
-                setActions(warningLabel, more, acceptPane, cancelButton);
-            } else
-                setActions(warningLabel, acceptPane, cancelButton);
+                // Insert more link before acceptPane
+                int moreIndex = getChildren().indexOf(acceptPane);
+                if (moreIndex >= 0) {
+                    getChildren().add(moreIndex, more);
+                }
+            }
         }
 
         @Override

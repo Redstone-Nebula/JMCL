@@ -250,8 +250,8 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
 
         public void showGameListPopupMenu(Region gameListItem) {
             GameListPopupMenu.show(gameListItem,
-                    Side.TOP,
-                    Side.LEFT,
+                    true,
+                    false,
                     gameListItem.getWidth(),
                     0,
                     getSkinnable().getMainPage().getProfile(),

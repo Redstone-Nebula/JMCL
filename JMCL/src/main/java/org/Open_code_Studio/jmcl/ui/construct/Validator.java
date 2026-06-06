@@ -39,7 +39,6 @@ public final class Validator implements Predicate<String> {
         return predicate -> {
             Validator validator = new Validator(message, predicate);
             InvalidationListener listener = any -> {};
-            validator.getProperties().put(validator, listener);
             control.textProperty().addListener(new WeakInvalidationListener(listener));
         };
     }

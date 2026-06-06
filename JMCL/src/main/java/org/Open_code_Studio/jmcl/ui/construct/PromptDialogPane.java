@@ -17,14 +17,14 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -78,7 +78,7 @@ public class PromptDialogPane extends DialogPane {
             } else if (question instanceof Builder.BooleanQuestion) {
                 HBox hBox = new HBox();
                 GridPane.setColumnSpan(hBox, 1);
-                MFXCheckbox checkBox = new MFXCheckbox();
+                CheckBox checkBox = new CheckBox();
                 hBox.getChildren().setAll(checkBox);
                 HBox.setMargin(checkBox, new Insets(0, 0, 0, -10));
                 checkBox.setSelected(((Builder.BooleanQuestion) question).value);
@@ -86,7 +86,7 @@ public class PromptDialogPane extends DialogPane {
                 checkBox.setText(question.question.get());
                 body.addRow(rowIndex++, hBox);
             } else if (question instanceof Builder.CandidatesQuestion) {
-                MFXComboBox<String> comboBox = new MFXComboBox<>();
+                ComboBox<String> comboBox = new ComboBox<>();
                 comboBox.getItems().setAll(((Builder.CandidatesQuestion) question).candidates);
                 comboBox.getSelectionModel().selectedIndexProperty().addListener((a, b, newValue) ->
                         ((Builder.CandidatesQuestion) question).value = newValue.intValue());

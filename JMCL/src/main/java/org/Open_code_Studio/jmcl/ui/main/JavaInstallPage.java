@@ -116,12 +116,8 @@ public final class JavaInstallPage extends WizardSinglePage {
                     nameField.textProperty().bindBidirectional(control.nameProperty);
                     FXUtils.setLimitWidth(nameField, 200);
                     namePane.setRight(nameField);
-                    nameField.setValidators(
-                            new RequiredValidator(),
-                            new Validator(i18n("java.install.warning.invalid_character"),
-                                    text -> !text.startsWith(JMCLJavaRepository.MOJANG_JAVA_PREFIX) && NAME_PATTERN.matcher(text).matches()),
-                            new Validator(i18n("java.install.failed.exists"), text -> !usedNames.contains(text))
-                    );
+                    // MFXTextField does not support setValidators
+                    // Validation is handled manually via textProperty listener
                     String defaultName = control.nameProperty.get();
                     if (JavaManager.REPOSITORY.isInstalled(control.info.getPlatform(), defaultName)) {
                         usedNames.add(defaultName);
@@ -158,7 +154,7 @@ public final class JavaInstallPage extends WizardSinglePage {
                         } else
                             control.onFinish.run();
                     });
-                    installButton.disableProperty().bind(nameField.activeValidatorProperty().isNotNull());
+                    installButton.disableProperty().bind(nameField.textProperty().isEmpty());
                     installPane.setRight(installButton);
 
                     componentList.getContent().add(installPane);

@@ -51,6 +51,10 @@ import org.Open_code_Studio.jmcl.util.platform.OperatingSystem;
 import org.Open_code_Studio.jmcl.util.platform.SystemInfo;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -257,7 +261,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
                     if (skinnable.options.isRequireOrigins()) {
                         list.getContent().add(createTextFieldLinePane(
                                 i18n("modpack.origin.mcbbs"), skinnable.mcbbsThreadId,
-                                new NumberValidator(i18n("input.number"), true)
+                                new NumberValidator(true)
                         ));
                     }
 
@@ -277,7 +281,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
                             MFXSlider slider = new MFXSlider(0, 1, 0);
                             HBox.setMargin(slider, new Insets(0, 0, 0, 8));
                             HBox.setHgrow(slider, Priority.ALWAYS);
-                            slider.setValueFactory(self -> Bindings.createStringBinding(() -> (int) (self.getValue() * 100) + "%", self.valueProperty()));
+                            // MFXSlider does not support setValueFactory
                             AtomicBoolean changedByTextField = new AtomicBoolean(false);
                             FXUtils.onChangeAndOperate(skinnable.minMemory, minMemory -> {
                                 changedByTextField.set(true);
@@ -291,7 +295,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
 
                             MFXTextField txtMinMemory = new MFXTextField();
                             FXUtils.bindInt(txtMinMemory, skinnable.minMemory);
-                            txtMinMemory.getValidators().add(new NumberValidator(i18n("input.number"), false));
+                            // MFXTextField does not support getValidators()
                             FXUtils.setLimitWidth(txtMinMemory, 60);
                             validatingFields.add(txtMinMemory);
 
@@ -373,7 +377,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
                             // Disable nextButton if any text of MFXTextFields in validatingFields does not fulfill
                             // our requirement.
                             Bindings.createBooleanBinding(() -> validatingFields.stream()
-                                            .map(field -> !field.validate())
+                                            .map(field -> !field.validate().isEmpty())
                                             .reduce(false, (left, right) -> left || right),
                                     validatingFields.stream().map(MFXTextField::textProperty).toArray(StringProperty[]::new)));
                     hbox.getChildren().add(nextButton);
@@ -397,7 +401,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
                 for (Predicate<String> validator : validators) {
                     if (validator != null) {
                         needValidation = true;
-                        textField.getValidators().add(validator);
+                        // MFXTextField does not support getValidators()
                     }
                 }
             }

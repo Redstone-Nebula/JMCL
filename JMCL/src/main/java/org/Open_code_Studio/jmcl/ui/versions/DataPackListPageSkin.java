@@ -19,10 +19,7 @@ package org.Open_code_Studio.jmcl.ui.versions;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import io.github.palexdev.mfxcore.base.beans.range.IntegerRange;
-import io.github.palexdev.virtualizedfx.cells.base.VFXCell;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -36,6 +33,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SkinBase;
 import javafx.scene.image.Image;
@@ -79,7 +77,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
     private final HBox selectingToolbar;
     InvalidationListener updateBarByStateWeakListener;
 
-    private final MFXListView<DataPackInfoObject, VFXCell<DataPackInfoObject>> listView;
+    private final ListView<DataPackInfoObject> listView;
     private final FilteredList<DataPackInfoObject> filteredList;
 
     private final BooleanProperty isSearching = new SimpleBooleanProperty(false);
@@ -98,11 +96,11 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
 
         ComponentList root = new ComponentList();
         root.getStyleClass().add("no-padding");
-        listView = new MFXListView<>();
+        listView = new ListView<>();
         filteredList = new FilteredList<>(skinnable.getItems());
 
         // reason for not using selectAll() is that selectAll() first clears all selected then selects all, causing the toolbar to flicker
-        var selectAllButton = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectIndexes(IntegerRange.of(0, listView.getItems().size())));
+        var selectAllButton = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectRange(0, listView.getItems().size()));
 
         MapChangeListener<Integer, DataPackInfoObject> selectionListener = change -> {
             selectAllButton.setDisable(!listView.getItems().isEmpty()
@@ -211,9 +209,9 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
 
         toggleSelect = i -> {
             if (listView.getSelectionModel().contains(i)) {
-                listView.getSelectionModel().deselectIndex(i);
+                listView.getSelectionModel().deselect(i);
             } else {
-                listView.getSelectionModel().selectIndex(i);
+                listView.getSelectionModel().select(i);
             }
         };
 
@@ -321,7 +319,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
         final TwoLineListItem content = new TwoLineListItem();
         BooleanProperty booleanProperty;
 
-        DataPackInfoListCell(MFXListView<DataPackInfoObject, ?> listView, BooleanProperty isReadOnlyProperty) {
+        DataPackInfoListCell(ListView<DataPackInfoObject> listView, BooleanProperty isReadOnlyProperty) {
             super(listView);
 
             HBox container = new HBox(8);
@@ -371,15 +369,15 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
                     IntStream.rangeClosed(
                                     Math.min(lastShiftClickIndex.get(), currentIndex),
                                     Math.max(lastShiftClickIndex.get(), currentIndex))
-                            .forEach(i -> listView.getSelectionModel().deselectIndex(i));
+                            .forEach(i -> listView.getSelectionModel().deselect(i));
                 } else {
-                    listView.getSelectionModel().selectIndexes(IntegerRange.of(lastShiftClickIndex.get(), currentIndex));
-                    listView.getSelectionModel().selectIndex(currentIndex);
+                    listView.getSelectionModel().selectRange(Math.min(lastShiftClickIndex.get(), currentIndex), Math.max(lastShiftClickIndex.get(), currentIndex) + 1);
+                    listView.getSelectionModel().select(currentIndex);
                 }
                 lastShiftClickIndex.set(-1);
             } else {
                 lastShiftClickIndex.set(currentIndex);
-                listView.getSelectionModel().selectIndex(currentIndex);
+                listView.getSelectionModel().select(currentIndex);
             }
         } else {
             toggleSelect.accept(cell.getIndex());

@@ -20,7 +20,6 @@ package org.Open_code_Studio.jmcl.ui;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -32,9 +31,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.game.GameDumpGenerator;
 import org.Open_code_Studio.jmcl.game.Log;
 import org.Open_code_Studio.jmcl.setting.StyleSheets;
@@ -161,7 +162,7 @@ public final class LogWindow extends Stage {
 
     private final class LogWindowImpl extends Control {
 
-        private final MFXListView<Log, ?> listView = new MFXListView<>();
+        private final ListView<Log> listView = new ListView<>();
         private final BooleanProperty autoScroll = new SimpleBooleanProperty();
         private final StringProperty[] buttonText = new StringProperty[LEVELS.length];
         private final BooleanProperty[] showLevel = new BooleanProperty[LEVELS.length];
@@ -182,7 +183,7 @@ public final class LogWindow extends Stage {
 
             cboLines.getItems().setAll(500, 2000, 5000, 10000);
             cboLines.setValue(Log.getLogLines());
-            cboLines.getSelectionModel().selectedItemProperty().addListener((a, b, newValue) -> config().setLogLines(newValue));
+            ((SingleSelectionModel<Integer>) cboLines.getSelectionModel()).selectedItemProperty().addListener((a, b, newValue) -> config().setLogLines(newValue));
 
             for (int i = 0; i < LEVELS.length; ++i) {
                 buttonText[i].bind(Bindings.concat(levelCountMap.get(LEVELS[i]), " " + LEVELS[i].name().toLowerCase(Locale.ROOT) + "s"));
@@ -304,7 +305,7 @@ public final class LogWindow extends Stage {
             }
 
             {
-                MFXListView<Log, ?> listView = control.listView;
+                ListView<Log> listView = control.listView;
                 listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
                 listView.getItems().addListener((InvalidationListener) observable -> {
                     if (!listView.getItems().isEmpty() && control.autoScroll.get())

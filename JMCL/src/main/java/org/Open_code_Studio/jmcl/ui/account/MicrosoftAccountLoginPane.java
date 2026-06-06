@@ -30,6 +30,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
@@ -135,11 +136,10 @@ public class MicrosoftAccountLoginPane extends VBox implements DialogAware {
     private void onStep(Step currentStep) {
         VBox rootContainer = new VBox(10);
         getChildren().clear();
-        if (!pseudoClassStateChanged(PseudoClass.getPseudoClass("bodyonly"), false)) {
-            Label heading = new Label(accountToRelogin != null ? i18n("account.login.refresh") : i18n("account.create.microsoft"));
-            heading.getStyleClass().add("header-label");
-            getChildren().add(heading);
-        }
+        pseudoClassStateChanged(PseudoClass.getPseudoClass("bodyonly"), false);
+        Label heading = new Label(accountToRelogin != null ? i18n("account.login.refresh") : i18n("account.create.microsoft"));
+        heading.getStyleClass().add("header-label");
+        getChildren().add(heading);
         getChildren().add(rootContainer);
 
         if (Accounts.OAUTH_CALLBACK.getClientId().isEmpty()) {

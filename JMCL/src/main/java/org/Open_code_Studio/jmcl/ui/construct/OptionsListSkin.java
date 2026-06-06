@@ -17,7 +17,6 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.beans.InvalidationListener;
 import javafx.beans.WeakInvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -28,22 +27,24 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 
 /// @author Glavo
 public final class OptionsListSkin extends SkinBase<OptionsList> {
 
-    private final MFXListView<OptionsList.Element, ?> listView;
+    private final ListView<OptionsList.Element> listView;
     private final ObjectBinding<ContentPaddings> contentPaddings;
 
     OptionsListSkin(OptionsList control) {
         super(control);
 
-        this.listView = new MFXListView<>();
+        this.listView = new ListView<>();
         listView.setItems(control.getElements());
-        listView.setCellFactory(listView1 -> new Cell());
+        listView.setCellFactory((Callback<ListView<OptionsList.Element>, ListCell<OptionsList.Element>>) listView1 -> new Cell());
 
         this.contentPaddings = Bindings.createObjectBinding(() -> {
             Insets padding = control.getContentPadding();

@@ -19,10 +19,7 @@ package org.Open_code_Studio.jmcl.ui.versions;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
-import io.github.palexdev.mfxcore.base.beans.range.IntegerRange;
-import io.github.palexdev.virtualizedfx.cells.base.VFXCell;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -30,13 +27,13 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.MapChangeListener;
 import javafx.css.PseudoClass;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -99,7 +96,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
     private final HBox toolbarNormal;
     private final HBox toolbarSelecting;
 
-    private final MFXListView<ModInfoObject, VFXCell<ModInfoObject>> listView;
+    private final ListView<ModInfoObject> listView;
     private final MFXTextField searchField;
 
     // FXThread
@@ -114,7 +111,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
 
         ComponentList root = new ComponentList();
         root.getStyleClass().add("no-padding");
-        listView = new MFXListView<>();
+        listView = new ListView<>();
         listView.getStyleClass().add("no-horizontal-scrollbar");
 
         {
@@ -169,7 +166,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             // Toolbar Selecting
 
             // reason for not using selectAll() is that selectAll() first clears all selected then selects all, causing the toolbar to flicker
-            var selectAll = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectIndexes(IntegerRange.of(0, listView.getItems().size())));
+            var selectAll = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectRange(0, listView.getItems().size()));
 
             MapChangeListener<Integer, ModInfoObject> selectionListener = change -> {
                 selectAll.setDisable(!listView.getItems().isEmpty()
@@ -242,7 +239,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                 ModInfoObject selectedItem = listView.getSelectionModel().getSelectedItem();
                 if (selectedItem != null && listView.getSelectionModel().getSelectedItems().size() == 1) {
                     listView.getSelectionModel().clearSelection();
-                    Controllers.dialog(new ModInfoDialog(selectedItem));
+                    new ModInfoDialog(selectedItem).showAndWait();
                 }
             });
 
@@ -432,17 +429,17 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
         }
     }
 
-    final class ModInfoDialog extends VBox {
+    final class ModInfoDialog extends Dialog<Void> {
 
         ModInfoDialog(ModInfoObject modInfo) {
-            setSpacing(8);
-            setPadding(new Insets(16));
+            VBox content = new VBox(8);
+            content.setPadding(new Insets(16));
 
             HBox titleContainer = new HBox();
             titleContainer.setSpacing(8);
 
             Stage stage = Controllers.getStage();
-            maxWidthProperty().bind(stage.widthProperty().multiply(0.7));
+            getDialogPane().maxWidthProperty().bind(stage.widthProperty().multiply(0.7));
 
             var imageContainer = new ImageContainer(40);
             modInfo.loadIcon(imageContainer, null);
@@ -467,7 +464,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             title.setSubtitle(subtitle.toString());
 
             titleContainer.getChildren().setAll(imageContainer, title);
-            getChildren().add(titleContainer);
+            content.getChildren().add(titleContainer);
 
             Label description = new Label(modInfo.getModInfo().getDescription().toString());
             description.setWrapText(true);
@@ -484,11 +481,11 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                 descriptionPane.setPrefViewportHeight(targetHeight);
             });
 
-            getChildren().add(descriptionPane);
+            content.getChildren().add(descriptionPane);
 
             VBox actionsBox = new VBox(8);
             actionsBox.setAlignment(Pos.CENTER);
-            getChildren().add(actionsBox);
+            content.getChildren().add(actionsBox);
 
             if (StringUtils.isNotBlank(modInfo.getModInfo().getId())) {
                 for (Pair<String, ? extends RemoteModRepository> item : Arrays.asList(
@@ -523,7 +520,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                                 }
 
                                 button.setOnAction(e -> {
-                                    fireEvent(new DialogCloseEvent());
+                                    close();
                                     Controllers.navigate(new DownloadPage(
                                             repository instanceof CurseForgeRemoteModRepository ? JMCLLocalizedDownloadListPage.ofCurseForgeMod(null, false) : JMCLLocalizedDownloadListPage.ofModrinthMod(null, false),
                                             remoteMod,
@@ -543,7 +540,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             if (StringUtils.isNotBlank(modInfo.getModInfo().getUrl())) {
                 Hyperlink officialPageButton = new Hyperlink(i18n("mods.url"));
                 officialPageButton.setOnAction(e -> {
-                    fireEvent(new DialogCloseEvent());
+                    close();
                     FXUtils.openLink(modInfo.getModInfo().getUrl());
                 });
 
@@ -553,7 +550,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             if (modInfo.getModTranslations() == null || StringUtils.isBlank(modInfo.getModTranslations().getMcmod())) {
                 Hyperlink searchButton = new Hyperlink(i18n("mods.mcmod.search"));
                 searchButton.setOnAction(e -> {
-                    fireEvent(new DialogCloseEvent());
+                    close();
                     FXUtils.openLink(NetworkUtils.withQuery("https://search.mcmod.cn/s", mapOf(
                             pair("key", modInfo.getModInfo().getName()),
                             pair("site", "all"),
@@ -564,7 +561,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             } else {
                 Hyperlink mcmodButton = new Hyperlink(i18n("mods.mcmod.page"));
                 mcmodButton.setOnAction(e -> {
-                    fireEvent(new DialogCloseEvent());
+                    close();
                     FXUtils.openLink(ModTranslations.MOD.getMcmodUrl(modInfo.getModTranslations()));
                 });
                 actionsBox.getChildren().add(mcmodButton);
@@ -575,11 +572,15 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             MFXButton okButton = new MFXButton();
             okButton.getStyleClass().add("dialog-accept");
             okButton.setText(i18n("button.ok"));
-            okButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
+            okButton.setOnAction(e -> close());
             buttonBar.getChildren().add(okButton);
-            getChildren().add(buttonBar);
+            content.getChildren().add(buttonBar);
 
-            onEscPressed(this, okButton::fire);
+            getDialogPane().setContent(content);
+            getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+            setResultConverter(buttonType -> null);
+
+            onEscPressed(content, okButton::fire);
         }
     }
 
@@ -604,7 +605,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
 
         Tooltip warningTooltip;
 
-        ModInfoListCell(MFXListView<ModInfoObject, ?> listView) {
+        ModInfoListCell(ListView<ModInfoObject> listView) {
             super(listView);
 
             this.getStyleClass().add("mod-info-list-cell");
@@ -714,7 +715,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                 popup.get().show(restoreButton, bounds.getMaxX(), bounds.getMinY());
             });
             revealButton.setOnAction(e -> FXUtils.showFileInExplorer(modInfo.getFile()));
-            infoButton.setOnAction(e -> Controllers.dialog(new ModInfoDialog(dataItem)));
+            infoButton.setOnAction(e -> new ModInfoDialog(dataItem).showAndWait());
 
             if (!warning.isEmpty()) {
                 pseudoClassStateChanged(WARNING, true);

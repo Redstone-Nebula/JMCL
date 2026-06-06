@@ -18,11 +18,11 @@
 package org.Open_code_Studio.jmcl.ui.versions;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Skin;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -153,7 +153,7 @@ public final class ResourcepackListPage extends ListPageBase<ResourcepackListPag
         }
 
         @Override
-        protected ListCell<ResourcepackInfoObject> createListCell(MFXListView<ResourcepackInfoObject, ?> listView) {
+        protected ListCell<ResourcepackInfoObject> createListCell(ListView<ResourcepackInfoObject> listView) {
             return new ResourcepackListCell(listView, getSkinnable());
         }
     }
@@ -200,7 +200,7 @@ public final class ResourcepackListPage extends ListPageBase<ResourcepackListPag
         private final MFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
         private final ResourcepackListPage page;
 
-        public ResourcepackListCell(MFXListView<ResourcepackInfoObject, ?> listView, ResourcepackListPage page) {
+        public ResourcepackListCell(ListView<ResourcepackInfoObject> listView, ResourcepackListPage page) {
             super(listView);
 
             this.page = page;

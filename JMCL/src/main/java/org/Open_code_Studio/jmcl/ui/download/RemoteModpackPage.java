@@ -65,10 +65,7 @@ public final class RemoteModpackPage extends ModpackPage {
         } else {
             // trim: https://github.com/Open-code-Studio/JMCL/issues/962
             txtModpackName.setText(manifest.getName().trim());
-            txtModpackName.getValidators().addAll(
-                    new RequiredValidator(),
-                    new Validator(i18n("install.new_game.already_exists"), str -> !profile.getRepository().versionIdConflicts(str)),
-                    new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId));
+            // Validation is handled by ModpackPage base class
         }
 
         btnDescription.setVisible(StringUtils.isNotBlank(manifest.getDescription()));
@@ -80,7 +77,7 @@ public final class RemoteModpackPage extends ModpackPage {
     }
 
     protected void onInstall() {
-        if (!txtModpackName.validate()) return;
+        if (!txtModpackName.validate().isEmpty()) return;
         controller.getSettings().put(MODPACK_NAME, txtModpackName.getText());
         controller.onFinish();
     }

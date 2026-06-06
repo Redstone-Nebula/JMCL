@@ -17,8 +17,11 @@
  */
 package org.Open_code_Studio.jmcl.ui.decorator;
 
+import javafx.animation.Interpolator;
 import javafx.scene.Node;
 import javafx.scene.input.*;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.Open_code_Studio.jmcl.auth.authlibinjector.AuthlibInjectorDnD;

@@ -17,8 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import io.github.palexdev.materialfx.controls.MFXListView;
-import io.github.palexdev.virtualizedfx.cells.base.VFXCell;
+import javafx.scene.control.ListView;
 import javafx.beans.binding.DoubleBinding;
 import javafx.css.PseudoClass;
 import javafx.scene.Node;
@@ -27,13 +26,13 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 
-public abstract class MDListCell<T> extends ListCell<T> implements VFXCell<T> {
+public abstract class MDListCell<T> extends ListCell<T> {
     private static final PseudoClass SELECTED = PseudoClass.getPseudoClass("selected");
 
     private final StackPane container = new StackPane();
     private final StackPane root = new StackPane();
 
-    public MDListCell(MFXListView<T, ?> listView) {
+    public MDListCell(ListView<T> listView) {
 
         setText(null);
         setGraphic(null);
@@ -77,12 +76,10 @@ public abstract class MDListCell<T> extends ListCell<T> implements VFXCell<T> {
 
     protected abstract void updateControl(T item, boolean empty);
 
-    @Override
     public Node toNode() {
         return this;
     }
 
-    @Override
     public void updateItem(T item) {
         updateItem(item, false);
     }

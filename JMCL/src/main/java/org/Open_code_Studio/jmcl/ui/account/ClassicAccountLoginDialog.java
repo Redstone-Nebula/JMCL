@@ -76,7 +76,6 @@ public class ClassicAccountLoginDialog extends StackPane {
 
             txtPassword = new MFXPasswordField();
             txtPassword.setOnAction(e -> onAccept());
-            txtPassword.setLabelFloat(true);
             txtPassword.setPromptText(i18n("account.password"));
 
             body.getChildren().setAll(usernameLabel, txtPassword);

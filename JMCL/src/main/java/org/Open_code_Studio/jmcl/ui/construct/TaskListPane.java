@@ -18,7 +18,6 @@
 package org.Open_code_Studio.jmcl.ui.construct;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import io.github.palexdev.materialfx.controls.MFXProgressBar;
 import javafx.application.Platform;
 import javafx.beans.WeakListener;
@@ -31,11 +30,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.download.cleanroom.CleanroomInstallTask;
 import org.Open_code_Studio.jmcl.download.fabric.FabricAPIInstallTask;
 import org.Open_code_Studio.jmcl.download.fabric.FabricInstallTask;
@@ -91,7 +92,7 @@ public final class TaskListPane extends StackPane {
     private static final Insets STAGED_PROGRESS_NODE_PADDING = new Insets(0, 0, 4, 26);
 
     private TaskExecutor executor;
-    private final MFXListView<Node, ?> listView = new MFXListView<>();
+    private final ListView<Node> listView = new ListView<>();
     private final Map<Task<?>, ProgressListNode> nodes = new HashMap<>();
     private final Map<String, StageNode> stageNodes = new HashMap<>();
     private final ObjectProperty<Insets> progressNodePadding = new SimpleObjectProperty<>(Insets.EMPTY);
@@ -99,7 +100,7 @@ public final class TaskListPane extends StackPane {
 
     public TaskListPane() {
         listView.setPadding(new Insets(12, 0, 0, 0));
-        listView.setCellFactory(l -> new Cell());
+        listView.setCellFactory((Callback<ListView<Node>, ListCell<Node>>) l -> new Cell());
         listView.setSelectionModel(null);
         FXUtils.onChangeAndOperate(listView.widthProperty(), width -> {
             double w = width.doubleValue();

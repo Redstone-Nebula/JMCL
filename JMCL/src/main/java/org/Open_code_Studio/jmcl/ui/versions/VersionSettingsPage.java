@@ -19,7 +19,6 @@ package org.Open_code_Studio.jmcl.ui.versions;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -29,8 +28,11 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Toggle;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -80,7 +82,7 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
     private String versionId;
 
     private final VBox rootPane;
-    private final MFXComboBox<String> cboWindowsSize;
+    private final ComboBox<String> cboWindowsSize;
     private final MFXTextField txtServerIP;
     private final ComponentList componentList;
     private final LineSelectButton<LauncherVisibility> launcherVisibilityPane;
@@ -204,7 +206,7 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
             javaSublist.setHasSubtitle(true);
             javaAutoDeterminedOption = new MultiFileItem.Option<>(i18n("settings.game.java_directory.auto"), pair(JavaVersionType.AUTO, null));
             javaVersionOption = new MultiFileItem.StringOption<>(i18n("settings.game.java_directory.version"), pair(JavaVersionType.VERSION, null));
-            javaVersionOption.setValidators(new NumberValidator(true));
+            FXUtils.setValidateWhileTextChanged(javaVersionOption.getCustomField(), true);
             FXUtils.setLimitWidth(javaVersionOption.getCustomField(), 40);
             javaCustomOption = new MultiFileItem.FileOption<Pair<JavaVersionType, JavaRuntime>>(i18n("settings.custom"), pair(JavaVersionType.CUSTOM, null))
                     .setChooserTitle(i18n("settings.game.java_directory.choose"));
@@ -291,7 +293,6 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
                     FXUtils.setLimitWidth(txtMaxMemory, 60);
                     FXUtils.setValidateWhileTextChanged(txtMaxMemory, true);
                     txtMaxMemory.textProperty().bindBidirectional(maxMemory, SafeStringConverter.fromInteger());
-                    txtMaxMemory.setValidators(new NumberValidator(i18n("input.number"), false));
 
                     lowerBoundPane.getChildren().setAll(label, slider, txtMaxMemory, new Label(i18n("settings.memory.unit.mib")));
                 }
@@ -350,7 +351,7 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
                 BorderPane right = new BorderPane();
                 dimensionPane.setRight(right);
                 {
-                    cboWindowsSize = new MFXComboBox<>();
+                    cboWindowsSize = new ComboBox<>();
                     cboWindowsSize.setPrefWidth(150);
                     right.setLeft(cboWindowsSize);
                     cboWindowsSize.setEditable(true);

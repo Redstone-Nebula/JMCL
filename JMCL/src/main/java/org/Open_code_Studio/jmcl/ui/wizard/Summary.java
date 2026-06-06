@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.wizard;
 
-import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
 /**
@@ -29,7 +29,7 @@ public final class Summary {
     private final Object result;
 
     public Summary(String[] items, Object result) {
-        MFXListView<String, ?> view = new MFXListView<>();
+        ListView<String> view = new ListView<>();
         view.getItems().addAll(items);
 
         this.component = view;

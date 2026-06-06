@@ -232,7 +232,7 @@ public class DownloadPage extends Control implements DecoratorPage {
 
                 if (getSkinnable().mod != null) {
                     Hyperlink openMcmodButton = new Hyperlink(i18n("mods.mcmod"));
-                    openMcmodButton.setExternalLink(getSkinnable().translations.getMcmodUrl(getSkinnable().mod));
+                    openMcmodButton.setOnAction(e -> FXUtils.openLink(getSkinnable().translations.getMcmodUrl(getSkinnable().mod)));
                     descriptionPane.getChildren().add(openMcmodButton);
                     openMcmodButton.setMinWidth(Region.USE_PREF_SIZE);
                 }

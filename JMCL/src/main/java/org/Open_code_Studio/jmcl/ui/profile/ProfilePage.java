@@ -83,12 +83,9 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
 
                         txtProfileName = new MFXTextField();
                         profileNamePane.setRight(txtProfileName);
-                        txtProfileName.getValidators().add(new RequiredValidator(i18n("input.not_empty")));
                         BorderPane.setMargin(txtProfileName, new Insets(8, 0, 8, 0));
 
                         txtProfileName.setText(profileDisplayName);
-                        txtProfileName.getValidators().add(new Validator(i18n("profile.already_exists"),
-                                str -> Profiles.getProfiles().stream().noneMatch(profile -> profile.getName().equals(str))));
                     }
 
                     gameDir = new LineFileChooserButton();
@@ -127,7 +124,13 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
             saveButton.setPrefSize(100, 40);
             saveButton.setOnAction(e -> onSave());
             saveButton.disableProperty().bind(Bindings.createBooleanBinding(
-                    () -> !txtProfileName.validate() || StringUtils.isBlank(getLocation()),
+                    () -> {
+                        String text = txtProfileName.getText();
+                        return StringUtils.isBlank(text)
+                               || Profiles.getProfiles().stream()
+                                    .anyMatch(p -> !p.equals(profile) && p.getName().equals(text))
+                               || StringUtils.isBlank(getLocation());
+                    },
                     txtProfileName.textProperty(), location));
         }
 

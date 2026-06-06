@@ -21,6 +21,7 @@ import static javafx.collections.FXCollections.emptyObservableList;
 import static javafx.collections.FXCollections.observableList;
 import static javafx.collections.FXCollections.singletonObservableList;
 
+import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.util.javafx.BindingMapping;
 
@@ -28,6 +29,7 @@ import io.github.palexdev.materialfx.controls.MFXComboBox;
 
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.text.Font;
 
 public final class FontComboBox extends MFXComboBox<String> {
@@ -39,7 +41,7 @@ public final class FontComboBox extends MFXComboBox<String> {
 
         styleProperty().bind(Bindings.concat("-fx-font-family: \"", valueProperty(), "\""));
 
-        setCellFactory(listView -> new ListCell<String>() {
+        setCellFactory((Callback<ListView<String>, ListCell<String>>) listView -> new ListCell<String>() {
             @Override
             public void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);

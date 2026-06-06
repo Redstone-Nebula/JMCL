@@ -95,7 +95,7 @@ public abstract class ModpackPage extends SpinnerPane implements WizardPage {
 
                 btnInstall = FXUtils.newRaisedButton(i18n("button.install"));
                 btnInstall.setOnAction(e -> onInstall());
-                btnInstall.disableProperty().bind(createBooleanBinding(() -> !txtModpackName.validate(), txtModpackName.textProperty()));
+                btnInstall.disableProperty().bind(createBooleanBinding(() -> !txtModpackName.validate().isEmpty(), txtModpackName.textProperty()));
                 descriptionPane.setRight(btnInstall);
             }
 

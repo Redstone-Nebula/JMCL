@@ -18,7 +18,6 @@
 package org.Open_code_Studio.jmcl.ui.main;
 
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -26,6 +25,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Skin;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
@@ -210,7 +210,7 @@ public final class JavaManagementPage extends ListPageBase<JavaRuntime> {
         }
 
         @Override
-        protected ListCell<JavaRuntime> createListCell(MFXListView<JavaRuntime, ?> listView) {
+        protected ListCell<JavaRuntime> createListCell(ListView<JavaRuntime> listView) {
             return new JavaItemCell(listView);
         }
     }
@@ -223,7 +223,7 @@ public final class JavaManagementPage extends ListPageBase<JavaRuntime> {
         private final StackPane removeIconPane;
         private final Tooltip removeTooltip = new Tooltip();
 
-        JavaItemCell(MFXListView<JavaRuntime, ?> listView) {
+        JavaItemCell(ListView<JavaRuntime> listView) {
             BorderPane root = new BorderPane();
 
             HBox center = new HBox();
