@@ -75,7 +75,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
     private final HBox selectingToolbar;
     InvalidationListener updateBarByStateWeakListener;
 
-    private final MFXListView<DataPackInfoObject> listView;
+    private final MFXListView<DataPackInfoObject, ?> listView;
     private final FilteredList<DataPackInfoObject> filteredList;
 
     private final BooleanProperty isSearching = new SimpleBooleanProperty(false);
@@ -314,7 +314,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
         final TwoLineListItem content = new TwoLineListItem();
         BooleanProperty booleanProperty;
 
-        DataPackInfoListCell(MFXListView<DataPackInfoObject> listView, BooleanProperty isReadOnlyProperty) {
+        DataPackInfoListCell(MFXListView<DataPackInfoObject, ?> listView, BooleanProperty isReadOnlyProperty) {
             super(listView);
 
             HBox container = new HBox(8);

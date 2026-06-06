@@ -1,0 +1,166 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "io.github.palexdev",
+    "module": "materialfx",
+    "version": "21.18.0-alpha",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.10"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxcore",
+          "version": {
+            "requires": "11.11.4"
+          }
+        },
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxresources",
+          "version": {
+            "requires": "11.12.2"
+          }
+        },
+        {
+          "group": "io.github.palexdev",
+          "module": "virtualizedfx",
+          "version": {
+            "requires": "21.7.9"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "materialfx-21.18.0-alpha.jar",
+          "url": "materialfx-21.18.0-alpha.jar",
+          "size": 5163560,
+          "sha512": "05598fbb95479a5f392f341206ca90be6cc930ef106d5181a515d021d35c98b44dfeb5c9577ecf19bddee56c9ed30868a994ac8b2ac7e163bc80cdcdeefcd84d",
+          "sha256": "8736a47e3cdbb803ad503fd5f9f03e834f4bf974fafd2333c073f2c72141bc26",
+          "sha1": "4d8a6eabe9c9d2203b4e6303e62eecdbcfae4f54",
+          "md5": "c1c8178ba62028fa1fffc3facca2f71f"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 21,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxcore",
+          "version": {
+            "requires": "11.11.4"
+          }
+        },
+        {
+          "group": "io.github.palexdev",
+          "module": "mfxresources",
+          "version": {
+            "requires": "11.12.2"
+          }
+        },
+        {
+          "group": "io.github.palexdev",
+          "module": "virtualizedfx",
+          "version": {
+            "requires": "21.7.9"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "materialfx-21.18.0-alpha.jar",
+          "url": "materialfx-21.18.0-alpha.jar",
+          "size": 5163560,
+          "sha512": "05598fbb95479a5f392f341206ca90be6cc930ef106d5181a515d021d35c98b44dfeb5c9577ecf19bddee56c9ed30868a994ac8b2ac7e163bc80cdcdeefcd84d",
+          "sha256": "8736a47e3cdbb803ad503fd5f9f03e834f4bf974fafd2333c073f2c72141bc26",
+          "sha1": "4d8a6eabe9c9d2203b4e6303e62eecdbcfae4f54",
+          "md5": "c1c8178ba62028fa1fffc3facca2f71f"
+        }
+      ]
+    },
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "materialfx-21.18.0-alpha-all.jar",
+          "url": "materialfx-21.18.0-alpha-all.jar",
+          "size": 11598140,
+          "sha512": "ec691d0148ae290248f72f351c0cb64647d02598bd8e4a656752e34f905e17768f632489973a966d5b41a094743e717b7a69fd49858e8f566fa5734457357498",
+          "sha256": "2126ae627e1ebbc836a96c46c0a894ccaddc9690f7dd200ee2ded8070a32ca98",
+          "sha1": "b2cf92d54d97c3adeb3a81b23eba4f0b77a551a9",
+          "md5": "0ebf78f9657bdea4ca1f8f8d1ed7cfd7"
+        }
+      ]
+    },
+    {
+      "name": "javadocElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "materialfx-21.18.0-alpha-javadoc.jar",
+          "url": "materialfx-21.18.0-alpha-javadoc.jar",
+          "size": 6333718,
+          "sha512": "04238e78d6b57d0340c9b85991e267877f3aa3396028347f62c8818b4bf4d85a82aecd231ef1adc4524856f85b78ba0abc89737c8233d5ed4cf96bc9a6f9206a",
+          "sha256": "c9aac2bfe5aaf192512ef90afc5a490f293ca42980c920e7089e278a86fa04c6",
+          "sha1": "e3f00328ab3c5315c5a5a0121017adab99c29554",
+          "md5": "36e080fd032890ad8556c4af84f40f19"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "materialfx-21.18.0-alpha-sources.jar",
+          "url": "materialfx-21.18.0-alpha-sources.jar",
+          "size": 4812121,
+          "sha512": "45d7e248ea3554eb4e3fc3e97e7f9772e4b67a23559457b8fc86b39993b5681e078daeadefa4e601418cfb86d69073bf32fc1d44e8c8e0a51eabe91a747107eb",
+          "sha256": "4cc7ecb043041d49c36e9ee0e2ea28032372c88cb21d3cb7a0598bedeb833427",
+          "sha1": "031d8153aa5e12150236c63783c6cd5d10c4336b",
+          "md5": "f2778e619adf9bf8c205685a2a75c364"
+        }
+      ]
+    }
+  ]
+}

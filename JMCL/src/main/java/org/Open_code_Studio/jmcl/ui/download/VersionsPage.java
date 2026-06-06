@@ -17,7 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import com.jfoenix.controls.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXListView;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -172,13 +174,13 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
             actions.setAlignment(Pos.CENTER);
             {
                 if ("game".equals(control.libraryId)) {
-                    JFXButton wikiButton = newToggleButton4(SVG.GLOBE_BOOK);
+                    MFXButton wikiButton = newToggleButton4(SVG.GLOBE_BOOK);
                     wikiButton.setOnAction(event -> onOpenWiki());
                     FXUtils.installFastTooltip(wikiButton, i18n("wiki.tooltip"));
                     actions.getChildren().add(wikiButton);
                 }
 
-                JFXButton actionButton = newToggleButton4(SVG.ARROW_FORWARD);
+                MFXButton actionButton = newToggleButton4(SVG.ARROW_FORWARD);
                 actionButton.setOnAction(e -> onAction());
                 actions.getChildren().add(actionButton);
             }
@@ -289,13 +291,13 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
     }
 
     private static final class VersionsPageSkin extends SkinBase<VersionsPage> {
-        private final JFXListView<RemoteVersion> list;
+        private final MFXListView<RemoteVersion, ?> list;
 
         private final TransitionPane transitionPane;
-        private final JFXSpinner spinner;
+        private final ProgressIndicator spinner;
 
-        private final JFXTextField nameField;
-        private final JFXComboBox<VersionTypeFilter> categoryField = new JFXComboBox<>();
+        private final MFXTextField nameField;
+        private final ComboBox<VersionTypeFilter> categoryField = new ComboBox<>();
 
         VersionsPageSkin(VersionsPage control) {
             super(control);
@@ -327,7 +329,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                 int rowIndex = 0;
 
                 {
-                    nameField = new JFXTextField();
+                    nameField = new MFXTextField();
                     nameField.setPromptText(i18n("version.search.prompt"));
                     nameField.textProperty().addListener(o -> updateList());
 
@@ -351,7 +353,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                     categoryField.setConverter(stringConverter(type -> i18n("version.game." + type.name().toLowerCase(Locale.ROOT))));
                     categoryField.getSelectionModel().selectedItemProperty().addListener(o -> updateList());
 
-                    JFXButton refreshButton = FXUtils.newRaisedButton(i18n("button.refresh"));
+                    MFXButton refreshButton = FXUtils.newRaisedButton(i18n("button.refresh"));
                     refreshButton.setOnAction(event -> control.onRefresh());
 
                     if (control.versionList.hasType()) {
@@ -374,7 +376,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                 root.setCenter(spinnerPane);
 
                 transitionPane = new TransitionPane();
-                spinner = new JFXSpinner();
+                spinner = new ProgressIndicator();
 
                 StackPane centerWrapper = new StackPane();
                 centerWrapper.setStyle("-fx-padding: 10;");
@@ -382,7 +384,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                     ComponentList centrePane = new ComponentList();
                     centrePane.getStyleClass().add("no-padding");
                     {
-                        list = new JFXListView<>();
+                        list = new MFXListView<>();
                         list.getStyleClass().add("jfx-list-view-float");
                         VBox.setVgrow(list, Priority.ALWAYS);
 

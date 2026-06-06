@@ -17,9 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXSpinner;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import io.nayuki.qrcodegen.QrCode;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -28,7 +26,9 @@ import javafx.css.PseudoClass;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -58,7 +58,7 @@ import static org.Open_code_Studio.jmcl.setting.ConfigHolder.config;
 import static org.Open_code_Studio.jmcl.ui.FXUtils.onEscPressed;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
-public class MicrosoftAccountLoginPane extends JFXDialogLayout implements DialogAware {
+public class MicrosoftAccountLoginPane extends VBox implements DialogAware {
     private final Account accountToRelogin;
     private final Consumer<AuthInfo> loginCallback;
     private final Runnable cancelCallback;
@@ -71,7 +71,7 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
     private TaskExecutor browserTaskExecutor;
     private TaskExecutor deviceTaskExecutor;
 
-    private final JFXButton btnLogin;
+    private final MFXButton btnLogin;
     private final SpinnerPane loginButtonSpinner;
 
     public MicrosoftAccountLoginPane() {
@@ -87,31 +87,34 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
         this.loginCallback = callback;
         this.cancelCallback = onCancel;
 
+        setSpacing(15);
+        setPadding(new javafx.geometry.Insets(24));
         getStyleClass().add("microsoft-login-dialog");
         if (bodyonly) {
             this.pseudoClassStateChanged(PseudoClass.getPseudoClass("bodyonly"), true);
         } else {
             Label heading = new Label(accountToRelogin != null ? i18n("account.login.refresh") : i18n("account.create.microsoft"));
             heading.getStyleClass().add("header-label");
-            setHeading(heading);
+            getChildren().add(heading);
         }
 
         this.setMaxWidth(650);
 
         onEscPressed(this, this::onCancel);
 
-        btnLogin = new JFXButton(i18n("account.login"));
+        btnLogin = new MFXButton(i18n("account.login"));
         btnLogin.getStyleClass().add("dialog-accept");
 
         loginButtonSpinner = new SpinnerPane();
         loginButtonSpinner.getStyleClass().add("small-spinner-pane");
         loginButtonSpinner.setContent(btnLogin);
 
-        JFXButton btnCancel = new JFXButton(i18n("button.cancel"));
+        MFXButton btnCancel = new MFXButton(i18n("button.cancel"));
         btnCancel.getStyleClass().add("dialog-cancel");
         btnCancel.setOnAction(e -> onCancel());
 
-        setActions(loginButtonSpinner, btnCancel);
+        HBox actions = new HBox(8, loginButtonSpinner, btnCancel);
+        actions.setAlignment(Pos.CENTER_RIGHT);
 
         holder.registerWeak(Accounts.OAUTH_CALLBACK.onOpenBrowserAuthorizationCode, event -> Platform.runLater(() -> {
             if (step.get() instanceof Step.StartAuthorizationCodeLogin)
@@ -131,8 +134,13 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
 
     private void onStep(Step currentStep) {
         VBox rootContainer = new VBox(10);
-        setBody(rootContainer);
-        rootContainer.setAlignment(Pos.TOP_CENTER);
+        getChildren().clear();
+        if (!pseudoClassStateChanged(PseudoClass.getPseudoClass("bodyonly"), false)) {
+            Label heading = new Label(accountToRelogin != null ? i18n("account.login.refresh") : i18n("account.create.microsoft"));
+            heading.getStyleClass().add("header-label");
+            getChildren().add(heading);
+        }
+        getChildren().add(rootContainer);
 
         if (Accounts.OAUTH_CALLBACK.getClientId().isEmpty()) {
             var snapshotHint = new HintPane(MessageDialogPane.MessageType.WARNING);
@@ -154,7 +162,7 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
             loginButtonSpinner.setLoading(false);
             cancelAllTasks();
 
-            rootContainer.getChildren().add(new JFXSpinner());
+            rootContainer.getChildren().add(new ProgressIndicator());
 
             browserTaskExecutor = Task.supplyAsync(() -> Accounts.FACTORY_MICROSOFT.create(null, null, null, null, OAuth.GrantFlow.AUTHORIZATION_CODE))
                     .whenComplete(Schedulers.javafx(), this::onLoginCompleted)
@@ -163,7 +171,7 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
             loginButtonSpinner.setLoading(true);
             cancelAllTasks();
 
-            rootContainer.getChildren().add(new JFXSpinner());
+            rootContainer.getChildren().add(new ProgressIndicator());
 
             deviceTaskExecutor = Task.supplyAsync(() -> Accounts.FACTORY_MICROSOFT.create(null, null, null, null, OAuth.GrantFlow.DEVICE))
                     .whenComplete(Schedulers.javafx(), this::onLoginCompleted)
@@ -228,24 +236,26 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
         linkBox.setPrefWrapLength(500);
 
         if (currentStep instanceof Step.Init || currentStep instanceof Step.StartAuthorizationCodeLogin || currentStep instanceof Step.WaitForOpenBrowser) {
-            JFXHyperlink useQrCode = new JFXHyperlink(i18n("account.methods.microsoft.methods.device"));
+            Hyperlink useQrCode = new Hyperlink(i18n("account.methods.microsoft.methods.device"));
             useQrCode.setOnAction(e -> this.step.set(new Step.StartDeviceCodeLogin()));
             linkBox.getChildren().add(useQrCode);
         } else if (currentStep instanceof Step.StartDeviceCodeLogin || currentStep instanceof Step.WaitForScanQrCode) {
-            JFXHyperlink userBrowser = new JFXHyperlink(i18n("account.methods.microsoft.methods.browser"));
+            Hyperlink userBrowser = new Hyperlink(i18n("account.methods.microsoft.methods.browser"));
             userBrowser.setOnAction(e -> this.step.set(new Step.StartAuthorizationCodeLogin()));
             linkBox.getChildren().add(userBrowser);
         }
 
-        JFXHyperlink profileLink = new JFXHyperlink(i18n("account.methods.microsoft.profile"));
-        profileLink.setExternalLink("https://account.live.com/editprof.aspx");
-        JFXHyperlink purchaseLink = new JFXHyperlink(i18n("account.methods.microsoft.purchase"));
-        purchaseLink.setExternalLink(YggdrasilService.PURCHASE_URL);
+        Hyperlink profileLink = new Hyperlink(i18n("account.methods.microsoft.profile"));
+        profileLink.setOnAction(e -> FXUtils.openLink("https://account.live.com/editprof.aspx"));
+        Hyperlink purchaseLink = new Hyperlink(i18n("account.methods.microsoft.purchase"));
+        purchaseLink.setOnAction(e -> FXUtils.openLink(YggdrasilService.PURCHASE_URL));
 
         linkBox.getChildren().addAll(profileLink, purchaseLink);
         rootContainer.getChildren().add(linkBox);
 
-        setBody(rootContainer);
+        HBox actions = new HBox(8, loginButtonSpinner, new MFXButton(i18n("button.cancel")));
+        actions.setAlignment(Pos.CENTER_RIGHT);
+        getChildren().add(actions);
     }
 
     private void cancelAllTasks() {
@@ -310,4 +320,3 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
     }
 
 }
-

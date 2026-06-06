@@ -91,7 +91,7 @@ public final class TaskListPane extends StackPane {
     private static final Insets STAGED_PROGRESS_NODE_PADDING = new Insets(0, 0, 4, 26);
 
     private TaskExecutor executor;
-    private final MFXListView<Node> listView = new MFXListView<>();
+    private final MFXListView<Node, ?> listView = new MFXListView<>();
     private final Map<Task<?>, ProgressListNode> nodes = new HashMap<>();
     private final Map<String, StageNode> stageNodes = new HashMap<>();
     private final ObjectProperty<Insets> progressNodePadding = new SimpleObjectProperty<>(Insets.EMPTY);

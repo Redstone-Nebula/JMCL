@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.terracotta;
 
-import com.jfoenix.controls.JFXProgressBar;
+import io.github.palexdev.materialfx.controls.MFXProgressBar;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -510,7 +510,7 @@ public class TerracottaControllerPage extends StackPane {
                 {
                     Label status = new Label();
                     status.textProperty().bind(statusProperty);
-                    JFXProgressBar progress = new JFXProgressBar();
+                    MFXProgressBar progress = new MFXProgressBar();
                     progress.progressProperty().bind(progressProperty);
                     progress.setMaxWidth(Double.MAX_VALUE);
 

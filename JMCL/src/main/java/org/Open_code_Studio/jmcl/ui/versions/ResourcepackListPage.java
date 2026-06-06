@@ -153,7 +153,7 @@ public final class ResourcepackListPage extends ListPageBase<ResourcepackListPag
         }
 
         @Override
-        protected ListCell<ResourcepackInfoObject> createListCell(MFXListView<ResourcepackInfoObject> listView) {
+        protected ListCell<ResourcepackInfoObject> createListCell(MFXListView<ResourcepackInfoObject, ?> listView) {
             return new ResourcepackListCell(listView, getSkinnable());
         }
     }
@@ -200,7 +200,7 @@ public final class ResourcepackListPage extends ListPageBase<ResourcepackListPag
         private final MFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
         private final ResourcepackListPage page;
 
-        public ResourcepackListCell(MFXListView<ResourcepackInfoObject> listView, ResourcepackListPage page) {
+        public ResourcepackListCell(MFXListView<ResourcepackInfoObject, ?> listView, ResourcepackListPage page) {
             super(listView);
 
             this.page = page;

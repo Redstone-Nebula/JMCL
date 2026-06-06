@@ -17,7 +17,10 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
@@ -77,12 +80,12 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
     private String versionId;
 
     private final VBox rootPane;
-    private final JFXComboBox<String> cboWindowsSize;
-    private final JFXTextField txtServerIP;
+    private final MFXComboBox<String> cboWindowsSize;
+    private final MFXTextField txtServerIP;
     private final ComponentList componentList;
     private final LineSelectButton<LauncherVisibility> launcherVisibilityPane;
-    private final JFXCheckBox chkAutoAllocate;
-    private final JFXCheckBox chkFullscreen;
+    private final MFXCheckbox chkAutoAllocate;
+    private final MFXCheckbox chkFullscreen;
     private final ComponentSublist javaSublist;
     private final MultiFileItem<Pair<JavaVersionType, JavaRuntime>> javaItem;
     private final MultiFileItem.Option<Pair<JavaVersionType, JavaRuntime>> javaAutoDeterminedOption;
@@ -133,7 +136,7 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
             text.textProperty().bind(BindingMapping.of(selectedVersion)
                     .map(selectedVersion -> i18n("settings.type.special.edit.hint", selectedVersion)));
 
-            JFXHyperlink specificSettingsLink = new JFXHyperlink(i18n("settings.type.special.edit"));
+            Hyperlink specificSettingsLink = new Hyperlink(i18n("settings.type.special.edit"));
             specificSettingsLink.setOnAction(e -> editSpecificSettings());
 
             specificSettingsHint.setChildren(text, specificSettingsLink);
@@ -162,13 +165,13 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
             settingsTypePane.disableProperty().bind(modpack);
             rootPane.getChildren().add(settingsTypePane);
 
-            JFXCheckBox enableSpecificCheckBox = new JFXCheckBox();
+            MFXCheckbox enableSpecificCheckBox = new MFXCheckbox();
             enableSpecificCheckBox.selectedProperty().bindBidirectional(enableSpecificSettings);
             settingsTypePane.setLeft(enableSpecificCheckBox);
             enableSpecificCheckBox.setText(i18n("settings.type.special.enable"));
             BorderPane.setAlignment(enableSpecificCheckBox, Pos.CENTER_RIGHT);
 
-            JFXButton editGlobalSettingsButton = FXUtils.newRaisedButton(i18n("settings.type.global.edit"));
+            MFXButton editGlobalSettingsButton = FXUtils.newRaisedButton(i18n("settings.type.global.edit"));
             settingsTypePane.setRight(editGlobalSettingsButton);
             editGlobalSettingsButton.disableProperty().bind(enableSpecificCheckBox.selectedProperty());
             BorderPane.setAlignment(editGlobalSettingsButton, Pos.CENTER_RIGHT);
@@ -252,7 +255,7 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
                 Label title = new Label(i18n("settings.memory"));
                 VBox.setMargin(title, new Insets(0, 0, 8, 0));
 
-                chkAutoAllocate = new JFXCheckBox(i18n("settings.memory.auto_allocate"));
+                chkAutoAllocate = new MFXCheckbox(i18n("settings.memory.auto_allocate"));
                 VBox.setMargin(chkAutoAllocate, new Insets(0, 0, 8, 5));
 
                 HBox lowerBoundPane = new HBox(8);
@@ -269,10 +272,10 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
                         }
                     }, chkAutoAllocate.selectedProperty()));
 
-                    JFXSlider slider = new JFXSlider(0, 1, 0);
+                    Slider slider = new Slider(0, 1, 0);
                     HBox.setMargin(slider, new Insets(0, 0, 0, 8));
                     HBox.setHgrow(slider, Priority.ALWAYS);
-                    slider.setValueFactory(self -> Bindings.createStringBinding(() -> (int) (self.getValue() * 100) + "%", self.valueProperty()));
+                    slider.setShowTickLabels(true);
                     AtomicBoolean changedByTextField = new AtomicBoolean(false);
                     FXUtils.onChangeAndOperate(maxMemory, maxMemory -> {
                         changedByTextField.set(true);
@@ -284,7 +287,7 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
                         maxMemory.set((int) (value.getValue().doubleValue() * MEGABYTES.convertFromBytes(SystemInfo.getTotalMemorySize())));
                     });
 
-                    JFXTextField txtMaxMemory = new JFXTextField();
+                    MFXTextField txtMaxMemory = new MFXTextField();
                     FXUtils.setLimitWidth(txtMaxMemory, 60);
                     FXUtils.setValidateWhileTextChanged(txtMaxMemory, true);
                     txtMaxMemory.textProperty().bindBidirectional(maxMemory, SafeStringConverter.fromInteger());
@@ -347,14 +350,14 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
                 BorderPane right = new BorderPane();
                 dimensionPane.setRight(right);
                 {
-                    cboWindowsSize = new JFXComboBox<>();
+                    cboWindowsSize = new MFXComboBox<>();
                     cboWindowsSize.setPrefWidth(150);
                     right.setLeft(cboWindowsSize);
                     cboWindowsSize.setEditable(true);
                     cboWindowsSize.setPromptText("854x480");
                     cboWindowsSize.getItems().setAll(getSupportedResolutions());
 
-                    chkFullscreen = new JFXCheckBox();
+                    chkFullscreen = new MFXCheckbox();
                     right.setRight(chkFullscreen);
                     chkFullscreen.setText(i18n("settings.game.fullscreen"));
                     chkFullscreen.setAlignment(Pos.CENTER);
@@ -390,7 +393,7 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
                 serverPane.setVgap(8);
                 serverPane.getColumnConstraints().setAll(title, value);
 
-                txtServerIP = new JFXTextField();
+                txtServerIP = new MFXTextField();
                 txtServerIP.setPromptText(i18n("settings.advanced.server_ip.prompt"));
                 Validator.addTo(txtServerIP).accept(str -> {
                     if (StringUtils.isBlank(str))

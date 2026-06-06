@@ -19,9 +19,8 @@ package org.Open_code_Studio.jmcl.ui;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXSpinner;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXSpinner;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -44,16 +43,17 @@ import static org.Open_code_Studio.jmcl.ui.FXUtils.onEscPressed;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
 
-public final class UpgradeDialog extends JFXDialogLayout {
+public final class UpgradeDialog extends VBox {
 
     private static final String GITHUB_API_RELEASE_BY_TAG = "https://api.github.com/repos/Open-code-Studio/JMCL/releases/tags/";
 
     public UpgradeDialog(RemoteVersion remoteVersion, Runnable updateRunnable) {
+        setSpacing(12);
         maxWidthProperty().bind(Controllers.getScene().widthProperty().multiply(0.7));
         maxHeightProperty().bind(Controllers.getScene().heightProperty().multiply(0.7));
 
-        setHeading(new Label(i18n("update.changelog")));
-        setBody(new JFXSpinner());
+        getChildren().add(new Label(i18n("update.changelog")));
+        getChildren().add(new MFXSpinner());
 
         // Use the original GitHub release tag as-is (e.g. "v2026.1.0" or "DEV2026.2.0")
         String versionTag = remoteVersion.tag();
@@ -85,7 +85,7 @@ public final class UpgradeDialog extends JFXDialogLayout {
                 ScrollPane scrollPane = new ScrollPane(result);
                 scrollPane.setFitToWidth(true);
                 FXUtils.smoothScrolling(scrollPane);
-                setBody(scrollPane);
+                getChildren().set(1, scrollPane);
             } else {
                 // Fallback: show a simple message with link to GitHub
                 VBox fallbackBox = new VBox(12);
@@ -93,22 +93,22 @@ public final class UpgradeDialog extends JFXDialogLayout {
                 infoLabel.setWrapText(true);
                 infoLabel.getStyleClass().add("md3-body-medium");
                 fallbackBox.getChildren().add(infoLabel);
-                setBody(fallbackBox);
+                getChildren().set(1, fallbackBox);
             }
         }).start();
 
         JFXHyperlink openInBrowser = new JFXHyperlink(i18n("web.view_in_browser"));
         openInBrowser.setExternalLink(releaseUrl);
 
-        JFXButton updateButton = new JFXButton(i18n("update.accept"));
+        MFXButton updateButton = new MFXButton(i18n("update.accept"));
         updateButton.getStyleClass().add("dialog-accept");
         updateButton.setOnAction(e -> updateRunnable.run());
 
-        JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
+        MFXButton cancelButton = new MFXButton(i18n("button.cancel"));
         cancelButton.getStyleClass().add("dialog-cancel");
         cancelButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
 
-        setActions(openInBrowser, updateButton, cancelButton);
+        getChildren().addAll(openInBrowser, updateButton, cancelButton);
         onEscPressed(this, cancelButton::fire);
     }
 

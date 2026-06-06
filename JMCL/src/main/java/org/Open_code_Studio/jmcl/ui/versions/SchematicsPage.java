@@ -656,7 +656,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
         }
 
         @Override
-        protected ListCell<Item> createListCell(MFXListView<Item> listView) {
+        protected ListCell<Item> createListCell(MFXListView<Item, ?> listView) {
             return new Cell();
         }
     }

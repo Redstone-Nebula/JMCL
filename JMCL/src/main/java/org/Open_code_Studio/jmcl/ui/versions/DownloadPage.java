@@ -17,8 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -232,14 +231,14 @@ public class DownloadPage extends Control implements DecoratorPage {
                 descriptionPane.getChildren().add(content);
 
                 if (getSkinnable().mod != null) {
-                    JFXHyperlink openMcmodButton = new JFXHyperlink(i18n("mods.mcmod"));
+                    Hyperlink openMcmodButton = new Hyperlink(i18n("mods.mcmod"));
                     openMcmodButton.setExternalLink(getSkinnable().translations.getMcmodUrl(getSkinnable().mod));
                     descriptionPane.getChildren().add(openMcmodButton);
                     openMcmodButton.setMinWidth(Region.USE_PREF_SIZE);
                 }
 
-                JFXHyperlink openUrlButton = new JFXHyperlink(control.page.getLocalizedOfficialPage());
-                openUrlButton.setExternalLink(getSkinnable().addon.getPageUrl());
+                Hyperlink openUrlButton = new Hyperlink(control.page.getLocalizedOfficialPage());
+                openUrlButton.setOnAction(e -> FXUtils.openLink(getSkinnable().addon.getPageUrl()));
                 descriptionPane.getChildren().add(openUrlButton);
                 openUrlButton.setMinWidth(Region.USE_PREF_SIZE);
             }
@@ -471,8 +470,11 @@ public class DownloadPage extends Control implements DecoratorPage {
         }
     }
 
-    private static final class ModVersion extends JFXDialogLayout {
+    private static final class ModVersion extends VBox {
         public ModVersion(RemoteMod mod, RemoteMod.Version version, DownloadPage selfPage) {
+            setSpacing(8);
+            setPadding(new Insets(16));
+
             RemoteModRepository.Type type = selfPage.repository.getType();
 
             String title = switch (type) {
@@ -482,7 +484,7 @@ public class DownloadPage extends Control implements DecoratorPage {
                 case SHADER_PACK -> "shaderpack.download.title";
                 default -> "mods.download.title";
             };
-            this.setHeading(new HBox(new Label(i18n(title, version.getName()))));
+            getChildren().add(new HBox(new Label(i18n(title, version.getName()))));
 
             VBox box = new VBox(8);
             box.setPadding(new Insets(8));
@@ -505,11 +507,14 @@ public class DownloadPage extends Control implements DecoratorPage {
             box.getChildren().add(spinnerPane);
             VBox.setVgrow(spinnerPane, Priority.SOMETIMES);
 
-            this.setBody(box);
+            getChildren().add(box);
 
-            JFXButton downloadButton = null;
+            HBox actionsBox = new HBox(8);
+            actionsBox.setAlignment(Pos.CENTER_RIGHT);
+
+            MFXButton downloadButton = null;
             if (selfPage.callback != null) {
-                downloadButton = new JFXButton(type == RemoteModRepository.Type.MODPACK ? i18n("install.modpack") : i18n("mods.install"));
+                downloadButton = new MFXButton(type == RemoteModRepository.Type.MODPACK ? i18n("install.modpack") : i18n("mods.install"));
                 downloadButton.getStyleClass().add("dialog-accept");
                 downloadButton.setOnAction(e -> {
                     if (type == RemoteModRepository.Type.MODPACK || !spinnerPane.isLoading() && spinnerPane.getFailedReason() == null) {
@@ -519,7 +524,7 @@ public class DownloadPage extends Control implements DecoratorPage {
                 });
             }
 
-            JFXButton saveAsButton = new JFXButton(i18n("mods.save_as"));
+            MFXButton saveAsButton = new MFXButton(i18n("mods.save_as"));
             saveAsButton.getStyleClass().add("dialog-accept");
             saveAsButton.setOnAction(e -> {
                 if (!spinnerPane.isLoading() && spinnerPane.getFailedReason() == null) {
@@ -528,15 +533,16 @@ public class DownloadPage extends Control implements DecoratorPage {
                 selfPage.saveAs(mod, version);
             });
 
-            JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
+            MFXButton cancelButton = new MFXButton(i18n("button.cancel"));
             cancelButton.getStyleClass().add("dialog-cancel");
             cancelButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
 
             if (downloadButton == null) {
-                this.setActions(saveAsButton, cancelButton);
+                actionsBox.getChildren().setAll(saveAsButton, cancelButton);
             } else {
-                this.setActions(downloadButton, saveAsButton, cancelButton);
+                actionsBox.getChildren().setAll(downloadButton, saveAsButton, cancelButton);
             }
+            getChildren().add(actionsBox);
 
             this.prefWidthProperty().bind(BindingMapping.of(Controllers.getStage().widthProperty()).map(w -> w.doubleValue() * 0.7));
             this.prefHeightProperty().bind(BindingMapping.of(Controllers.getStage().heightProperty()).map(w -> w.doubleValue() * 0.7));

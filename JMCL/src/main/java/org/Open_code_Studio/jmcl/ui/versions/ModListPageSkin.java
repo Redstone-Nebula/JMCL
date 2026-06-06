@@ -17,14 +17,21 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.*;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import io.github.palexdev.materialfx.controls.MFXListView;
+import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.mfxcore.base.beans.range.IntegerRange;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.MapChangeListener;
 import javafx.css.PseudoClass;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -35,6 +42,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.Open_code_Studio.jmcl.mod.LocalModFile;
@@ -89,8 +97,8 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
     private final HBox toolbarNormal;
     private final HBox toolbarSelecting;
 
-    private final JFXListView<ModInfoObject> listView;
-    private final JFXTextField searchField;
+    private final MFXListView<ModInfoObject, ?> listView;
+    private final MFXTextField searchField;
 
     // FXThread
     private boolean isSearching = false;
@@ -104,7 +112,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
 
         ComponentList root = new ComponentList();
         root.getStyleClass().add("no-padding");
-        listView = new JFXListView<>();
+        listView = new MFXListView<>();
         listView.getStyleClass().add("no-horizontal-scrollbar");
 
         {
@@ -117,7 +125,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             // Search Bar
             searchBar.setAlignment(Pos.CENTER);
             searchBar.setPadding(new Insets(0, 5, 0, 5));
-            searchField = new JFXTextField();
+            searchField = new MFXTextField();
             searchField.setPromptText(i18n("search"));
             HBox.setHgrow(searchField, Priority.ALWAYS);
             PauseTransition pause = new PauseTransition(Duration.millis(100));
@@ -127,7 +135,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                 pause.playFromStart();
             });
 
-            JFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE,
+            MFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE,
                     () -> {
                         changeToolbar(toolbarNormal);
 
@@ -419,9 +427,12 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
         }
     }
 
-    final class ModInfoDialog extends JFXDialogLayout {
+    final class ModInfoDialog extends VBox {
 
         ModInfoDialog(ModInfoObject modInfo) {
+            setSpacing(8);
+            setPadding(new Insets(16));
+
             HBox titleContainer = new HBox();
             titleContainer.setSpacing(8);
 
@@ -451,7 +462,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             title.setSubtitle(subtitle.toString());
 
             titleContainer.getChildren().setAll(imageContainer, title);
-            setHeading(titleContainer);
+            getChildren().add(titleContainer);
 
             Label description = new Label(modInfo.getModInfo().getDescription().toString());
             description.setWrapText(true);
@@ -468,7 +479,11 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                 descriptionPane.setPrefViewportHeight(targetHeight);
             });
 
-            setBody(descriptionPane);
+            getChildren().add(descriptionPane);
+
+            VBox actionsBox = new VBox(8);
+            actionsBox.setAlignment(Pos.CENTER);
+            getChildren().add(actionsBox);
 
             if (StringUtils.isNotBlank(modInfo.getModInfo().getId())) {
                 for (Pair<String, ? extends RemoteModRepository> item : Arrays.asList(
@@ -476,7 +491,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                         pair("mods.modrinth", ModrinthRemoteModRepository.MODS)
                 )) {
                     RemoteModRepository repository = item.getValue();
-                    JFXHyperlink button = new JFXHyperlink(i18n(item.getKey()));
+                    Hyperlink button = new Hyperlink(i18n(item.getKey()));
                     Task.runAsync(() -> {
                         Optional<RemoteMod.Version> versionOptional = repository.getRemoteVersionByLocalFile(modInfo.getModInfo(), modInfo.getModInfo().getFile());
                         if (versionOptional.isPresent()) {
@@ -516,22 +531,22 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                         }
                     }).start();
                     button.setDisable(true);
-                    getActions().add(button);
+                    actionsBox.getChildren().add(button);
                 }
             }
 
             if (StringUtils.isNotBlank(modInfo.getModInfo().getUrl())) {
-                JFXHyperlink officialPageButton = new JFXHyperlink(i18n("mods.url"));
+                Hyperlink officialPageButton = new Hyperlink(i18n("mods.url"));
                 officialPageButton.setOnAction(e -> {
                     fireEvent(new DialogCloseEvent());
                     FXUtils.openLink(modInfo.getModInfo().getUrl());
                 });
 
-                getActions().add(officialPageButton);
+                actionsBox.getChildren().add(officialPageButton);
             }
 
             if (modInfo.getModTranslations() == null || StringUtils.isBlank(modInfo.getModTranslations().getMcmod())) {
-                JFXHyperlink searchButton = new JFXHyperlink(i18n("mods.mcmod.search"));
+                Hyperlink searchButton = new Hyperlink(i18n("mods.mcmod.search"));
                 searchButton.setOnAction(e -> {
                     fireEvent(new DialogCloseEvent());
                     FXUtils.openLink(NetworkUtils.withQuery("https://search.mcmod.cn/s", mapOf(
@@ -540,43 +555,51 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                             pair("filter", "0")
                     )));
                 });
-                getActions().add(searchButton);
+                actionsBox.getChildren().add(searchButton);
             } else {
-                JFXHyperlink mcmodButton = new JFXHyperlink(i18n("mods.mcmod.page"));
+                Hyperlink mcmodButton = new Hyperlink(i18n("mods.mcmod.page"));
                 mcmodButton.setOnAction(e -> {
                     fireEvent(new DialogCloseEvent());
                     FXUtils.openLink(ModTranslations.MOD.getMcmodUrl(modInfo.getModTranslations()));
                 });
-                getActions().add(mcmodButton);
+                actionsBox.getChildren().add(mcmodButton);
             }
 
-            JFXButton okButton = new JFXButton();
+            HBox buttonBar = new HBox(8);
+            buttonBar.setAlignment(Pos.CENTER_RIGHT);
+            MFXButton okButton = new MFXButton();
             okButton.getStyleClass().add("dialog-accept");
             okButton.setText(i18n("button.ok"));
             okButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
-            getActions().add(okButton);
+            buttonBar.getChildren().add(okButton);
+            getChildren().add(buttonBar);
 
             onEscPressed(this, okButton::fire);
         }
     }
 
     private static final Lazy<PopupMenu> menu = new Lazy<>(PopupMenu::new);
-    private static final Lazy<JFXPopup> popup = new Lazy<>(() -> new JFXPopup(menu.get()));
+    private static final Lazy<Popup> popup = new Lazy<>(() -> {
+        Popup p = new Popup();
+        p.getContent().add(menu.get());
+        p.setAutoHide(true);
+        return p;
+    });
 
     final class ModInfoListCell extends MDListCell<ModInfoObject> {
         private static final PseudoClass WARNING = PseudoClass.getPseudoClass("warning");
 
-        JFXCheckBox checkBox = new JFXCheckBox();
+        MFXCheckbox checkBox = new MFXCheckbox();
         ImageContainer imageContainer = new ImageContainer(24);
         TwoLineListItem content = new TwoLineListItem();
-        JFXButton restoreButton = FXUtils.newToggleButton4(SVG.RESTORE);
-        JFXButton infoButton = FXUtils.newToggleButton4(SVG.INFO);
-        JFXButton revealButton = FXUtils.newToggleButton4(SVG.FOLDER);
+        MFXButton restoreButton = FXUtils.newToggleButton4(SVG.RESTORE);
+        MFXButton infoButton = FXUtils.newToggleButton4(SVG.INFO);
+        MFXButton revealButton = FXUtils.newToggleButton4(SVG.FOLDER);
         BooleanProperty booleanProperty;
 
         Tooltip warningTooltip;
 
-        ModInfoListCell(JFXListView<ModInfoObject> listView) {
+        ModInfoListCell(MFXListView<ModInfoObject, ?> listView) {
             super(listView);
 
             this.getStyleClass().add("mod-info-list-cell");
@@ -682,7 +705,8 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                         .toList()
                 );
 
-                popup.get().show(restoreButton, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.RIGHT, 0, restoreButton.getHeight());
+                Bounds bounds = restoreButton.localToScreen(restoreButton.getBoundsInLocal());
+                popup.get().show(restoreButton, bounds.getMaxX(), bounds.getMinY());
             });
             revealButton.setOnAction(e -> FXUtils.showFileInExplorer(modInfo.getFile()));
             infoButton.setOnAction(e -> Controllers.dialog(new ModInfoDialog(dataItem)));

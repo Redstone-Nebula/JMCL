@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -44,9 +44,9 @@ public abstract class ModpackPage extends SpinnerPane implements WizardPage {
     protected final StringProperty nameProperty;
     protected final StringProperty versionProperty;
     protected final StringProperty authorProperty;
-    protected final JFXTextField txtModpackName;
-    protected final JFXButton btnInstall;
-    protected final JFXButton btnDescription;
+    protected final MFXTextField txtModpackName;
+    protected final MFXButton btnInstall;
+    protected final MFXButton btnDescription;
 
     protected ModpackPage(WizardController controller) {
         this.controller = controller;
@@ -61,7 +61,7 @@ public abstract class ModpackPage extends SpinnerPane implements WizardPage {
             {
                 archiveNamePane.setTitle(i18n("version.name"));
 
-                txtModpackName = new JFXTextField();
+                txtModpackName = new MFXTextField();
                 txtModpackName.setPrefWidth(300);
                 FXUtils.setLimitHeight(archiveNamePane, 75);
                 // BorderPane.setMargin(txtModpackName, new Insets(0, 0, 8, 32));

@@ -62,7 +62,7 @@ public final class GameListPopupMenu extends StackPane {
         popup.show(owner, screenX, screenY);
     }
 
-    private final MFXListView<GameItem> listView = new MFXListView<>();
+    private final MFXListView<GameItem, ?> listView = new MFXListView<>();
     private final BooleanBinding isEmpty = Bindings.isEmpty(listView.getItems());
 
     public GameListPopupMenu() {

@@ -35,7 +35,7 @@ import org.Open_code_Studio.jmcl.ui.FXUtils;
 /// @author Glavo
 public final class OptionsListSkin extends SkinBase<OptionsList> {
 
-    private final MFXListView<OptionsList.Element> listView;
+    private final MFXListView<OptionsList.Element, ?> listView;
     private final ObjectBinding<ContentPaddings> contentPaddings;
 
     OptionsListSkin(OptionsList control) {

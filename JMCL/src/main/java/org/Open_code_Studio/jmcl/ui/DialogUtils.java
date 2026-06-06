@@ -17,7 +17,6 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
-import com.jfoenix.controls.JFXDialog;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,10 +28,8 @@ import org.Open_code_Studio.jmcl.ui.construct.DialogAware;
 import org.Open_code_Studio.jmcl.ui.construct.DialogCloseEvent;
 import org.Open_code_Studio.jmcl.ui.construct.JFXDialogPane;
 import org.Open_code_Studio.jmcl.ui.decorator.Decorator;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public final class DialogUtils {
     private DialogUtils() {
@@ -43,7 +40,6 @@ public final class DialogUtils {
     public static final String PROPERTY_DIALOG_CLOSE_HANDLER = DialogUtils.class.getName() + ".dialog.closeListener";
 
     public static final String PROPERTY_PARENT_PANE_REF = DialogUtils.class.getName() + ".dialog.parentPaneRef";
-    public static final String PROPERTY_PARENT_DIALOG_REF = DialogUtils.class.getName() + ".dialog.parentDialogRef";
 
     public static void show(Decorator decorator, Node content) {
         if (decorator.getDrawerWrapper() == null) {
@@ -51,67 +47,55 @@ public final class DialogUtils {
             return;
         }
 
-        show(decorator.getDrawerWrapper(), content, (dialog) -> {
-            JFXDialogPane pane = (JFXDialogPane) dialog.getContent();
-            decorator.capableDraggingWindow(dialog);
-            decorator.forbidDraggingWindow(pane);
-            dialog.setDialogContainer(decorator.getDrawerWrapper());
-        });
+        StackPane container = decorator.getDrawerWrapper();
+
+        JFXDialogPane dialogPane = new JFXDialogPane();
+        decorator.capableDraggingWindow(dialogPane);
+        decorator.forbidDraggingWindow(dialogPane);
+
+        show(container, content, dialogPane);
     }
 
     public static void show(StackPane container, Node content) {
         show(container, content, null);
     }
 
-    public static void show(StackPane container, Node content, @Nullable Consumer<JFXDialog> onDialogCreated) {
+    private static void show(StackPane container, Node content, @org.jetbrains.annotations.Nullable JFXDialogPane dialogPane) {
         FXUtils.checkFxUserThread();
 
-        JFXDialog dialog = (JFXDialog) container.getProperties().get(PROPERTY_DIALOG_INSTANCE);
-        JFXDialogPane dialogPane = (JFXDialogPane) container.getProperties().get(PROPERTY_DIALOG_PANE_INSTANCE);
+        JFXDialogPane existingPane = (JFXDialogPane) container.getProperties().get(PROPERTY_DIALOG_PANE_INSTANCE);
 
-        if (dialog == null) {
-            dialog = new JFXDialog(AnimationUtils.isAnimationEnabled()
-                    ? JFXDialog.DialogTransition.CENTER
-                    : JFXDialog.DialogTransition.NONE);
-            dialogPane = new JFXDialogPane();
+        if (existingPane == null) {
+            JFXDialogPane pane = dialogPane != null ? dialogPane : new JFXDialogPane();
 
-            dialog.setContent(dialogPane);
-            dialog.setDialogContainer(container);
-            dialog.setOverlayClose(false);
+            container.getProperties().put(PROPERTY_DIALOG_PANE_INSTANCE, pane);
+            container.getChildren().add(pane);
 
-            container.getProperties().put(PROPERTY_DIALOG_INSTANCE, dialog);
-            container.getProperties().put(PROPERTY_DIALOG_PANE_INSTANCE, dialogPane);
-
-            if (onDialogCreated != null) {
-                onDialogCreated.accept(dialog);
-            }
-
-            dialog.show();
+            existingPane = pane;
         }
 
-        content.getProperties().put(PROPERTY_PARENT_PANE_REF, dialogPane);
-        content.getProperties().put(PROPERTY_PARENT_DIALOG_REF, dialog);
+        content.getProperties().put(PROPERTY_PARENT_PANE_REF, existingPane);
 
-        dialogPane.push(content);
+        existingPane.push(content);
 
         EventHandler<DialogCloseEvent> handler = event -> close(content);
         content.getProperties().put(PROPERTY_DIALOG_CLOSE_HANDLER, handler);
         content.addEventHandler(DialogCloseEvent.CLOSE, handler);
 
-        handleDialogShown(dialog, content);
+        handleDialogShown(existingPane, content);
     }
 
-    private static void handleDialogShown(JFXDialog dialog, Node node) {
-        if (dialog.isVisible()) {
-            dialog.requestFocus();
+    private static void handleDialogShown(JFXDialogPane dialogPane, Node node) {
+        if (dialogPane.isVisible()) {
+            dialogPane.requestFocus();
             if (node instanceof DialogAware dialogAware)
                 dialogAware.onDialogShown();
         } else {
-            dialog.visibleProperty().addListener(new ChangeListener<>() {
+            dialogPane.visibleProperty().addListener(new ChangeListener<>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                     if (newValue) {
-                        dialog.requestFocus();
+                        dialogPane.requestFocus();
                         if (node instanceof DialogAware dialogAware)
                             dialogAware.onDialogShown();
                         observable.removeListener(this);
@@ -129,18 +113,15 @@ public final class DialogUtils {
                 .ifPresent(handler -> content.removeEventHandler(DialogCloseEvent.CLOSE, (EventHandler<DialogCloseEvent>) handler));
 
         JFXDialogPane pane = (JFXDialogPane) content.getProperties().get(PROPERTY_PARENT_PANE_REF);
-        JFXDialog dialog = (JFXDialog) content.getProperties().get(PROPERTY_PARENT_DIALOG_REF);
 
-        if (dialog != null && pane != null) {
+        if (pane != null) {
             if (pane.size() == 1 && pane.peek().orElse(null) == content) {
-                dialog.setOnDialogClosed(e -> pane.pop(content));
-                dialog.close();
+                pane.pop(content);
 
-                StackPane container = dialog.getDialogContainer();
+                StackPane container = (StackPane) pane.getParent();
                 if (container != null) {
-                    container.getProperties().remove(PROPERTY_DIALOG_INSTANCE);
+                    container.getChildren().remove(pane);
                     container.getProperties().remove(PROPERTY_DIALOG_PANE_INSTANCE);
-                    container.getProperties().remove(PROPERTY_PARENT_DIALOG_REF);
                     container.getProperties().remove(PROPERTY_PARENT_PANE_REF);
                 }
             } else {

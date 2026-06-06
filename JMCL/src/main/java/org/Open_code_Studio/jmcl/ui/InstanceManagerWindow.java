@@ -281,7 +281,7 @@ public final class InstanceManagerWindow extends Stage {
     }
 
     /// A small icon-only button used in the instance manager toolbar.
-    private static final class IconButton extends com.jfoenix.controls.JFXButton {
+    private static final class IconButton extends io.github.palexdev.materialfx.controls.MFXButton {
         IconButton(SVG icon, Runnable action) {
             setGraphic(icon.createIcon(16));
             setFocusTraversable(false);

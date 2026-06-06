@@ -17,8 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.effects.JFXDepthManager;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -85,8 +84,8 @@ public final class ModpackSelectionPage extends VBox implements WizardPage {
         });
     }
 
-    private JFXButton createButton(String type, Runnable action) {
-        JFXButton button = new JFXButton();
+    private MFXButton createButton(String type, Runnable action) {
+        MFXButton button = new MFXButton();
 
         button.getStyleClass().add("card");
         button.setStyle("-fx-cursor: HAND;");
@@ -103,7 +102,7 @@ public final class ModpackSelectionPage extends VBox implements WizardPage {
 
         button.setGraphic(graphic);
 
-        JFXDepthManager.setDepth(button, 1);
+        // Removed JFXDepthManager.setDepth - using CSS effect instead
 
         return button;
     }

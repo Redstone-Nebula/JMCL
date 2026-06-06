@@ -17,14 +17,15 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import com.jfoenix.controls.JFXPopup;
 import javafx.beans.InvalidationListener;
 import javafx.beans.WeakInvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Popup;
 import org.Open_code_Studio.jmcl.auth.Account;
 import org.Open_code_Studio.jmcl.setting.Accounts;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
@@ -33,11 +34,33 @@ import org.Open_code_Studio.jmcl.ui.construct.AdvancedListBox;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
 public final class AccountListPopupMenu extends StackPane {
-    public static void show(Node owner, JFXPopup.PopupVPosition vAlign, JFXPopup.PopupHPosition hAlign,
+    public static void show(Node owner, Side vAlign, Side hAlign,
                             double initOffsetX, double initOffsetY) {
         var menu = new AccountListPopupMenu();
-        JFXPopup popup = new JFXPopup(menu);
-        popup.show(owner, vAlign, hAlign, initOffsetX, initOffsetY);
+        Popup popup = new Popup();
+        popup.getContent().add(menu);
+        popup.setAutoHide(true);
+
+        // Calculate position based on alignment
+        var bounds = owner.localToScreen(owner.getBoundsInLocal());
+        if (bounds == null) return;
+
+        double x = bounds.getMinX();
+        double y = bounds.getMinY();
+
+        if (hAlign == Side.LEFT) {
+            x = bounds.getMinX() + initOffsetX;
+        } else if (hAlign == Side.RIGHT) {
+            x = bounds.getMaxX() - initOffsetX;
+        }
+
+        if (vAlign == Side.TOP) {
+            y = bounds.getMinY() + initOffsetY;
+        } else if (vAlign == Side.BOTTOM) {
+            y = bounds.getMaxY() - initOffsetY;
+        }
+
+        popup.show(owner, x, y);
     }
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -59,7 +82,7 @@ public final class AccountListPopupMenu extends StackPane {
                 AccountAdvancedListItem item = new AccountAdvancedListItem(account);
                 item.setOnAction(e -> {
                     Accounts.setSelectedAccount(account);
-                    if (getScene().getWindow() instanceof JFXPopup popup)
+                    if (getScene().getWindow() instanceof Popup popup)
                         popup.hide();
                 });
                 box.add(item);

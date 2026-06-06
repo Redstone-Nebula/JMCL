@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXListView;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,7 +37,7 @@ import java.util.List;
 
 public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends SkinBase<P> {
 
-    protected final JFXListView<E> listView;
+    protected final MFXListView<E, ?> listView;
 
     public ToolbarListPageSkin(P skinnable) {
         super(skinnable);
@@ -66,9 +66,9 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
         ComponentList.setVgrow(spinnerPane, Priority.ALWAYS);
 
         {
-            this.listView = new JFXListView<>();
+            this.listView = new MFXListView<>();
             this.listView.setPadding(Insets.EMPTY);
-            this.listView.setCellFactory(listView -> createListCell((JFXListView<E>) listView));
+            this.listView.setCellFactory(listView -> createListCell((MFXListView<E, ?>) listView));
             this.listView.getStyleClass().add("no-horizontal-scrollbar");
             Bindings.bindContent(this.listView.getItems(), skinnable.itemsProperty());
             FXUtils.ignoreEvent(listView, KeyEvent.KEY_PRESSED, e -> e.getCode() == KeyCode.ESCAPE);
@@ -81,8 +81,8 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
         getChildren().setAll(container);
     }
 
-    public static JFXButton createToolbarButton2(String text, SVG svg, Runnable onClick) {
-        JFXButton ret = new JFXButton();
+    public static MFXButton createToolbarButton2(String text, SVG svg, Runnable onClick) {
+        MFXButton ret = new MFXButton();
         ret.getStyleClass().add("jfx-tool-bar-button");
         ret.setGraphic(svg.createIcon(20));
         ret.setText(text);
@@ -90,8 +90,8 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
         return ret;
     }
 
-    public static JFXButton createDecoratorButton(String tooltip, SVG svg, Runnable onClick) {
-        JFXButton ret = new JFXButton();
+    public static MFXButton createDecoratorButton(String tooltip, SVG svg, Runnable onClick) {
+        MFXButton ret = new MFXButton();
         ret.getStyleClass().add("jfx-decorator-button");
         ret.setGraphic(svg.createIcon(20));
         FXUtils.installFastTooltip(ret, tooltip);
@@ -101,7 +101,7 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
 
     protected abstract List<Node> initializeToolbar(P skinnable);
 
-    protected ListCell<E> createListCell(JFXListView<E> listView) {
+    protected ListCell<E> createListCell(MFXListView<E, ?> listView) {
         return new ListCell<>() {
             @Override
             protected void updateItem(E item, boolean empty) {

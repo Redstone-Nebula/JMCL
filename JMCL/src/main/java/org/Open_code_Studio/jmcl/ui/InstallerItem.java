@@ -17,8 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXRippler;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
@@ -283,7 +282,6 @@ public class InstallerItem extends Control {
             }
             pane.getStyleClass().add("installer-item");
             RipplerContainer container = new RipplerContainer(pane);
-            container.setPosition(JFXRippler.RipplerPos.BACK);
             StackPane paneWrapper = new StackPane();
             paneWrapper.getStyleClass().add("installer-item-wrapper");
             paneWrapper.getChildren().setAll(container);
@@ -347,7 +345,7 @@ public class InstallerItem extends Control {
             buttonsContainer.setAlignment(Pos.CENTER);
             pane.getChildren().add(buttonsContainer);
 
-            JFXButton removeButton = FXUtils.newToggleButton4(SVG.CLOSE);
+            MFXButton removeButton = FXUtils.newToggleButton4(SVG.CLOSE);
             if (control.id.equals(MINECRAFT.getPatchId())) {
                 removeButton.setVisible(false);
             } else {
@@ -364,7 +362,7 @@ public class InstallerItem extends Control {
             });
             buttonsContainer.getChildren().add(removeButton);
 
-            JFXButton installButton = new JFXButton();
+            MFXButton installButton = new MFXButton();
             installButton.graphicProperty().bind(Bindings.createObjectBinding(() ->
                             control.resolvedStateProperty.get() instanceof InstallableState ?
                                     SVG.ARROW_FORWARD.createIcon() :

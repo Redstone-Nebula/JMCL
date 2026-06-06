@@ -210,7 +210,7 @@ public final class JavaManagementPage extends ListPageBase<JavaRuntime> {
         }
 
         @Override
-        protected ListCell<JavaRuntime> createListCell(MFXListView<JavaRuntime> listView) {
+        protected ListCell<JavaRuntime> createListCell(MFXListView<JavaRuntime, ?> listView) {
             return new JavaItemCell(listView);
         }
     }
@@ -223,7 +223,7 @@ public final class JavaManagementPage extends ListPageBase<JavaRuntime> {
         private final StackPane removeIconPane;
         private final Tooltip removeTooltip = new Tooltip();
 
-        JavaItemCell(MFXListView<JavaRuntime> listView) {
+        JavaItemCell(MFXListView<JavaRuntime, ?> listView) {
             BorderPane root = new BorderPane();
 
             HBox center = new HBox();

@@ -17,13 +17,12 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXProgressBar;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.Open_code_Studio.jmcl.auth.AuthInfo;
@@ -46,23 +45,27 @@ public class ClassicAccountLoginDialog extends StackPane {
     private final Consumer<AuthInfo> success;
     private final Runnable failed;
 
-    private final JFXPasswordField txtPassword;
+    private final MFXPasswordField txtPassword;
     private final Label lblCreationWarning = new Label();
-    private final JFXProgressBar progressBar;
+    private final ProgressBar progressBar;
 
     public ClassicAccountLoginDialog(ClassicAccount oldAccount, Consumer<AuthInfo> success, Runnable failed) {
         this.oldAccount = oldAccount;
         this.success = success;
         this.failed = failed;
 
-        progressBar = new JFXProgressBar();
+        progressBar = new ProgressBar();
         StackPane.setAlignment(progressBar, Pos.TOP_CENTER);
         progressBar.setVisible(false);
 
-        JFXDialogLayout dialogLayout = new JFXDialogLayout();
+        VBox dialogLayout = new VBox();
+        dialogLayout.setSpacing(15);
+        dialogLayout.setPadding(new Insets(24));
 
         {
-            dialogLayout.setHeading(new Label(i18n("login.enter_password")));
+            Label heading = new Label(i18n("login.enter_password"));
+            heading.getStyleClass().add("header-label");
+            dialogLayout.getChildren().add(heading);
         }
 
         {
@@ -71,29 +74,31 @@ public class ClassicAccountLoginDialog extends StackPane {
 
             Label usernameLabel = new Label(oldAccount.getUsername());
 
-            txtPassword = new JFXPasswordField();
+            txtPassword = new MFXPasswordField();
             txtPassword.setOnAction(e -> onAccept());
-            txtPassword.getValidators().add(new RequiredValidator());
             txtPassword.setLabelFloat(true);
             txtPassword.setPromptText(i18n("account.password"));
 
             body.getChildren().setAll(usernameLabel, txtPassword);
-            dialogLayout.setBody(body);
+            dialogLayout.getChildren().add(body);
         }
 
         {
-            JFXButton acceptButton = new JFXButton(i18n("button.ok"));
+            MFXButton acceptButton = new MFXButton(i18n("button.ok"));
             acceptButton.setOnAction(e -> onAccept());
             acceptButton.getStyleClass().add("dialog-accept");
 
-            JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
+            MFXButton cancelButton = new MFXButton(i18n("button.cancel"));
             cancelButton.setOnAction(e -> onCancel());
             cancelButton.getStyleClass().add("dialog-cancel");
 
-            dialogLayout.setActions(lblCreationWarning, acceptButton, cancelButton);
+            VBox actions = new VBox(8, lblCreationWarning,
+                    new javafx.scene.layout.HBox(8, acceptButton, cancelButton));
+            actions.setAlignment(Pos.CENTER_RIGHT);
+            dialogLayout.getChildren().add(actions);
         }
 
-        getChildren().setAll(dialogLayout);
+        getChildren().setAll(dialogLayout, progressBar);
 
         onEscPressed(this, this::onCancel);
     }

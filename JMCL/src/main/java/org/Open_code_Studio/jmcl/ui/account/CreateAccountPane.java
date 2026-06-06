@@ -17,10 +17,11 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import com.jfoenix.controls.*;
-import com.jfoenix.validation.base.ValidatorBase;
+import io.github.palexdev.materialfx.controls.MFXButton;
+import io.github.palexdev.materialfx.controls.MFXComboBox;
+import io.github.palexdev.materialfx.controls.MFXPasswordField;
+import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.application.Platform;
-import javafx.beans.NamedArg;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -31,7 +32,6 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.*;
 import org.Open_code_Studio.jmcl.auth.AccountFactory;
 import org.Open_code_Studio.jmcl.auth.CharacterSelector;
@@ -70,17 +70,18 @@ import static org.Open_code_Studio.jmcl.ui.FXUtils.*;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 import static org.Open_code_Studio.jmcl.util.javafx.ExtendedProperties.classPropertyFor;
 
-public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
+public class CreateAccountPane extends VBox implements DialogAware {
     private static final Pattern USERNAME_CHECKER_PATTERN = Pattern.compile("^[A-Za-z0-9_]+$");
 
     private boolean showMethodSwitcher;
     private AccountFactory<?> factory;
 
     private final Label lblErrorMessage;
-    private final JFXButton btnAccept;
+    private final MFXButton btnAccept;
     private final SpinnerPane spinner;
     private final Node body;
-    private final HBox actions;
+    private final HBox actionButtons;
+    private final VBox actionsBox;
     private Node detailsPane; // AccountDetailsInputPane for Offline / Mojang / authlib-injector, Label for Microsoft
     private final Pane detailsContainer;
 
@@ -93,6 +94,9 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
     }
 
     public CreateAccountPane(AccountFactory<?> factory) {
+        setSpacing(15);
+        setPadding(new Insets(24));
+
         if (factory == null) {
             if (AccountListPage.RESTRICTED.get()) {
                 showMethodSwitcher = false;
@@ -118,7 +122,9 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
             } else {
                 title = "account.create." + Accounts.getLoginType(factory);
             }
-            setHeading(new Label(i18n(title)));
+            Label heading = new Label(i18n(title));
+            heading.getStyleClass().add("header-label");
+            getChildren().add(heading);
         }
 
         {
@@ -126,7 +132,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
             lblErrorMessage.setWrapText(true);
             lblErrorMessage.setMaxWidth(400);
 
-            btnAccept = new JFXButton(i18n("account.login"));
+            btnAccept = new MFXButton(i18n("account.login"));
             btnAccept.getStyleClass().add("dialog-accept");
             btnAccept.setOnAction(e -> onAccept());
 
@@ -134,15 +140,17 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
             spinner.getStyleClass().add("small-spinner-pane");
             spinner.setContent(btnAccept);
 
-            JFXButton btnCancel = new JFXButton(i18n("button.cancel"));
+            MFXButton btnCancel = new MFXButton(i18n("button.cancel"));
             btnCancel.getStyleClass().add("dialog-cancel");
             btnCancel.setOnAction(e -> onCancel());
             onEscPressed(this, btnCancel::fire);
 
-            actions = new HBox(spinner, btnCancel);
-            actions.setAlignment(Pos.CENTER_RIGHT);
+            actionButtons = new HBox(spinner, btnCancel);
+            actionButtons.setAlignment(Pos.CENTER_RIGHT);
 
-            setActions(lblErrorMessage, actions);
+            actionsBox = new VBox();
+            actionsBox.setAlignment(Pos.CENTER_RIGHT);
+            actionsBox.getChildren().setAll(lblErrorMessage, actionButtons);
         }
 
         if (showMethodSwitcher) {
@@ -178,16 +186,17 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
             VBox boxBody = new VBox(tabHeader, detailsContainer);
             boxBody.setAlignment(Pos.CENTER);
             body = boxBody;
-            setBody(body);
+            getChildren().add(body);
 
         } else {
             detailsContainer = new StackPane();
             detailsContainer.setPadding(new Insets(10, 0, 0, 0));
             body = detailsContainer;
-            setBody(body);
+            getChildren().add(body);
         }
         initDetailsPane();
 
+        getChildren().add(actionsBox);
         setPrefWidth(560);
     }
 
@@ -272,16 +281,17 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
             btnAccept.disableProperty().unbind();
             detailsContainer.getChildren().remove(detailsPane);
             lblErrorMessage.setText("");
-            setActions(lblErrorMessage, actions);
         }
+
+        actionsBox.getChildren().clear();
 
         if (factory == Accounts.FACTORY_MICROSOFT) {
             detailsPane = new MicrosoftAccountLoginPane(true);
-            setActions();
+            // actionsBox stays empty for Microsoft
         } else {
             detailsPane = new AccountDetailsInputPane(factory, btnAccept::fire);
             btnAccept.disableProperty().bind(((AccountDetailsInputPane) detailsPane).validProperty().not());
-            setActions(lblErrorMessage, actions);
+            actionsBox.getChildren().setAll(lblErrorMessage, actionButtons);
         }
 
         detailsContainer.getChildren().add(detailsPane);
@@ -314,10 +324,10 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
 
         private final AccountFactory<?> factory;
         private @Nullable AuthlibInjectorServer server;
-        private @Nullable JFXComboBox<AuthlibInjectorServer> cboServers;
-        private @Nullable JFXTextField txtUsername;
-        private @Nullable JFXPasswordField txtPassword;
-        private @Nullable JFXTextField txtUUID;
+        private @Nullable MFXComboBox<AuthlibInjectorServer> cboServers;
+        private @Nullable MFXTextField txtUsername;
+        private @Nullable MFXPasswordField txtPassword;
+        private @Nullable MFXTextField txtUUID;
         private final BooleanBinding valid;
 
         public AccountDetailsInputPane(AccountFactory<?> factory, Runnable onAction) {
@@ -362,7 +372,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 setHalignment(lblServers, HPos.LEFT);
                 add(lblServers, 0, rowIndex);
 
-                cboServers = new JFXComboBox<>();
+                cboServers = new MFXComboBox<>();
                 cboServers.setCellFactory(jfxListCellFactory(server -> new TwoLineListItem(server.getName(), server.getUrl())));
                 cboServers.setConverter(stringConverter(AuthlibInjectorServer::getName));
                 bindContent(cboServers.getItems(), config().getAuthlibInjectorServers());
@@ -383,13 +393,10 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 onChangeAndOperate(cboServers.valueProperty(), server -> {
                     this.server = server;
                     linksContainer.getChildren().setAll(createHyperlinks(server));
-
-                    if (txtUsername != null)
-                        txtUsername.validate();
                 });
                 linksContainer.setMinWidth(USE_PREF_SIZE);
 
-                JFXButton btnAddServer = FXUtils.newToggleButton4(SVG.ADD, 20);
+                MFXButton btnAddServer = FXUtils.newToggleButton4(SVG.ADD, 20);
                 btnAddServer.setOnAction(e -> {
                     Controllers.dialog(new AddAuthlibInjectorServerPane());
                 });
@@ -405,16 +412,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 setHalignment(lblUsername, HPos.LEFT);
                 add(lblUsername, 0, rowIndex);
 
-                txtUsername = new JFXTextField();
-                txtUsername.setValidators(
-                        new RequiredValidator(),
-                        new Validator(i18n("input.email"), username -> {
-                            if (requiresEmailAsUsername()) {
-                                return username.contains("@");
-                            } else {
-                                return true;
-                            }
-                        }));
+                txtUsername = new MFXTextField();
                 setValidateWhileTextChanged(txtUsername, true);
                 txtUsername.setOnAction(e -> onAction.run());
                 add(txtUsername, 1, rowIndex);
@@ -427,8 +425,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 setHalignment(lblPassword, HPos.LEFT);
                 add(lblPassword, 0, rowIndex);
 
-                txtPassword = new JFXPasswordField();
-                txtPassword.setValidators(new RequiredValidator());
+                txtPassword = new MFXPasswordField();
                 setValidateWhileTextChanged(txtPassword, true);
                 txtPassword.setOnAction(e -> onAction.run());
                 add(txtPassword, 1, rowIndex);
@@ -463,10 +460,9 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 setHalignment(lblUUID, HPos.LEFT);
                 add(lblUUID, 0, rowIndex);
 
-                txtUUID = new JFXTextField();
+                txtUUID = new MFXTextField();
                 txtUUID.managedProperty().bind(advancedButton.selectedProperty());
                 txtUUID.visibleProperty().bind(advancedButton.selectedProperty());
-                txtUUID.setValidators(new UUIDValidator());
                 txtUUID.promptTextProperty().bind(BindingMapping.of(txtUsername.textProperty()).map(name -> OfflineAccountFactory.getUUIDFromUserName(name).toString()));
                 txtUUID.setOnAction(e -> onAction.run());
                 add(txtUUID, 1, rowIndex);
@@ -499,12 +495,27 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 protected boolean computeValue() {
                     if (cboServers != null && cboServers.getValue() == null)
                         return false;
-                    if (txtUsername != null && !txtUsername.validate())
-                        return false;
-                    if (txtPassword != null && !txtPassword.validate())
-                        return false;
-                    if (txtUUID != null && !txtUUID.validate())
-                        return false;
+                    if (txtUsername != null) {
+                        String text = txtUsername.getText();
+                        if (!new RequiredValidator().test(text))
+                            return false;
+                        if (requiresEmailAsUsername() && !text.contains("@"))
+                            return false;
+                    }
+                    if (txtPassword != null) {
+                        if (!new RequiredValidator().test(txtPassword.getText()))
+                            return false;
+                    }
+                    if (txtUUID != null) {
+                        String text = txtUUID.getText();
+                        if (StringUtils.isBlank(text))
+                            return true; // UUID is optional
+                        try {
+                            UUIDTypeAdapter.fromString(text);
+                        } catch (IllegalArgumentException ignored) {
+                            return false;
+                        }
+                    }
                     return true;
                 }
             };
@@ -554,16 +565,17 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
         }
     }
 
-    public static class DialogCharacterSelector extends JFXDialogLayout implements CharacterSelector {
+    public static class DialogCharacterSelector extends VBox implements CharacterSelector {
 
         private final AdvancedListBox listBox = new AdvancedListBox();
-        private final JFXButton cancel = new JFXButton();
+        private final MFXButton cancel = new MFXButton();
 
         private final CountDownLatch latch = new CountDownLatch(1);
         private GameProfile selectedProfile = null;
 
         public DialogCharacterSelector() {
-            setStyle("-fx-padding: 8px;");
+            setSpacing(15);
+            setPadding(new Insets(24));
 
             cancel.setText(i18n("button.cancel"));
             cancel.setOnAction(e -> latch.countDown());
@@ -571,12 +583,12 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
 
             listBox.startCategory(i18n("account.choose").toUpperCase(Locale.ROOT));
 
-            setBody(listBox);
+            getChildren().add(listBox);
 
             HBox hbox = new HBox();
             hbox.setAlignment(Pos.CENTER_RIGHT);
             hbox.getChildren().add(cancel);
-            setActions(hbox);
+            getChildren().add(hbox);
 
             onEscPressed(this, cancel::fire);
         }
@@ -617,39 +629,6 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
     public void onDialogShown() {
         if (detailsPane instanceof AccountDetailsInputPane) {
             ((AccountDetailsInputPane) detailsPane).focus();
-        }
-    }
-
-    private static class UUIDValidator extends ValidatorBase {
-
-        public UUIDValidator() {
-            this(i18n("account.methods.offline.uuid.malformed"));
-        }
-
-        public UUIDValidator(@NamedArg("message") String message) {
-            super(message);
-        }
-
-        @Override
-        protected void eval() {
-            if (srcControl.get() instanceof TextInputControl) {
-                evalTextInputField();
-            }
-        }
-
-        private void evalTextInputField() {
-            TextInputControl textField = ((TextInputControl) srcControl.get());
-            if (StringUtils.isBlank(textField.getText())) {
-                hasErrors.set(false);
-                return;
-            }
-
-            try {
-                UUIDTypeAdapter.fromString(textField.getText());
-                hasErrors.set(false);
-            } catch (IllegalArgumentException ignored) {
-                hasErrors.set(true);
-            }
         }
     }
 

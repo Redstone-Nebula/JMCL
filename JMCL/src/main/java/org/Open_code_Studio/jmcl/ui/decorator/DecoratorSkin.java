@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.decorator;
 
-import com.jfoenix.controls.JFXButton;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -96,7 +96,7 @@ public class DecoratorSkin extends SkinBase<Decorator> {
         clip.setArcHeight(8);
         parent.setClip(clip);
 
-        skinnable.getSnackbar().registerSnackbarContainer(parent);
+        // Snackbar container registration removed (JFXSnackbar replaced with StackPane)
 
         EventHandler<MouseEvent> onMouseReleased = this::onMouseReleased;
         EventHandler<MouseEvent> onMouseDragged = this::onMouseDragged;
@@ -231,13 +231,13 @@ public class DecoratorSkin extends SkinBase<Decorator> {
             buttonsContainer.setAlignment(Pos.TOP_RIGHT);
             buttonsContainer.setMaxHeight(40);
             {
-                JFXButton btnMin = new JFXButton();
+                MFXButton btnMin = new MFXButton();
                 btnMin.setFocusTraversable(false);
                 btnMin.setGraphic(SVG.MINIMIZE_CENTER.createIcon(Themes.titleFillProperty()));
                 btnMin.getStyleClass().add("jfx-decorator-button");
                 btnMin.setOnAction(e -> skinnable.minimize());
 
-                JFXButton btnClose = new JFXButton();
+                MFXButton btnClose = new MFXButton();
                 btnClose.setFocusTraversable(false);
                 btnClose.setGraphic(SVG.CLOSE.createIcon(Themes.titleFillProperty()));
                 btnClose.getStyleClass().add("jfx-decorator-button");
@@ -267,7 +267,7 @@ public class DecoratorSkin extends SkinBase<Decorator> {
             navLeft.setPadding(new Insets(0, 5, 0, 5));
 
             if (canBack) {
-                JFXButton backNavButton = new JFXButton();
+                MFXButton backNavButton = new MFXButton();
                 skinnable.forbidDraggingWindow(backNavButton);
                 backNavButton.setFocusTraversable(false);
                 backNavButton.setGraphic(SVG.ARROW_BACK.createIcon(Themes.titleFillProperty()));
@@ -279,7 +279,7 @@ public class DecoratorSkin extends SkinBase<Decorator> {
             }
 
             if (canClose) {
-                JFXButton closeNavButton = new JFXButton();
+                MFXButton closeNavButton = new MFXButton();
                 skinnable.forbidDraggingWindow(closeNavButton);
                 closeNavButton.setFocusTraversable(false);
                 closeNavButton.setGraphic(SVG.CLOSE.createIcon(Themes.titleFillProperty()));
@@ -341,7 +341,7 @@ public class DecoratorSkin extends SkinBase<Decorator> {
             if (canRefresh) {
                 HBox navRight = new HBox();
                 navRight.setAlignment(Pos.CENTER_RIGHT);
-                JFXButton refreshNavButton = new JFXButton();
+                MFXButton refreshNavButton = new MFXButton();
                 refreshNavButton.setGraphic(SVG.REFRESH.createIcon(Themes.titleFillProperty()));
                 refreshNavButton.getStyleClass().add("jfx-decorator-button");
                 refreshNavButton.onActionProperty().bind(skinnable.onRefreshNavButtonActionProperty());

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.Open_code_Studio.jmcl.ui.GameCrashWindowTest" tests="1" skipped="1" failures="0" errors="0" timestamp="2026-06-03T13:15:33.551Z" hostname="cangcangdeMacBook-Air.local" time="0.001">
-  <properties/>
-  <testcase name="test()" classname="org.Open_code_Studio.jmcl.ui.GameCrashWindowTest" time="0.001">
-    <skipped/>
-  </testcase>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -233,7 +233,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
         }
 
         @Override
-        protected ListCell<World> createListCell(MFXListView<World> listView) {
+        protected ListCell<World> createListCell(MFXListView<World, ?> listView) {
             return new WorldListCell(getSkinnable());
         }
     }
