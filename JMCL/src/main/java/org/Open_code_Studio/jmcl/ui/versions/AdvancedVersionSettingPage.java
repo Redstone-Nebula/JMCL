@@ -18,6 +18,7 @@
 package org.Open_code_Studio.jmcl.ui.versions;
 
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.materialfx.validation.Constraint;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -160,7 +161,12 @@ public final class AdvancedVersionSettingPage extends StackPane implements Decor
             txtMetaspace.setPromptText(i18n("settings.advanced.java_permanent_generation_space.prompt"));
             txtMetaspace.getStyleClass().add("fit-width");
             FXUtils.setValidateWhileTextChanged(txtMetaspace, true);
-            txtMetaspace.setValidators(new NumberValidator(true));
+            txtMetaspace.getValidator().constraint(Constraint.of(
+                    i18n("settings.advanced.java_permanent_generation_space.prompt"),
+                    Bindings.createBooleanBinding(
+                            () -> txtMetaspace.getText().isEmpty() || txtMetaspace.getText().matches("-?\\d+"),
+                            txtMetaspace.textProperty())
+            ));
             pane.addRow(1, new Label(i18n("settings.advanced.java_permanent_generation_space")), txtMetaspace);
 
             txtEnvironmentVariables = new MFXTextField();

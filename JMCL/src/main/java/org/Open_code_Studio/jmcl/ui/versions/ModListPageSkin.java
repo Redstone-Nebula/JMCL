@@ -168,12 +168,12 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             // reason for not using selectAll() is that selectAll() first clears all selected then selects all, causing the toolbar to flicker
             var selectAll = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectRange(0, listView.getItems().size()));
 
-            MapChangeListener<Integer, ModInfoObject> selectionListener = change -> {
+            ListChangeListener<ModInfoObject> selectionListener = change -> {
                 selectAll.setDisable(!listView.getItems().isEmpty()
                         && listView.getSelectionModel().getSelectedItems().size() == listView.getItems().size());
             };
 
-            listView.getSelectionModel().selection().addListener(selectionListener);
+            listView.getSelectionModel().getSelectedItems().addListener(selectionListener);
             listView.getItems().addListener((ListChangeListener<ModInfoObject>) c -> {
                 selectAll.setDisable(!listView.getItems().isEmpty()
                         && listView.getSelectionModel().getSelectedItems().size() == listView.getItems().size());
@@ -201,9 +201,9 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                             listView.getSelectionModel().clearSelection())
             );
 
-            FXUtils.onChangeAndOperate(listView.getSelectionModel().selection(),
-                    selection -> {
-                        if (selection.isEmpty())
+            FXUtils.onChangeAndOperate(listView.getSelectionModel().selectedItemProperty(),
+                    selectedItem -> {
+                        if (selectedItem == null)
                             changeToolbar(isSearching ? searchBar : toolbarNormal);
                         else
                             changeToolbar(toolbarSelecting);
@@ -227,7 +227,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             center.loadingProperty().bind(skinnable.loadingProperty());
 
             listView.setCellFactory(x -> new ModInfoListCell(listView));
-            listView.getSelectionModel().setAllowsMultipleSelection(true);
+            listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             Bindings.bindContent(listView.getItems(), skinnable.getItems());
             skinnable.getItems().addListener((ListChangeListener<? super ModInfoObject>) c -> {
                 if (isSearching) {

@@ -28,7 +28,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.MapChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -102,7 +101,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
         // reason for not using selectAll() is that selectAll() first clears all selected then selects all, causing the toolbar to flicker
         var selectAllButton = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectRange(0, listView.getItems().size()));
 
-        MapChangeListener<Integer, DataPackInfoObject> selectionListener = change -> {
+        ListChangeListener<DataPackInfoObject> selectionListener = change -> {
             selectAllButton.setDisable(!listView.getItems().isEmpty()
                     && listView.getSelectionModel().getSelectedItems().size() == listView.getItems().size());
         };
@@ -133,7 +132,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
             enableButton.disableProperty().bind(getSkinnable().readOnly);
             disableButton.disableProperty().bind(getSkinnable().readOnly);
 
-            listView.getSelectionModel().selection().addListener(selectionListener);
+            listView.getSelectionModel().getSelectedItems().addListener(selectionListener);
 
             selectingToolbar.getChildren().addAll(
                     removeButton,
@@ -172,8 +171,8 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
                 }
             });
 
-            FXUtils.onChangeAndOperate(listView.getSelectionModel().selection(),
-                    selection -> isSelecting.set(!selection.isEmpty()));
+            FXUtils.onChangeAndOperate(listView.getSelectionModel().selectedItemProperty(),
+                    selectedItem -> isSelecting.set(selectedItem != null));
             root.getContent().add(toolbarPane);
 
             updateBarByStateWeakListener = FXUtils.observeWeak(() -> {
@@ -193,7 +192,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
             center.loadingProperty().bind(skinnable.loadingProperty());
 
             listView.setCellFactory(x -> new DataPackInfoListCell(listView, getSkinnable().readOnly));
-            listView.getSelectionModel().setAllowsMultipleSelection(true);
+            listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             this.listView.setItems(filteredList);
             listView.getItems().addListener((ListChangeListener<DataPackInfoObject>) c -> {
                 selectAllButton.setDisable(!listView.getItems().isEmpty()
@@ -208,8 +207,8 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
         }
 
         toggleSelect = i -> {
-            if (listView.getSelectionModel().contains(i)) {
-                listView.getSelectionModel().deselect(i);
+            if (listView.getSelectionModel().getSelectedIndices().contains(i)) {
+                listView.getSelectionModel().clearSelection(i);
             } else {
                 listView.getSelectionModel().select(i);
             }
@@ -369,7 +368,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
                     IntStream.rangeClosed(
                                     Math.min(lastShiftClickIndex.get(), currentIndex),
                                     Math.max(lastShiftClickIndex.get(), currentIndex))
-                            .forEach(i -> listView.getSelectionModel().deselect(i));
+                            .forEach(i -> listView.getSelectionModel().clearSelection(i));
                 } else {
                     listView.getSelectionModel().selectRange(Math.min(lastShiftClickIndex.get(), currentIndex), Math.max(lastShiftClickIndex.get(), currentIndex) + 1);
                     listView.getSelectionModel().select(currentIndex);
