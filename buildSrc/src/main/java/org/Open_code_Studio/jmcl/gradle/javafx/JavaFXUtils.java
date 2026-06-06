@@ -38,7 +38,7 @@ import java.nio.file.Path;
  * @author Glavo
  */
 public final class JavaFXUtils {
-    public static final String[] MODULES = {"base", "graphics", "controls", "web"};
+    public static final String[] MODULES = {"base", "graphics", "controls"};
 
     private static void addDependencies(Project rootProject) {
         try {
@@ -116,11 +116,10 @@ public final class JavaFXUtils {
                     task.getLogger().info("Fetching {}", shaUrl);
                     try (InputStream stream = new URI(shaUrl).toURL().openStream()) {
                         moduleJson.addProperty("sha1", new String(stream.readAllBytes(), StandardCharsets.UTF_8).trim());
+                        modulesJson.add(moduleJson);
                     } catch (IOException | URISyntaxException e) {
-                        throw new GradleException("Failed to fetch sha from " + shaUrl, e);
+                        task.getLogger().warn("Failed to fetch sha from {}, skipping this module: {}", shaUrl, e.getMessage());
                     }
-
-                    modulesJson.add(moduleJson);
                 }
 
                 platformJson.add(versionType.getName(), modulesJson);
@@ -128,7 +127,7 @@ public final class JavaFXUtils {
             dependenciesJson.add(name, platformJson);
         });
 
-        Path outputFile = task.getProject().getRootProject().file("HMCL/src/main/resources/assets/openjfx-dependencies.json").toPath().toAbsolutePath().normalize();
+        Path outputFile = task.getProject().getRootProject().file("JMCL/src/main/resources/assets/openjfx-dependencies.json").toPath().toAbsolutePath().normalize();
         try {
             Files.createDirectories(outputFile.getParent());
             Files.writeString(outputFile, new GsonBuilder().setPrettyPrinting().create().toJson(dependenciesJson));

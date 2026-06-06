@@ -17,67 +17,31 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
-import javafx.concurrent.Worker;
 import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
 import javafx.scene.layout.StackPane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import org.Open_code_Studio.jmcl.auth.Account;
 import org.Open_code_Studio.jmcl.auth.yggdrasil.TextureModel;
 import org.Open_code_Studio.jmcl.game.TexturesLoader;
 import org.Open_code_Studio.jmcl.setting.Accounts;
+import org.Open_code_Studio.jmcl.ui.skin.SkinCanvas;
+import org.Open_code_Studio.jmcl.ui.skin.SkinHelper;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.net.URL;
-import java.util.Base64;
-
-import static org.Open_code_Studio.jmcl.util.logging.Logger.LOG;
-
+/**
+ * A pane that displays a 3D preview of the currently selected account's skin.
+ * Uses JavaFX 3D (SubScene) for rendering via {@link SkinCanvas}.
+ */
 public class SkinViewPane extends StackPane {
-    private final WebView webView;
-    private final WebEngine engine;
-    private String pendingDataUrl;
-    private boolean pendingSlim;
+    private final SkinCanvas skinCanvas;
 
     public SkinViewPane() {
         getStyleClass().add("skin-view-pane");
 
-        webView = new WebView();
-        webView.getStyleClass().add("skin-view-webview");
+        // SkinCanvas now extends Pane and adapts to container size natively via layoutChildren()
+        skinCanvas = new SkinCanvas(TexturesLoader.getDefaultSkinImage(), 300, 400, true);
+        getChildren().add(skinCanvas);
 
-        engine = webView.getEngine();
-
-        URL url = getClass().getResource("/assets/skinview3d.html");
-        if (url != null) {
-            engine.load(url.toExternalForm());
-        }
-
-        getChildren().add(webView);
-
-        // Bind WebView size to StackPane size
-        webView.prefWidthProperty().bind(widthProperty());
-        webView.prefHeightProperty().bind(heightProperty());
-
-        // Initialize skinview3d when the page is loaded
-        engine.getLoadWorker().stateProperty().addListener((obs, old, state) -> {
-            if (state == Worker.State.SUCCEEDED) {
-                engine.executeScript(String.format(
-                        "initViewer(%d, %d)", (int) getWidth(), (int) getHeight()
-                ));
-                // Flush any pending skin update
-                if (pendingDataUrl != null) {
-                    pushSkin(pendingDataUrl, pendingSlim);
-                    pendingDataUrl = null;
-                }
-            }
-        });
-
-        // React to account selection changes
+        // Listen for account changes
         InvalidationListener updateSkinListener = obs -> {
             Account selectedAccount = Accounts.selectedAccountProperty().get();
             if (selectedAccount != null) {
@@ -101,46 +65,9 @@ public class SkinViewPane extends StackPane {
         });
     }
 
-    private void updateSkinFromImage(Image fxImage, boolean isSlim) {
-        String dataUrl = imageToDataUrl(fxImage);
-        if (dataUrl == null) return;
-
-        Platform.runLater(() -> {
-            if (engine.getLoadWorker().getState() == Worker.State.SUCCEEDED) {
-                pushSkin(dataUrl, isSlim);
-            } else {
-                // Page not loaded yet — queue for later
-                pendingDataUrl = dataUrl;
-                pendingSlim = isSlim;
-            }
-        });
-    }
-
-    private void pushSkin(String dataUrl, boolean isSlim) {
-        // Escape single quotes in base64 data URL (safe for this format)
-        engine.executeScript("updateSkin('" + dataUrl + "', " + isSlim + ")");
-    }
-
-    private static String imageToDataUrl(Image fxImage) {
-        try {
-            int w = (int) fxImage.getWidth();
-            int h = (int) fxImage.getHeight();
-            BufferedImage bufferedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-            PixelReader reader = fxImage.getPixelReader();
-            if (reader != null) {
-                for (int y = 0; y < h; y++) {
-                    for (int x = 0; x < w; x++) {
-                        bufferedImage.setRGB(x, y, reader.getArgb(x, y));
-                    }
-                }
-            }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", baos);
-            byte[] bytes = baos.toByteArray();
-            return "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
-        } catch (Exception e) {
-            LOG.warning("Failed to convert skin image to data URL", e);
-            return null;
+    private void updateSkinFromImage(Image skin, boolean isSlim) {
+        if (SkinHelper.isNoRequest(skin) && SkinHelper.isSkin(skin)) {
+            skinCanvas.updateSkin(skin, isSlim, null);
         }
     }
 }

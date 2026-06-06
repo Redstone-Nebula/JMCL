@@ -1246,11 +1246,6 @@
     -fx-border-radius: 12;
 }
 
-/* WebView hosting skinview3d — transparent so the pane background shows through */
-.skin-view-webview {
-    -fx-background-color: transparent;
-}
-
 /* Main content area — base surface (lowest container level), no shadow */
 .md3-content-area {
     -fx-background-color: -monet-surface;

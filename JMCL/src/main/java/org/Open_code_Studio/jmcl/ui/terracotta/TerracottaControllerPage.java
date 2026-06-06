@@ -160,17 +160,6 @@ public class TerracottaControllerPage extends StackPane {
                     if (s != null) {
                         UI_STATE.set(s);
                     }
-
-                    if (uninitialized.hasLegacy() && I18n.isUseChinese()) {
-                        Object feedback = config().getShownTips().get(FEEDBACK_TIP);
-                        if (!(feedback instanceof Number number) || number.intValue() < 1) {
-                            Controllers.confirm(i18n("terracotta.feedback.desc"), i18n("terracotta.feedback.title"), () -> {
-                                FXUtils.openLink(TerracottaMetadata.FEEDBACK_LINK);
-                                config().getShownTips().put(FEEDBACK_TIP, 1);
-                            }, () -> {
-                            });
-                        }
-                    }
                 });
 
                 nodesProperty.setAll(body, download, getThirdPartyDownloadNodes());
@@ -255,7 +244,6 @@ public class TerracottaControllerPage extends StackPane {
                     feedback.setTitle(i18n("terracotta.feedback.title"));
                     feedback.setSubtitle(i18n("terracotta.feedback.desc"));
                     feedback.setTrailingIcon(SVG.OPEN_IN_NEW, ICON_SIZE);
-                    FXUtils.onClicked(feedback, () -> FXUtils.openLink(TerracottaMetadata.FEEDBACK_LINK));
 
                     nodesProperty.setAll(flow, host, guest, feedback);
                 } else {

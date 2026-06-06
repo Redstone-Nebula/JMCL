@@ -2,10 +2,9 @@
 
 ## 项目结构
 
-这是一个双语言项目：
+这是一个单语言项目：
 
 - **Java 后端** — MC 启动器本体 (JavaFX + JFoenix + MD3 CSS)，Gradle 多模块
-- **Dart/Flutter 前端** (`jboot/`) — 启动器 UI (MD3UI 设计规范)，当前为独立占位工程
 
 ### Java 模块 (Gradle)
 
@@ -38,15 +37,6 @@
 ```
 
 如果遇到 Gradle daemon `posix_spawn` 问题，使用 `build-ultimate.sh` (它会设置 `_JAVA_OPTIONS=-Djdk.lang.Process.launchMechanism=FORK`)。
-
-### Flutter (jboot/)
-
-```shell
-cd jboot
-flutter pub get
-flutter run
-flutter build apk / ios / macos / linux / windows
-```
 
 ## 代码风格
 

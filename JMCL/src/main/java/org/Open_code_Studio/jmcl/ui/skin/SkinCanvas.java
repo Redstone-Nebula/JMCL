@@ -4,6 +4,7 @@ import javafx.scene.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
@@ -14,7 +15,7 @@ import javafx.scene.transform.Translate;
 
 import org.jetbrains.annotations.Nullable;
 
-public class SkinCanvas extends Group {
+public class SkinCanvas extends Pane {
 
     public static final SkinCube ALEX_LARM = new SkinCube(3, 12, 4, 14F / 64F, 16F / 64F, 32F / 64F, 48F / 64F, 0F, true);
     public static final SkinCube ALEX_RARM = new SkinCube(3, 12, 4, 14F / 64F, 16F / 64F, 40F / 64F, 16F / 64F, 0F, true);
@@ -154,7 +155,24 @@ public class SkinCanvas extends Group {
         this.preH = preH;
         this.msaa = msaa;
 
+        setPrefWidth(preW);
+        setPrefHeight(preH);
+
         init();
+    }
+
+    @Override
+    protected void layoutChildren() {
+        double w = getWidth();
+        double h = getHeight();
+        if (w <= 0 || h <= 0) {
+            w = preW;
+            h = preH;
+        }
+        if (subScene != null && (subScene.getWidth() != w || subScene.getHeight() != h)) {
+            subScene.setWidth(w);
+            subScene.setHeight(h);
+        }
     }
 
     protected Material createMaterial(final Image image) {

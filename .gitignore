@@ -4,6 +4,9 @@
 # Log file
 *.log
 
+# Azure AD local credentials (do not commit)
+config/azure-ad.properties
+
 # BlueJ files
 *.ctxt
 

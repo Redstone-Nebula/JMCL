@@ -103,7 +103,7 @@ public class TerracottaPage extends DecoratorAnimatedPage implements DecoratorPa
                             0,
                             mainPage.getProfile(), mainPage.getVersions()));
                 })
-                .addNavigationDrawerItem(i18n("terracotta.feedback.title"), SVG.FEEDBACK, () -> FXUtils.openLink(TerracottaMetadata.FEEDBACK_LINK));
+                .addNavigationDrawerItem(i18n("terracotta.feedback.title"), SVG.FEEDBACK, () -> {});
         BorderPane.setMargin(toolbar, new Insets(0, 0, 12, 0));
         left.setBottom(toolbar);
 

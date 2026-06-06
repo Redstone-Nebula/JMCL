@@ -120,6 +120,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         state.setValue(new State(null, titleNode, false, false, true));
 
         setPadding(new Insets(20));
+        FXUtils.setOverflowHidden(this);
 
         if (Metadata.isNightly() || (Metadata.isDev() && !Objects.equals(Metadata.VERSION, config().getShownTips().get(ANNOUNCEMENT)))) {
             String title;
@@ -163,7 +164,8 @@ public final class MainPage extends StackPane implements DecoratorPage {
             announcementPane = new TransitionPane();
             announcementPane.setContent(announcementBox, ContainerAnimations.NONE);
 
-            StackPane.setMargin(announcementPane, new Insets(-15));
+            StackPane.setAlignment(announcementPane, Pos.TOP_LEFT);
+            StackPane.setMargin(announcementPane, new Insets(0));
             getChildren().add(announcementPane);
         }
 

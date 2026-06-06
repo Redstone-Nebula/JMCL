@@ -29,7 +29,7 @@ val isOfficial = JenkinsUtils.IS_ON_CI || GitHubActionUtils.IS_ON_OFFICIAL_REPO
 val versionType = System.getenv("VERSION_TYPE") ?: if (isOfficial) "nightly" else "unofficial"
 val versionRoot = System.getenv("VERSION_ROOT") ?: projectConfig.getProperty("versionRoot") ?: "3"
 
-val microsoftAuthId = System.getenv("MICROSOFT_AUTH_ID") ?: ""
+val microsoftAuthId = System.getenv("MICROSOFT_AUTH_ID") ?: getOrPromptMicrosoftAuthId()
 val curseForgeApiKey = System.getenv("CURSEFORGE_API_KEY") ?: ""
 
 val launcherExe = System.getenv("JVM-MCL_LAUNCHER_EXE") ?: ""
@@ -44,6 +44,93 @@ if (buildNumber != null) {
     } else {
         "DEV$versionRoot-$shortCommit"
     }
+}
+
+/// Reads a single property value from a simple key=value file.
+/// Returns the value for the given key, or null if not found.
+fun readProperty(file: java.io.File, key: String): String? {
+    if (!file.exists()) return null
+    try {
+        val lines = Files.readAllLines(file.toPath())
+        for (l in lines) {
+            val trimmed = l.trim()
+            if (!trimmed.startsWith("#") && trimmed.startsWith("$key=")) {
+                return trimmed.substring(key.length + 1)
+            }
+        }
+    } catch (e: Exception) {
+        // ignore
+    }
+    return null
+}
+
+/// Writes a single property to a simple key=value file.
+fun writeProperty(file: java.io.File, key: String, value: String) {
+    file.parentFile.mkdirs()
+    val content = listOf(
+        "# JMCL Azure AD / Microsoft OAuth Client ID",
+        "# This file is git-ignored. Do not commit.",
+        "$key=$value"
+    )
+    Files.write(file.toPath(), content)
+}
+
+/// Reads a line from the console. Tries System.console() first, falls back to kotlin.io.readLine().
+fun readConsoleLine(prompt: String?): String? {
+    val console: java.io.Console? = System.console()
+    if (console != null) {
+        return if (prompt != null) console.readLine(prompt) else console.readLine()
+    }
+    // Fallback: kotlin.io.readLine() reads from System.in
+    if (prompt != null) {
+        print(prompt)
+    }
+    return readLine()
+}
+
+/// Resolves the Azure AD / Microsoft OAuth client ID for builds.
+/// Priority: MICROSOFT_AUTH_ID env var → config/azure-ad.properties → interactive console prompt.
+/// The prompted value is persisted to config/azure-ad.properties for subsequent builds.
+fun getOrPromptMicrosoftAuthId(): String {
+    val configFile = rootProject.file("config/azure-ad.properties")
+
+    // Try reading from persisted config file
+    if (configFile.exists()) {
+        val id: String? = readProperty(configFile, "microsoft.auth.id")
+        if (!id.isNullOrBlank()) {
+            logger.quiet("Azure AD client ID loaded from {}", configFile)
+            return id
+        }
+    }
+
+    // Prompt user interactively
+    logger.quiet("")
+    logger.quiet("╔══════════════════════════════════════════════════════════════╗")
+    logger.quiet("║  Azure AD / Microsoft OAuth Client ID Configuration        ║")
+    logger.quiet("║                                                              ║")
+    logger.quiet("║  Register an app at:                                        ║")
+    logger.quiet("║  https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps ║")
+    logger.quiet("║                                                              ║")
+    logger.quiet("║  Required: Redirect URI = http://localhost:29111/auth-response║")
+    logger.quiet("║  Required: Live SDK support enabled                         ║")
+    logger.quiet("╚══════════════════════════════════════════════════════════════╝")
+    logger.quiet("")
+
+    val clientId: String? = readConsoleLine("Enter your Azure AD client ID (or press Enter to skip): ")?.trim()
+
+    if (!clientId.isNullOrBlank()) {
+        // Persist for future builds
+        try {
+            writeProperty(configFile, "microsoft.auth.id", clientId)
+            logger.quiet("Azure AD client ID saved to {}", configFile)
+        } catch (e: Exception) {
+            logger.warn("Failed to save client ID to {}: {}", configFile, e.message)
+        }
+        return clientId
+    }
+
+    logger.quiet("No client ID provided. Microsoft login will not be available in this build.")
+    return ""
 }
 
 val embedResources by configurations.registering
@@ -356,6 +443,55 @@ fun parseToolOptions(options: String?): MutableList<String> {
     }
 
     return result
+}
+
+/// Interactive task to configure or reconfigure the Azure AD client ID.
+/// Prompts in the console and persists to config/azure-ad.properties.
+tasks.register("configureAzureAd") {
+    group = "configuration"
+    description = "Configure Azure AD / Microsoft OAuth client ID for Microsoft account login"
+
+    doLast {
+        val configFile = rootProject.file("config/azure-ad.properties")
+
+        val currentId: String? = try {
+            val fromFile = readProperty(configFile, "microsoft.auth.id")
+            if (!fromFile.isNullOrBlank()) fromFile else System.getenv("MICROSOFT_AUTH_ID")
+        } catch (e: Exception) { null }
+
+        logger.quiet("")
+        logger.quiet("╔══════════════════════════════════════════════════════════════╗")
+        logger.quiet("║  Azure AD / Microsoft OAuth Client ID Configuration        ║")
+        logger.quiet("║                                                              ║")
+        logger.quiet("║  Register an app at:                                        ║")
+        logger.quiet("║  https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps ║")
+        logger.quiet("║                                                              ║")
+        logger.quiet("║  Required: Redirect URI = http://localhost:29111/auth-response║")
+        logger.quiet("║  Required: Live SDK support enabled                         ║")
+        logger.quiet("╚══════════════════════════════════════════════════════════════╝")
+        logger.quiet("")
+
+        if (currentId != null) {
+            logger.quiet("Current client ID: {}", currentId)
+        } else {
+            logger.quiet("No client ID currently configured.")
+        }
+        logger.quiet("")
+
+        val clientId: String? = readConsoleLine("Enter new Azure AD client ID (or press Enter to keep current): ")?.trim()
+
+        if (!clientId.isNullOrBlank()) {
+            try {
+                writeProperty(configFile, "microsoft.auth.id", clientId)
+                logger.quiet("Azure AD client ID saved to {}", configFile)
+                logger.quiet("Run './gradlew -g .gradle-user-home clean build' to rebuild with the new client ID.")
+            } catch (e: Exception) {
+                throw GradleException("Failed to save client ID: ${e.message}", e)
+            }
+        } else {
+            logger.quiet("Client ID unchanged.")
+        }
+    }
 }
 
 // For IntelliJ IDEA

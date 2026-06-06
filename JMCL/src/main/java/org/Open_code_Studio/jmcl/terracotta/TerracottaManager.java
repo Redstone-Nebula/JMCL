@@ -124,6 +124,11 @@ public final class TerracottaManager {
                 next = object;
             } catch (Exception e) {
                 LOG.warning("Cannot fetch state from Terracotta.", e);
+                // If we are still in Unknown state (process just launched, HTTP server not ready yet),
+                // keep retrying instead of immediately marking as fatal.
+                if (state instanceof TerracottaState.Unknown) {
+                    continue;
+                }
                 next = new TerracottaState.Fatal(TerracottaState.Fatal.Type.TERRACOTTA);
             }
 

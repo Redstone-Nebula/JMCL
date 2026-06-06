@@ -47,15 +47,6 @@ public class HelpPage extends SpinnerPane {
         FXUtils.smoothScrolling(scrollPane);
         setContent(scrollPane);
 
-        var docPane = LineButton.createExternalLinkButton(Metadata.DOCS_URL);
-        docPane.setLargeTitle(true);
-        docPane.setTitle(i18n("help.doc"));
-        docPane.setSubtitle(i18n("help.detail"));
-
-        ComponentList doc = new ComponentList();
-        doc.getContent().setAll(docPane);
-        content.getChildren().add(doc);
-
         loadHelp();
     }
 

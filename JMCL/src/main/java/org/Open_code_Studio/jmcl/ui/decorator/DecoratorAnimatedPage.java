@@ -82,8 +82,8 @@ public class DecoratorAnimatedPage extends Control {
             HBox centerContainer = new HBox();
             centerContainer.setFillHeight(true);
             
-            control.leftCenter.setPrefWidth(200);
-            control.leftCenter.setMinWidth(200);
+            control.leftCenter.setPrefWidth(260);
+            control.leftCenter.setMinWidth(260);
             control.leftCenter.setMaxWidth(400);
             HBox.setHgrow(control.leftCenter, Priority.SOMETIMES);
             centerContainer.getChildren().add(control.leftCenter);

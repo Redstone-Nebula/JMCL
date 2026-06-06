@@ -150,9 +150,6 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
         protected Skin(RootPage control) {
             super(control);
 
-            // Compact icon-only sidebar: narrow width
-            control.left.setPrefWidth(72);
-
             AccountAdvancedListItem accountListItem = new AccountAdvancedListItem();
             accountListItem.setOnAction(e -> Controllers.navigate(Controllers.getAccountListPage()));
             FXUtils.onSecondaryButtonClicked(accountListItem, () -> AccountListPopupMenu.show(accountListItem, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, accountListItem.getWidth(), 0));
@@ -250,13 +247,17 @@ public class RootPage extends DecoratorAnimatedPage implements DecoratorPage {
             leftCenterContent.getChildren().addAll(accountListItem, skinViewPane);
             VBox.setVgrow(skinViewPane, Priority.ALWAYS);
 
-            sideBar.getStyleClass().addAll("card", "elev-2", "md3-sidebar");
+            sideBar.getStyleClass().addAll("card", "elev-2");
             skinViewPane.getStyleClass().addAll("skin-view-pane");
             getSkinnable().getMainPage().getStyleClass().add("md3-content-area");
 
             setLeft(sideBar);
             setLeftCenter(leftCenterContent);
             setCenter(getSkinnable().getMainPage());
+
+            // Prevent overflow from center (announcement) from overlapping sibling regions
+            FXUtils.setOverflowHidden(control.center);
+            FXUtils.setOverflowHidden(control.left);
         }
 
         public void showGameListPopupMenu(Region gameListItem) {
