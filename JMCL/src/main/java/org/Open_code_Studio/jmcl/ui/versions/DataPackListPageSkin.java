@@ -21,13 +21,17 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXListView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.mfxcore.base.beans.range.IntegerRange;
+import io.github.palexdev.virtualizedfx.cells.base.VFXCell;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.MapChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -75,7 +79,7 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
     private final HBox selectingToolbar;
     InvalidationListener updateBarByStateWeakListener;
 
-    private final MFXListView<DataPackInfoObject, ?> listView;
+    private final MFXListView<DataPackInfoObject, VFXCell<DataPackInfoObject>> listView;
     private final FilteredList<DataPackInfoObject> filteredList;
 
     private final BooleanProperty isSearching = new SimpleBooleanProperty(false);
@@ -98,9 +102,9 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
         filteredList = new FilteredList<>(skinnable.getItems());
 
         // reason for not using selectAll() is that selectAll() first clears all selected then selects all, causing the toolbar to flicker
-        var selectAllButton = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectRange(0, listView.getItems().size()));
+        var selectAllButton = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectIndexes(IntegerRange.of(0, listView.getItems().size())));
 
-        ListChangeListener<Object> listener = change -> {
+        MapChangeListener<Integer, DataPackInfoObject> selectionListener = change -> {
             selectAllButton.setDisable(!listView.getItems().isEmpty()
                     && listView.getSelectionModel().getSelectedItems().size() == listView.getItems().size());
         };
@@ -120,18 +124,18 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
 
             MFXButton removeButton = createToolbarButton2(i18n("button.remove"), SVG.DELETE_FOREVER, () -> {
                 Controllers.confirm(i18n("button.remove.confirm"), i18n("button.remove"), () -> {
-                    skinnable.removeSelected(listView.getSelectionModel().getSelectedItems());
+                    skinnable.removeSelected(FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems()));
                 }, null);
             });
             MFXButton enableButton = createToolbarButton2(i18n("mods.enable"), SVG.CHECK, () ->
-                    skinnable.enableSelected(listView.getSelectionModel().getSelectedItems()));
+                    skinnable.enableSelected(FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems())));
             MFXButton disableButton = createToolbarButton2(i18n("mods.disable"), SVG.CLOSE, () ->
-                    skinnable.disableSelected(listView.getSelectionModel().getSelectedItems()));
+                    skinnable.disableSelected(FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems())));
             removeButton.disableProperty().bind(getSkinnable().readOnly);
             enableButton.disableProperty().bind(getSkinnable().readOnly);
             disableButton.disableProperty().bind(getSkinnable().readOnly);
 
-            listView.getSelectionModel().getSelectedItems().addListener(listener);
+            listView.getSelectionModel().selection().addListener(selectionListener);
 
             selectingToolbar.getChildren().addAll(
                     removeButton,
@@ -170,8 +174,8 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
                 }
             });
 
-            FXUtils.onChangeAndOperate(listView.getSelectionModel().selectedItemProperty(),
-                    selectedItem -> isSelecting.set(selectedItem != null));
+            FXUtils.onChangeAndOperate(listView.getSelectionModel().selection(),
+                    selection -> isSelecting.set(!selection.isEmpty()));
             root.getContent().add(toolbarPane);
 
             updateBarByStateWeakListener = FXUtils.observeWeak(() -> {
@@ -191,9 +195,12 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
             center.loadingProperty().bind(skinnable.loadingProperty());
 
             listView.setCellFactory(x -> new DataPackInfoListCell(listView, getSkinnable().readOnly));
-            listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            listView.getSelectionModel().setAllowsMultipleSelection(true);
             this.listView.setItems(filteredList);
-            listView.getItems().addListener(listener);
+            listView.getItems().addListener((ListChangeListener<DataPackInfoObject>) c -> {
+                selectAllButton.setDisable(!listView.getItems().isEmpty()
+                        && listView.getSelectionModel().getSelectedItems().size() == listView.getItems().size());
+            });
 
             // ListViewBehavior would consume ESC pressed event, preventing us from handling it, so we ignore it here
             FXUtils.ignoreEvent(listView, KeyEvent.KEY_PRESSED, e -> e.getCode() == KeyCode.ESCAPE);
@@ -203,10 +210,10 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
         }
 
         toggleSelect = i -> {
-            if (listView.getSelectionModel().isSelected(i)) {
-                listView.getSelectionModel().clearSelection(i);
+            if (listView.getSelectionModel().contains(i)) {
+                listView.getSelectionModel().deselectIndex(i);
             } else {
-                listView.getSelectionModel().select(i);
+                listView.getSelectionModel().selectIndex(i);
             }
         };
 
@@ -364,15 +371,15 @@ final class DataPackListPageSkin extends SkinBase<DataPackListPage> {
                     IntStream.rangeClosed(
                                     Math.min(lastShiftClickIndex.get(), currentIndex),
                                     Math.max(lastShiftClickIndex.get(), currentIndex))
-                            .forEach(listView.getSelectionModel()::clearSelection);
+                            .forEach(i -> listView.getSelectionModel().deselectIndex(i));
                 } else {
-                    listView.getSelectionModel().selectRange(lastShiftClickIndex.get(), currentIndex);
-                    listView.getSelectionModel().select(currentIndex);
+                    listView.getSelectionModel().selectIndexes(IntegerRange.of(lastShiftClickIndex.get(), currentIndex));
+                    listView.getSelectionModel().selectIndex(currentIndex);
                 }
                 lastShiftClickIndex.set(-1);
             } else {
                 lastShiftClickIndex.set(currentIndex);
-                listView.getSelectionModel().select(currentIndex);
+                listView.getSelectionModel().selectIndex(currentIndex);
             }
         } else {
             toggleSelect.accept(cell.getIndex());

@@ -22,6 +22,7 @@ import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import io.github.palexdev.materialfx.controls.MFXListView;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.mfxcore.base.beans.range.IntegerRange;
+import io.github.palexdev.virtualizedfx.cells.base.VFXCell;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -42,6 +43,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -97,7 +99,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
     private final HBox toolbarNormal;
     private final HBox toolbarSelecting;
 
-    private final MFXListView<ModInfoObject, ?> listView;
+    private final MFXListView<ModInfoObject, VFXCell<ModInfoObject>> listView;
     private final MFXTextField searchField;
 
     // FXThread
@@ -167,26 +169,29 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             // Toolbar Selecting
 
             // reason for not using selectAll() is that selectAll() first clears all selected then selects all, causing the toolbar to flicker
-            var selectAll = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectRange(0, listView.getItems().size()));
+            var selectAll = createToolbarButton2(i18n("button.select_all"), SVG.SELECT_ALL, () -> listView.getSelectionModel().selectIndexes(IntegerRange.of(0, listView.getItems().size())));
 
-            ListChangeListener<Object> listener = change -> {
+            MapChangeListener<Integer, ModInfoObject> selectionListener = change -> {
                 selectAll.setDisable(!listView.getItems().isEmpty()
                         && listView.getSelectionModel().getSelectedItems().size() == listView.getItems().size());
             };
 
-            listView.getSelectionModel().getSelectedItems().addListener(listener);
-            listView.getItems().addListener(listener);
+            listView.getSelectionModel().selection().addListener(selectionListener);
+            listView.getItems().addListener((ListChangeListener<ModInfoObject>) c -> {
+                selectAll.setDisable(!listView.getItems().isEmpty()
+                        && listView.getSelectionModel().getSelectedItems().size() == listView.getItems().size());
+            });
 
             toolbarSelecting.getChildren().setAll(
                     createToolbarButton2(i18n("button.remove"), SVG.DELETE_FOREVER, () -> {
                         Controllers.confirm(i18n("button.remove.confirm"), i18n("button.remove"), () -> {
-                            skinnable.removeSelected(listView.getSelectionModel().getSelectedItems());
+                            skinnable.removeSelected(FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems()));
                         }, null);
                     }),
                     createToolbarButton2(i18n("mods.enable"), SVG.CHECK, () ->
-                            skinnable.enableSelected(listView.getSelectionModel().getSelectedItems())),
+                            skinnable.enableSelected(FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems()))),
                     createToolbarButton2(i18n("mods.disable"), SVG.CLOSE, () ->
-                            skinnable.disableSelected(listView.getSelectionModel().getSelectedItems())),
+                            skinnable.disableSelected(FXCollections.observableArrayList(listView.getSelectionModel().getSelectedItems()))),
                     createToolbarButton2(i18n("mods.check_updates.button"), SVG.UPDATE, () ->
                             skinnable.checkUpdates(
                                     listView.getSelectionModel().getSelectedItems().stream()
@@ -199,9 +204,9 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                             listView.getSelectionModel().clearSelection())
             );
 
-            FXUtils.onChangeAndOperate(listView.getSelectionModel().selectedItemProperty(),
-                    selectedItem -> {
-                        if (selectedItem == null)
+            FXUtils.onChangeAndOperate(listView.getSelectionModel().selection(),
+                    selection -> {
+                        if (selection.isEmpty())
                             changeToolbar(isSearching ? searchBar : toolbarNormal);
                         else
                             changeToolbar(toolbarSelecting);
@@ -225,7 +230,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             center.loadingProperty().bind(skinnable.loadingProperty());
 
             listView.setCellFactory(x -> new ModInfoListCell(listView));
-            listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            listView.getSelectionModel().setAllowsMultipleSelection(true);
             Bindings.bindContent(listView.getItems(), skinnable.getItems());
             skinnable.getItems().addListener((ListChangeListener<? super ModInfoObject>) c -> {
                 if (isSearching) {
