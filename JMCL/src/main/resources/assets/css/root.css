@@ -198,7 +198,7 @@
 }
 
 /* =============================================================================
- * MD3 Navigation Drawer Items — rounded pill active indicator
+ * MD3 Navigation Drawer Items + Hover / Focus transitions
  * ============================================================================= */
 .advanced-list-item > .rippler-container > .container {
     -fx-padding: 0 12 0 12;
@@ -221,6 +221,14 @@
     -fx-text-alignment: justify;
 }
 
+/* MD3 Navigation Drawer: hover state */
+.advanced-list-item:hover > .rippler-container > .container {
+    -fx-background-color: -monet-secondary-container;
+    -fx-background-radius: 28;
+    -fx-opacity: 0.7;
+    -fx-transition: all 0.15s ease-in-out;
+}
+
 /* MD3 Navigation Drawer: Pill-shaped active indicator */
 .advanced-list-item:selected > .rippler-container > .container {
     -fx-background-color: -monet-secondary-container;
@@ -236,9 +244,17 @@
     -fx-fill: -monet-on-secondary-container;
 }
 
-/* MD3 Navigation Drawer: standard nav drawer item */
+/* MD3 Navigation Drawer: standard nav drawer item + hover */
 .navigation-drawer-item > .rippler-container > .container {
     -fx-padding: 0 12 0 12;
+    -fx-background-radius: 28;
+    -fx-background-color: null;
+    -fx-transition: all 0.15s ease-in-out;
+}
+
+.navigation-drawer-item > .rippler-container > .container:hover {
+    -fx-background-color: -monet-secondary-container;
+    -fx-opacity: 0.7;
 }
 
 .navigation-drawer-item > .rippler-container > .container > VBox {
@@ -2102,4 +2118,184 @@
     -fx-background-color: -monet-surface-container-high;
     -fx-background-radius: 3;
     -fx-padding: 1 4;
+}
+
+/* =============================================================================
+ * MD3 Tabs — active indicator, hover, selection
+ * ============================================================================= */
+.md3-tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 0 20px;
+    -fx-min-height: 48px;
+    -fx-cursor: hand;
+}
+
+.md3-tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: transparent;
+}
+
+.md3-tab-pane > .tab-header-area > .headers-region > .tab .tab-label {
+    -fx-text-fill: -monet-on-surface-variant;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-text-transform: uppercase;
+    -fx-letter-spacing: 0.5px;
+}
+
+.md3-tab-pane > .tab-header-area > .headers-region > .tab:selected .tab-label {
+    -fx-text-fill: -monet-primary;
+}
+
+.md3-tab-pane > .tab-header-area > .headers-region > .tab:hover .tab-label {
+    -fx-text-fill: -monet-on-surface;
+}
+
+.md3-tab-pane > .tab-header-area > .tab-selected-line {
+    -fx-background-color: -monet-primary;
+    -fx-background-radius: 3px 3px 0 0;
+    -fx-min-height: 3px;
+    -fx-max-height: 3px;
+}
+
+.md3-tab-pane > .tab-header-area > .headers-region > .tab .jfx-rippler {
+    -jfx-rippler-fill: -monet-primary;
+}
+
+/* =============================================================================
+ * MD3 Linear Progress — determinate & indeterminate
+ * ============================================================================= */
+.md3-linear-progress {
+    -fx-min-height: 4px;
+    -fx-max-height: 4px;
+    -fx-background-color: -monet-secondary-container;
+    -fx-background-radius: 2px;
+}
+
+.md3-linear-progress .bar {
+    -fx-background-color: -monet-primary;
+    -fx-background-radius: 2px;
+}
+
+.md3-linear-progress .track {
+    -fx-background-color: -monet-secondary-container;
+    -fx-background-radius: 2px;
+}
+
+/* =============================================================================
+ * MD3 Dividers — full-bleed & inset
+ * ============================================================================= */
+.md3-divider {
+    -fx-min-height: 1px;
+    -fx-max-height: 1px;
+    -fx-background-color: -monet-outline-variant;
+    -fx-opacity: 0.5;
+}
+
+.md3-divider-inset {
+    -fx-min-height: 1px;
+    -fx-max-height: 1px;
+    -fx-background-color: -monet-outline-variant;
+    -fx-opacity: 0.4;
+    -fx-padding: 0 16px;
+}
+
+/* =============================================================================
+ * MD3 Menu / Popup / Dropdown — rounded surfaces
+ * ============================================================================= */
+.md3-menu,
+.context-menu {
+    -fx-background-color: -monet-surface-container;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px 0;
+    -fx-border-color: -monet-outline-variant;
+    -fx-border-width: 0.5px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0.0, 0, 4);
+}
+
+.md3-menu-item,
+.menu-item {
+    -fx-padding: 8px 16px;
+    -fx-font-size: 14px;
+    -fx-text-fill: -monet-on-surface;
+    -fx-background-color: transparent;
+}
+
+.md3-menu-item:hover,
+.menu-item:hover,
+.menu-item:focused {
+    -fx-background-color: -monet-secondary-container;
+    -fx-background-radius: 4px;
+}
+
+.menu-item .label {
+    -fx-text-fill: -monet-on-surface;
+    -fx-font-size: 14px;
+}
+
+.menu-item:disabled .label {
+    -fx-opacity: 0.38;
+}
+
+/* =============================================================================
+ * MD3 Skin View Pane — elevated card with subtle glow
+ * ============================================================================= */
+.skin-view-pane {
+    -fx-background-color: -monet-surface-container-low;
+    -fx-background-radius: 12;
+    -fx-padding: 16px;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0.0, 0, 2);
+    -fx-border-color: -monet-outline-variant;
+    -fx-border-width: 0.5px;
+    -fx-border-radius: 12;
+}
+
+/* =============================================================================
+ * MD3 Smooth State Transitions — hover / focus / press
+ * ============================================================================= */
+.md3-hover-transition {
+    -fx-transition: all 0.15s ease-in-out;
+}
+
+.md3-hover-transition:hover {
+    -fx-background-color: -monet-secondary-container;
+    -fx-opacity: 0.85;
+}
+
+/* Hover lift effect for cards */
+.card:hover,
+.card-elevated:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0.0, 0, 4);
+}
+
+/* Card highlight border on interaction */
+.card-filled:focus-within,
+.card-outlined:focus-within,
+.card:focus-within {
+    -fx-border-color: -monet-primary;
+    -fx-border-width: 2px;
+    -fx-border-radius: 16px;
+}
+
+/* =============================================================================
+ * MD3 ComboBox — outlined variant
+ * ============================================================================= */
+.md3-combo-box {
+    -fx-background-color: transparent;
+    -fx-border-color: -monet-outline;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 14px;
+}
+
+.md3-combo-box:focused {
+    -fx-border-color: -monet-primary;
+    -fx-border-width: 2px;
+}
+
+.md3-combo-box .arrow {
+    -fx-fill: -monet-on-surface-variant;
 }
