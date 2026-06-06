@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
 import javafx.beans.InvalidationListener;
 import javafx.beans.WeakInvalidationListener;
 import javafx.beans.property.ObjectProperty;
@@ -157,20 +157,20 @@ public final class JavaRestorePage extends ListPageBase<JavaRestorePage.Disabled
             HBox right = new HBox();
             right.setAlignment(Pos.CENTER_RIGHT);
             {
-                MFXButton revealButton = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
+                JFXButton revealButton = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
                 revealButton.setOnAction(e -> skinnable.onReveal());
                 FXUtils.installFastTooltip(revealButton, i18n("reveal.in_file_manager"));
 
                 if (skinnable.realPath == null) {
                     revealButton.setDisable(true);
 
-                    MFXButton removeButton = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
+                    JFXButton removeButton = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
                     removeButton.setOnAction(e -> skinnable.onRemove());
                     FXUtils.installFastTooltip(removeButton, i18n("java.disabled.management.remove"));
 
                     right.getChildren().setAll(revealButton, removeButton);
                 } else {
-                    MFXButton restoreButton = FXUtils.newToggleButton4(SVG.RESTORE);
+                    JFXButton restoreButton = FXUtils.newToggleButton4(SVG.RESTORE);
                     restoreButton.setOnAction(e -> skinnable.onRestore());
                     FXUtils.installFastTooltip(restoreButton, i18n("java.disabled.management.restore"));
 

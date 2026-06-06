@@ -17,6 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
+import com.jfoenix.controls.JFXPopup;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
@@ -25,7 +26,6 @@ import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
 import org.Open_code_Studio.jmcl.event.EventBus;
 import org.Open_code_Studio.jmcl.event.EventPriority;
 import org.Open_code_Studio.jmcl.event.RefreshedVersionsEvent;
@@ -292,9 +292,7 @@ public class VersionPage extends DecoratorAnimatedPage implements DecoratorPage 
                 VBox.setVgrow(sideBar, Priority.ALWAYS);
 
                 PopupMenu browseList = new PopupMenu();
-                Popup browsePopup = new Popup();
-                browsePopup.getContent().add(browseList);
-                browsePopup.setAutoHide(true);
+                JFXPopup browsePopup = new JFXPopup(browseList);
                 browseList.getContent().setAll(
                         new IconedMenuItem(SVG.STADIA_CONTROLLER, i18n("folder.game"), () -> control.onBrowse(""), browsePopup),
                         new IconedMenuItem(SVG.EXTENSION, i18n("folder.mod"), () -> control.onBrowse("mods"), browsePopup),
@@ -308,9 +306,7 @@ public class VersionPage extends DecoratorAnimatedPage implements DecoratorPage 
                 );
 
                 PopupMenu managementList = new PopupMenu();
-                Popup managementPopup = new Popup();
-                managementPopup.getContent().add(managementList);
-                managementPopup.setAutoHide(true);
+                JFXPopup managementPopup = new JFXPopup(managementList);
                 managementList.getContent().setAll(
                         new IconedMenuItem(SVG.ROCKET_LAUNCH, i18n("version.launch.test"), control::testGame, managementPopup),
                         new IconedMenuItem(SVG.SCRIPT, i18n("version.launch_script"), control::generateLaunchScript, managementPopup),
@@ -332,20 +328,10 @@ public class VersionPage extends DecoratorAnimatedPage implements DecoratorPage 
                         })
                         .addNavigationDrawerItem(i18n("version.launch.test"), SVG.ROCKET_LAUNCH, control::testGame)
                         .addNavigationDrawerItem(i18n("settings.game.exploration"), SVG.FOLDER_OPEN, null, browseMenuItem -> {
-                            browseMenuItem.setOnAction(e -> {
-                                Popup popup = new Popup();
-                                popup.getContent().add(browseList);
-                                popup.setAutoHide(true);
-                                popup.show(browseMenuItem, browseMenuItem.localToScreen(browseMenuItem.getWidth(), 0).getX(), browseMenuItem.localToScreen(0, 0).getY());
-                            });
+                            browseMenuItem.setOnAction(e -> browsePopup.show(browseMenuItem, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, browseMenuItem.getWidth(), 0));
                         })
                         .addNavigationDrawerItem(i18n("settings.game.management"), SVG.MENU, null, managementItem -> {
-                            managementItem.setOnAction(e -> {
-                                Popup popup = new Popup();
-                                popup.getContent().add(managementList);
-                                popup.setAutoHide(true);
-                                popup.show(managementItem, managementItem.localToScreen(managementItem.getWidth(), 0).getX(), managementItem.localToScreen(0, 0).getY());
-                            });
+                            managementItem.setOnAction(e -> managementPopup.show(managementItem, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, managementItem.getWidth(), 0));
                         });
                 toolbar.getStyleClass().add("advanced-list-box-clear-padding");
                 FXUtils.setLimitHeight(toolbar, 40 * 4 + 12 * 2);

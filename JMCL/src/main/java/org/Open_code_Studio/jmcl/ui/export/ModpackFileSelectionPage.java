@@ -17,14 +17,14 @@
  */
 package org.Open_code_Studio.jmcl.ui.export;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXTreeView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import org.Open_code_Studio.jmcl.mod.ModAdviser;
@@ -64,7 +64,7 @@ public final class ModpackFileSelectionPage extends BorderPane implements Wizard
         this.version = version;
         this.adviser = adviser;
 
-        TreeView<String> treeView = new TreeView<>();
+        JFXTreeView<String> treeView = new JFXTreeView<>();
         rootNode = getTreeItem(profile.getRepository().getRunDirectory(version), "minecraft");
         treeView.setRoot(rootNode);
         treeView.setSelectionModel(new NoneMultipleSelectionModel<>());
@@ -76,7 +76,7 @@ public final class ModpackFileSelectionPage extends BorderPane implements Wizard
         nextPane.setPadding(new Insets(16, 16, 16, 0));
         nextPane.setAlignment(Pos.CENTER_RIGHT);
         {
-            MFXButton btnNext = FXUtils.newRaisedButton(i18n("wizard.next"));
+            JFXButton btnNext = FXUtils.newRaisedButton(i18n("wizard.next"));
             btnNext.setPrefSize(100, 40);
             btnNext.setOnAction(e -> onNext());
 
@@ -145,7 +145,7 @@ public final class ModpackFileSelectionPage extends BorderPane implements Wizard
         }
 
         HBox graphic = new HBox();
-        MFXCheckbox checkBox = new MFXCheckbox();
+        JFXCheckBox checkBox = new JFXCheckBox();
         checkBox.selectedProperty().bindBidirectional(node.selectedProperty());
         checkBox.indeterminateProperty().bindBidirectional(node.indeterminateProperty());
         graphic.getChildren().add(checkBox);

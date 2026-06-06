@@ -17,6 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
+import com.jfoenix.controls.JFXListView;
 import javafx.beans.InvalidationListener;
 import javafx.beans.WeakInvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -27,24 +28,22 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.StackPane;
-import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 
 /// @author Glavo
 public final class OptionsListSkin extends SkinBase<OptionsList> {
 
-    private final ListView<OptionsList.Element> listView;
+    private final JFXListView<OptionsList.Element> listView;
     private final ObjectBinding<ContentPaddings> contentPaddings;
 
     OptionsListSkin(OptionsList control) {
         super(control);
 
-        this.listView = new ListView<>();
+        this.listView = new JFXListView<>();
         listView.setItems(control.getElements());
-        listView.setCellFactory((Callback<ListView<OptionsList.Element>, ListCell<OptionsList.Element>>) listView1 -> new Cell());
+        listView.setCellFactory(listView1 -> new Cell());
 
         this.contentPaddings = Bindings.createObjectBinding(() -> {
             Insets padding = control.getContentPadding();

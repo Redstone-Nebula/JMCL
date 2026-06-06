@@ -17,11 +17,12 @@
  */
 package org.Open_code_Studio.jmcl.ui.decorator;
 
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSnackbarLayout;
 import javafx.animation.Interpolator;
 import javafx.scene.Node;
 import javafx.scene.input.*;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.Open_code_Studio.jmcl.auth.authlibinjector.AuthlibInjectorDnD;
@@ -216,8 +217,7 @@ public class DecoratorController {
     // ==== Toast ====
 
     public void showToast(String content) {
-        // Toast removed - JFXSnackbar was JFoenix-specific
-        System.out.println("[Toast] " + content);
+        decorator.getSnackbar().fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(content)));
     }
 
     // ==== Wizard ====

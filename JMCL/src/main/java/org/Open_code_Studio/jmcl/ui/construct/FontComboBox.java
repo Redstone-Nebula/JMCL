@@ -21,16 +21,16 @@ import static javafx.collections.FXCollections.emptyObservableList;
 import static javafx.collections.FXCollections.observableList;
 import static javafx.collections.FXCollections.singletonObservableList;
 
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.virtualizedfx.cells.base.VFXCell;
-import javafx.beans.binding.Bindings;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.text.Font;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.util.javafx.BindingMapping;
 
-public final class FontComboBox extends MFXComboBox<String> {
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListCell;
+
+import javafx.beans.binding.Bindings;
+import javafx.scene.text.Font;
+
+public final class FontComboBox extends JFXComboBox<String> {
 
     private boolean loaded = false;
 
@@ -39,22 +39,15 @@ public final class FontComboBox extends MFXComboBox<String> {
 
         styleProperty().bind(Bindings.concat("-fx-font-family: \"", valueProperty(), "\""));
 
-        setCellFactory(item -> new VFXCell<String>() {
+        setCellFactory(listView -> new JFXListCell<String>() {
             @Override
-            public Node toNode() {
-                Label label = new Label(item);
-                label.setStyle("-fx-font-family: \"" + item + "\"");
-                return label;
-            }
-
-            @Override
-            public void updateItem(String newItem) {
-                // Item is set at creation time, no update needed
-            }
-
-            @Override
-            public void updateIndex(int index) {
-                // Index tracking not needed
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (!empty) {
+                    setText(item);
+                    setGraphic(null);
+                    setStyle("-fx-font-family: \"" + item + "\"");
+                }
             }
         });
 

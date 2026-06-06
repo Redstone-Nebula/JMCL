@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.export;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -61,8 +61,8 @@ public final class ModpackTypeSelectionPage extends VBox implements WizardPage {
         );
     }
 
-    private MFXButton createButton(String type, ModpackExportInfo.Options option) {
-        MFXButton button = new MFXButton();
+    private JFXButton createButton(String type, ModpackExportInfo.Options option) {
+        JFXButton button = new JFXButton();
 
         button.getStyleClass().add("card");
         button.setOnAction(e -> {

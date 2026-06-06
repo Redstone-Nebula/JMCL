@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.terracotta;
 
-import javafx.geometry.Side;
+import com.jfoenix.controls.JFXPopup;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
@@ -75,7 +75,7 @@ public class TerracottaPage extends DecoratorAnimatedPage implements DecoratorPa
         AccountAdvancedListItem accountListItem = new AccountAdvancedListItem();
         accountListItem.setOnAction(e -> Controllers.navigate(Controllers.getAccountListPage()));
         accountListItem.accountProperty().bind(Accounts.selectedAccountProperty());
-        FXUtils.onSecondaryButtonClicked(accountListItem, () -> AccountListPopupMenu.show(accountListItem, Side.BOTTOM, Side.LEFT, accountListItem.getWidth(), 0));
+        FXUtils.onSecondaryButtonClicked(accountListItem, () -> AccountListPopupMenu.show(accountListItem, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.LEFT, accountListItem.getWidth(), 0));
 
         AdvancedListBox toolbar = new AdvancedListBox()
                 .add(accountListItem)
@@ -97,8 +97,8 @@ public class TerracottaPage extends DecoratorAnimatedPage implements DecoratorPa
                     }, it -> mainPage.getProfile().setSelectedVersion(it.getId()));
 
                     FXUtils.onSecondaryButtonClicked(item, () -> GameListPopupMenu.show(item,
-                            true,
-                            false,
+                            JFXPopup.PopupVPosition.BOTTOM,
+                            JFXPopup.PopupHPosition.LEFT,
                             item.getWidth(),
                             0,
                             mainPage.getProfile(), mainPage.getVersions()));

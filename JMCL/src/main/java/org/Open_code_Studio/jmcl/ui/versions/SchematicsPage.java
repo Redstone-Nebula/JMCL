@@ -17,13 +17,14 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXListView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Skin;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -32,7 +33,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.Open_code_Studio.jmcl.schematic.LitematicFile;
 import org.Open_code_Studio.jmcl.setting.Profile;
@@ -177,7 +177,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                         LOG.warning("Failed to create directory: " + targetDir, e);
                         handler.reject(i18n("schematics.create_directory.failed", targetDir));
                     }
-                }, "");
+                }, "", new RequiredValidator(), new Validator(i18n("schematics.create_directory.failed.invalid_name"), FileUtils::isNameValid));
     }
 
     private DirItem loadAll(Path dir, @Nullable DirItem parent) {
@@ -459,7 +459,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
             }
         }
 
-        private final class LitematicInfoDialog extends VBox {
+        private final class LitematicInfoDialog extends JFXDialogLayout {
             private final ComponentList details;
 
             private void addDetailItem(String key, Object detail) {
@@ -494,9 +494,6 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
             }
 
             LitematicInfoDialog() {
-                setSpacing(8);
-                setPadding(new Insets(16));
-
                 HBox titleBox = new HBox(8);
                 {
                     Node icon = getIcon(40);
@@ -506,7 +503,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                     title.setSubtitle(file.getFile().getFileName().toString());
 
                     titleBox.getChildren().setAll(icon, title);
-                    getChildren().add(titleBox);
+                    setHeading(titleBox);
                 }
 
                 {
@@ -514,20 +511,15 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                     StackPane detailsContainer = new StackPane();
                     detailsContainer.setPadding(new Insets(10, 0, 0, 0));
                     detailsContainer.getChildren().add(details);
-                    getChildren().add(detailsContainer);
+                    setBody(detailsContainer);
                 }
 
                 {
-                    HBox actionsBox = new HBox();
-                    actionsBox.setAlignment(Pos.CENTER_RIGHT);
-                    actionsBox.setPadding(new Insets(8, 0, 0, 0));
-
-                    MFXButton okButton = new MFXButton();
+                    JFXButton okButton = new JFXButton();
                     okButton.getStyleClass().add("dialog-accept");
                     okButton.setText(i18n("button.ok"));
                     okButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
-                    actionsBox.getChildren().add(okButton);
-                    getChildren().add(actionsBox);
+                    getActions().add(okButton);
 
                     onEscPressed(this, okButton::fire);
                 }
@@ -575,7 +567,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                 this.right = new HBox(8);
                 right.setAlignment(Pos.CENTER_RIGHT);
 
-                MFXButton btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
+                JFXButton btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
                 FXUtils.installFastTooltip(btnReveal, i18n("reveal.in_file_manager"));
                 btnReveal.setOnAction(event -> {
                     Item item = getItem();
@@ -583,7 +575,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                         item.onReveal();
                 });
 
-                MFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
+                JFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
                 btnDelete.setOnAction(event -> {
                     Item item = getItem();
                     if (item != null && !(item instanceof BackItem)) {
@@ -656,7 +648,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
         }
 
         @Override
-        protected ListCell<Item> createListCell(ListView<Item> listView) {
+        protected ListCell<Item> createListCell(JFXListView<Item> listView) {
             return new Cell();
         }
     }

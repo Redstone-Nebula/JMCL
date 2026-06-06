@@ -17,14 +17,14 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXTextField;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
@@ -36,7 +36,6 @@ import org.Open_code_Studio.jmcl.auth.offline.Skin;
 import org.Open_code_Studio.jmcl.auth.yggdrasil.TextureModel;
 import org.Open_code_Studio.jmcl.game.TexturesLoader;
 import org.Open_code_Studio.jmcl.task.Schedulers;
-import org.Open_code_Studio.jmcl.task.Task;
 import org.Open_code_Studio.jmcl.ui.Controllers;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.ui.construct.*;
@@ -58,8 +57,8 @@ public class OfflineAccountSkinPane extends StackPane {
     private final OfflineAccount account;
 
     private final MultiFileItem<Skin.Type> skinItem = new MultiFileItem<>();
-    private final MFXTextField cslApiField = new MFXTextField();
-    private final MFXComboBox<TextureModel> modelCombobox = new MFXComboBox<>();
+    private final JFXTextField cslApiField = new JFXTextField();
+    private final JFXComboBox<TextureModel> modelCombobox = new JFXComboBox<>();
     private final FileSelector skinSelector = new FileSelector();
     private final FileSelector capeSelector = new FileSelector();
 
@@ -70,14 +69,9 @@ public class OfflineAccountSkinPane extends StackPane {
 
         getStyleClass().add("skin-pane");
 
-        VBox layout = new VBox();
-        layout.setSpacing(15);
-        layout.setPadding(new Insets(24));
+        JFXDialogLayout layout = new JFXDialogLayout();
         getChildren().setAll(layout);
-
-        Label heading = new Label(i18n("account.skin"));
-        heading.getStyleClass().add("header-label");
-        layout.getChildren().add(heading);
+        layout.setHeading(new Label(i18n("account.skin")));
 
         BorderPane pane = new BorderPane();
 
@@ -114,9 +108,11 @@ public class OfflineAccountSkinPane extends StackPane {
         skinSelector.maxWidthProperty().bind(skinOptionPane.maxWidthProperty().multiply(0.7));
         capeSelector.maxWidthProperty().bind(skinOptionPane.maxWidthProperty().multiply(0.7));
 
-        layout.getChildren().add(pane);
+        layout.setBody(pane);
 
         cslApiField.setPromptText(i18n("account.skin.type.csl_api.location.hint"));
+        cslApiField.setValidators(new URLValidator());
+        FXUtils.setValidateWhileTextChanged(cslApiField, true);
 
         skinItem.loadChildren(Arrays.asList(
                 new MultiFileItem.Option<>(i18n("message.default"), Skin.Type.DEFAULT),
@@ -173,7 +169,10 @@ public class OfflineAccountSkinPane extends StackPane {
             Skin.Type selectedType = skinItem.getSelectedData();
 
             if (selectedType == Skin.Type.CUSTOM_SKIN_LOADER_API) {
-                pauseTransition.stop();
+                if (!cslApiField.validate()) {
+                    pauseTransition.stop();
+                    return;
+                }
                 pauseTransition.playFromStart();
             } else {
                 pauseTransition.stop();
@@ -227,7 +226,7 @@ public class OfflineAccountSkinPane extends StackPane {
             skinOptionPane.getChildren().setAll(gridPane);
         });
 
-        MFXButton acceptButton = new MFXButton(i18n("button.ok"));
+        JFXButton acceptButton = new JFXButton(i18n("button.ok"));
         acceptButton.getStyleClass().add("dialog-accept");
         acceptButton.setOnAction(e -> {
             account.setSkin(getSkin());
@@ -236,14 +235,16 @@ public class OfflineAccountSkinPane extends StackPane {
 
         JFXHyperlink littleSkinLink = new JFXHyperlink(i18n("account.skin.type.little_skin"));
         littleSkinLink.setOnAction(e -> FXUtils.openLink("https://littleskin.cn/"));
-        MFXButton cancelButton = new MFXButton(i18n("button.cancel"));
+        JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
         cancelButton.getStyleClass().add("dialog-cancel");
         cancelButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
         onEscPressed(this, cancelButton::fire);
 
-        HBox actions = new HBox(8, littleSkinLink, acceptButton, cancelButton);
-        actions.setAlignment(Pos.CENTER_RIGHT);
-        layout.getChildren().add(actions);
+        acceptButton.disableProperty().bind(
+                skinItem.selectedDataProperty().isEqualTo(Skin.Type.CUSTOM_SKIN_LOADER_API)
+                        .and(cslApiField.activeValidatorProperty().isNotNull()));
+
+        layout.setActions(littleSkinLink, acceptButton, cancelButton);
     }
 
     private Skin getSkin() {

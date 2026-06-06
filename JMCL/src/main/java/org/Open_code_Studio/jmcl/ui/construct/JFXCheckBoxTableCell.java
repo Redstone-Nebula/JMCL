@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import com.jfoenix.controls.JFXCheckBox;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.TableCell;
@@ -31,7 +31,7 @@ public final class JFXCheckBoxTableCell<S, T> extends TableCell<S, T> {
         return list -> new JFXCheckBoxTableCell<>();
     }
 
-    private final MFXCheckbox checkBox = new MFXCheckbox();
+    private final JFXCheckBox checkBox = new JFXCheckBox();
     private BooleanProperty booleanProperty;
 
     public JFXCheckBoxTableCell() {

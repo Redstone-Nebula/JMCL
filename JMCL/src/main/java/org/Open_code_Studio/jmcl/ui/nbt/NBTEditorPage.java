@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.nbt;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.geometry.Insets;
@@ -77,7 +77,7 @@ public final class NBTEditorPage extends SpinnerPane implements DecoratorPage {
         actions.setPadding(new Insets(8));
         actions.setAlignment(Pos.CENTER_RIGHT);
 
-        MFXButton saveButton = FXUtils.newRaisedButton(i18n("button.save"));
+        JFXButton saveButton = FXUtils.newRaisedButton(i18n("button.save"));
         saveButton.setOnAction(e -> {
             try {
                 save();
@@ -87,7 +87,7 @@ public final class NBTEditorPage extends SpinnerPane implements DecoratorPage {
             }
         });
 
-        MFXButton cancelButton = FXUtils.newRaisedButton(i18n("button.cancel"));
+        JFXButton cancelButton = FXUtils.newRaisedButton(i18n("button.cancel"));
         cancelButton.setOnAction(e -> fireEvent(new PageCloseEvent()));
         onEscPressed(this, cancelButton::fire);
 

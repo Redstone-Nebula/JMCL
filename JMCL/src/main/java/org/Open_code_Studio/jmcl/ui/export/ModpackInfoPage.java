@@ -17,9 +17,11 @@
  */
 package org.Open_code_Studio.jmcl.ui.export;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXSlider;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
@@ -51,11 +53,7 @@ import org.Open_code_Studio.jmcl.util.platform.OperatingSystem;
 import org.Open_code_Studio.jmcl.util.platform.SystemInfo;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.Open_code_Studio.jmcl.setting.ConfigHolder.config;
@@ -174,7 +172,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
     public static class ModpackInfoPageSkin extends SkinBase<ModpackInfoPage> {
         private ObservableList<Node> originList;
 
-        private final List<MFXTextField> validatingFields = new ArrayList<>();
+        private final List<JFXTextField> validatingFields = new ArrayList<>();
 
         public ModpackInfoPageSkin(ModpackInfoPage skinnable) {
             super(skinnable);
@@ -261,7 +259,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
                     if (skinnable.options.isRequireOrigins()) {
                         list.getContent().add(createTextFieldLinePane(
                                 i18n("modpack.origin.mcbbs"), skinnable.mcbbsThreadId,
-                                new NumberValidator(true)
+                                new NumberValidator(i18n("input.number"), true)
                         ));
                     }
 
@@ -278,10 +276,10 @@ public final class ModpackInfoPage extends Control implements WizardPage {
                         {
                             Label label = new Label(i18n("settings.memory.lower_bound"));
 
-                            MFXSlider slider = new MFXSlider(0, 1, 0);
+                            JFXSlider slider = new JFXSlider(0, 1, 0);
                             HBox.setMargin(slider, new Insets(0, 0, 0, 8));
                             HBox.setHgrow(slider, Priority.ALWAYS);
-                            // MFXSlider does not support setValueFactory
+                            slider.setValueFactory(self -> Bindings.createStringBinding(() -> (int) (self.getValue() * 100) + "%", self.valueProperty()));
                             AtomicBoolean changedByTextField = new AtomicBoolean(false);
                             FXUtils.onChangeAndOperate(skinnable.minMemory, minMemory -> {
                                 changedByTextField.set(true);
@@ -293,9 +291,9 @@ public final class ModpackInfoPage extends Control implements WizardPage {
                                 skinnable.minMemory.set((int) (value.getValue().doubleValue() * MEGABYTES.convertFromBytes(SystemInfo.getTotalMemorySize())));
                             });
 
-                            MFXTextField txtMinMemory = new MFXTextField();
+                            JFXTextField txtMinMemory = new JFXTextField();
                             FXUtils.bindInt(txtMinMemory, skinnable.minMemory);
-                            // MFXTextField does not support getValidators()
+                            txtMinMemory.getValidators().add(new NumberValidator(i18n("input.number"), false));
                             FXUtils.setLimitWidth(txtMinMemory, 60);
                             validatingFields.add(txtMinMemory);
 
@@ -308,7 +306,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
 
                     {
                         VBox pane = new VBox(8);
-                        TextArea area = new TextArea();
+                        JFXTextArea area = new JFXTextArea();
                         area.textProperty().bindBidirectional(skinnable.description);
                         area.setMinHeight(400);
                         pane.getChildren().setAll(new Label(i18n("modpack.desc")), area);
@@ -369,17 +367,17 @@ public final class ModpackInfoPage extends Control implements WizardPage {
                     hbox.setAlignment(Pos.CENTER_RIGHT);
                     borderPane.setBottom(hbox);
 
-                    MFXButton nextButton = FXUtils.newRaisedButton(i18n("wizard.next"));
+                    JFXButton nextButton = FXUtils.newRaisedButton(i18n("wizard.next"));
                     nextButton.setOnAction(e -> skinnable.onNext());
                     nextButton.setPrefWidth(100);
                     nextButton.setPrefHeight(40);
                     nextButton.disableProperty().bind(
-                            // Disable nextButton if any text of MFXTextFields in validatingFields does not fulfill
+                            // Disable nextButton if any text of JFXTextFields in validatingFields does not fulfill
                             // our requirement.
                             Bindings.createBooleanBinding(() -> validatingFields.stream()
-                                            .map(field -> !field.validate().isEmpty())
+                                            .map(field -> !field.validate())
                                             .reduce(false, (left, right) -> left || right),
-                                    validatingFields.stream().map(MFXTextField::textProperty).toArray(StringProperty[]::new)));
+                                    validatingFields.stream().map(JFXTextField::textProperty).toArray(StringProperty[]::new)));
                     hbox.getChildren().add(nextButton);
                 }
             }
@@ -387,9 +385,9 @@ public final class ModpackInfoPage extends Control implements WizardPage {
             FXUtils.smoothScrolling(scroll);
         }
 
-        private LinePane createTextFieldLinePane(String title, StringProperty property, Predicate<String>... validators) {
+        private LinePane createTextFieldLinePane(String title, StringProperty property, ValidatorBase... validators) {
             LinePane linePane = new LinePane();
-            MFXTextField textField = new MFXTextField();
+            JFXTextField textField = new JFXTextField();
             textField.setMinWidth(500);
 
             linePane.setTitle(title);
@@ -398,10 +396,10 @@ public final class ModpackInfoPage extends Control implements WizardPage {
 
             boolean needValidation = false;
             if (validators != null) {
-                for (Predicate<String> validator : validators) {
+                for (ValidatorBase validator : validators) {
                     if (validator != null) {
                         needValidation = true;
-                        // MFXTextField does not support getValidators()
+                        textField.getValidators().add(validator);
                     }
                 }
             }

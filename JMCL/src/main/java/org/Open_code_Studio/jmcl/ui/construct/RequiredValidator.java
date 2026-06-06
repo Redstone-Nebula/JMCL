@@ -17,23 +17,34 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
+import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.NamedArg;
-import org.Open_code_Studio.jmcl.util.StringUtils;
+import javafx.scene.control.TextInputControl;
 
-import java.util.function.Predicate;
+import org.Open_code_Studio.jmcl.util.StringUtils;
 
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 
-public class RequiredValidator implements Predicate<String> {
+public class RequiredValidator extends ValidatorBase {
 
     public RequiredValidator() {
+        this(i18n("input.not_empty"));
     }
 
     public RequiredValidator(@NamedArg("message") String message) {
+        super(message);
     }
 
     @Override
-    public boolean test(String text) {
-        return !StringUtils.isBlank(text);
+    protected void eval() {
+        if (srcControl.get() instanceof TextInputControl) {
+            evalTextInputField();
+        }
+    }
+
+    private void evalTextInputField() {
+        TextInputControl textField = ((TextInputControl) srcControl.get());
+
+        hasErrors.set(StringUtils.isBlank(textField.getText()));
     }
 }

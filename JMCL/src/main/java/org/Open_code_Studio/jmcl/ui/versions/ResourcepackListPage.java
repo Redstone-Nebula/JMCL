@@ -17,12 +17,12 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Skin;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -153,7 +153,7 @@ public final class ResourcepackListPage extends ListPageBase<ResourcepackListPag
         }
 
         @Override
-        protected ListCell<ResourcepackInfoObject> createListCell(ListView<ResourcepackInfoObject> listView) {
+        protected ListCell<ResourcepackInfoObject> createListCell(JFXListView<ResourcepackInfoObject> listView) {
             return new ResourcepackListCell(listView, getSkinnable());
         }
     }
@@ -196,11 +196,11 @@ public final class ResourcepackListPage extends ListPageBase<ResourcepackListPag
     private static final class ResourcepackListCell extends MDListCell<ResourcepackInfoObject> {
         private final ImageContainer imageView = new ImageContainer(32);
         private final TwoLineListItem content = new TwoLineListItem();
-        private final MFXButton btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
-        private final MFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
+        private final JFXButton btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
+        private final JFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
         private final ResourcepackListPage page;
 
-        public ResourcepackListCell(ListView<ResourcepackInfoObject> listView, ResourcepackListPage page) {
+        public ResourcepackListCell(JFXListView<ResourcepackInfoObject> listView, ResourcepackListPage page) {
             super(listView);
 
             this.page = page;

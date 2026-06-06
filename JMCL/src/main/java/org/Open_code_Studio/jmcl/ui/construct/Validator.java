@@ -17,6 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.base.ValidatorBase;
+
 import javafx.beans.InvalidationListener;
 import javafx.beans.WeakInvalidationListener;
 import javafx.scene.control.TextInputControl;
@@ -26,20 +29,22 @@ import java.util.function.Predicate;
 
 import org.Open_code_Studio.jmcl.util.javafx.SafeStringConverter;
 
-public final class Validator implements Predicate<String> {
+public final class Validator extends ValidatorBase {
 
-    public static Consumer<Predicate<String>> addTo(TextInputControl control) {
+    public static Consumer<Predicate<String>> addTo(JFXTextField control) {
         return addTo(control, null);
     }
 
     /**
      * @see SafeStringConverter#asPredicate(Consumer)
      */
-    public static Consumer<Predicate<String>> addTo(TextInputControl control, String message) {
+    public static Consumer<Predicate<String>> addTo(JFXTextField control, String message) {
         return predicate -> {
             Validator validator = new Validator(message, predicate);
-            InvalidationListener listener = any -> {};
+            InvalidationListener listener = any -> control.validate();
+            validator.getProperties().put(validator, listener);
             control.textProperty().addListener(new WeakInvalidationListener(listener));
+            control.getValidators().add(validator);
         };
     }
 
@@ -54,10 +59,15 @@ public final class Validator implements Predicate<String> {
 
     public Validator(String message, Predicate<String> validator) {
         this(validator);
+
+        setMessage(message);
     }
 
     @Override
-    public boolean test(String text) {
-        return validator.test(text);
+    protected void eval() {
+        if (this.srcControl.get() instanceof TextInputControl) {
+            String text = ((TextInputControl) srcControl.get()).getText();
+            hasErrors.set(!validator.test(text));
+        }
     }
 }

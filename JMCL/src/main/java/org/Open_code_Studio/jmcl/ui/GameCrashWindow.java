@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
@@ -435,7 +435,7 @@ public class GameCrashWindow extends Stage {
                 SpinnerPane exportButtonPane = new SpinnerPane();
                 exportButtonPane.getStyleClass().add("small-spinner-pane");
 
-                MFXButton exportButton = FXUtils.newRaisedButton(i18n("logwindow.export_game_crash_logs"));
+                JFXButton exportButton = FXUtils.newRaisedButton(i18n("logwindow.export_game_crash_logs"));
                 exportButtonPane.setContent(exportButton);
                 exportButton.setOnAction(e -> {
                     exportButtonPane.showSpinner();
@@ -462,7 +462,7 @@ public class GameCrashWindow extends Stage {
                     }, Schedulers.javafx());
                 });
 
-                MFXButton logButton = FXUtils.newRaisedButton(i18n("logwindow.title"));
+                JFXButton logButton = FXUtils.newRaisedButton(i18n("logwindow.title"));
                 logButton.setOnAction(e -> showLogWindow());
 
                 toolBar.setPadding(new Insets(8));

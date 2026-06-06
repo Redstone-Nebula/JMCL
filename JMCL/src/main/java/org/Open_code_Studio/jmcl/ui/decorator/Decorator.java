@@ -17,6 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.decorator;
 
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -60,7 +61,7 @@ public class Decorator extends Control {
     private final Stage primaryStage;
     private Navigation.NavigationDirection navigationDirection = Navigation.NavigationDirection.START;
     private StackPane drawerWrapper;
-    private final StackPane snackbar = new StackPane();
+    private final JFXSnackbar snackbar = new JFXSnackbar();
 
     private final ReadOnlyBooleanWrapper allowMove = new ReadOnlyBooleanWrapper();
     private final ReadOnlyBooleanWrapper dragging = new ReadOnlyBooleanWrapper();
@@ -213,7 +214,7 @@ public class Decorator extends Control {
         return onRefreshNavButtonAction;
     }
 
-    public StackPane getSnackbar() {
+    public JFXSnackbar getSnackbar() {
         return snackbar;
     }
 

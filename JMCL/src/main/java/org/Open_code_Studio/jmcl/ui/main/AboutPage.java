@@ -18,7 +18,7 @@
 package org.Open_code_Studio.jmcl.ui.main;
 
 import com.google.gson.*;
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -140,7 +140,7 @@ public final class AboutPage extends SpinnerPane {
             scrollPane.setFitToWidth(true);
             scrollPane.setPrefSize(620, 520);
 
-            MFXButton closeButton = FXUtils.newToggleButton4(SVG.CLOSE);
+            JFXButton closeButton = FXUtils.newToggleButton4(SVG.CLOSE);
             closeButton.getStyleClass().add("license-close-button");
 
             HBox header = new HBox(closeButton);

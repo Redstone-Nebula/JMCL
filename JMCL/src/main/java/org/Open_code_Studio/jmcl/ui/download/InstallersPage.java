@@ -40,8 +40,11 @@ public class InstallersPage extends AbstractInstallersPage {
     public InstallersPage(WizardController controller, JMCLGameRepository repository, String gameVersion, DownloadProvider downloadProvider) {
         super(controller, gameVersion, downloadProvider);
 
-        // Validation is handled by checking txtName.validate().isEmpty() in the binding below
-        installable.bind(createBooleanBinding(() -> txtName.validate().isEmpty(), txtName.textProperty()));
+        txtName.getValidators().addAll(
+                new RequiredValidator(),
+                new Validator(i18n("install.new_game.already_exists"), str -> !repository.versionIdConflicts(str)),
+                new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId));
+        installable.bind(createBooleanBinding(txtName::validate, txtName.textProperty()));
 
         txtName.textProperty().addListener((obs, oldText, newText) -> isNameModifiedByUser = true);
     }

@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -44,9 +44,9 @@ public abstract class ModpackPage extends SpinnerPane implements WizardPage {
     protected final StringProperty nameProperty;
     protected final StringProperty versionProperty;
     protected final StringProperty authorProperty;
-    protected final MFXTextField txtModpackName;
-    protected final MFXButton btnInstall;
-    protected final MFXButton btnDescription;
+    protected final JFXTextField txtModpackName;
+    protected final JFXButton btnInstall;
+    protected final JFXButton btnDescription;
 
     protected ModpackPage(WizardController controller) {
         this.controller = controller;
@@ -61,7 +61,7 @@ public abstract class ModpackPage extends SpinnerPane implements WizardPage {
             {
                 archiveNamePane.setTitle(i18n("version.name"));
 
-                txtModpackName = new MFXTextField();
+                txtModpackName = new JFXTextField();
                 txtModpackName.setPrefWidth(300);
                 FXUtils.setLimitHeight(archiveNamePane, 75);
                 // BorderPane.setMargin(txtModpackName, new Insets(0, 0, 8, 32));
@@ -95,7 +95,7 @@ public abstract class ModpackPage extends SpinnerPane implements WizardPage {
 
                 btnInstall = FXUtils.newRaisedButton(i18n("button.install"));
                 btnInstall.setOnAction(e -> onInstall());
-                btnInstall.disableProperty().bind(createBooleanBinding(() -> !txtModpackName.validate().isEmpty(), txtModpackName.textProperty()));
+                btnInstall.disableProperty().bind(createBooleanBinding(() -> !txtModpackName.validate(), txtModpackName.textProperty()));
                 descriptionPane.setRight(btnInstall);
             }
 

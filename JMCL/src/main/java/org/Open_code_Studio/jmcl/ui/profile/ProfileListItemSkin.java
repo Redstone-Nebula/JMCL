@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.profile;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -60,7 +60,7 @@ public class ProfileListItemSkin extends SkinBase<ProfileListItem> {
         HBox right = new HBox();
         right.setAlignment(Pos.CENTER_RIGHT);
 
-        MFXButton btnRemove = FXUtils.newToggleButton4(SVG.CLOSE, 14);
+        JFXButton btnRemove = FXUtils.newToggleButton4(SVG.CLOSE, 14);
         btnRemove.setOnAction(e -> skinnable.remove());
         BorderPane.setAlignment(btnRemove, Pos.CENTER);
         right.getChildren().add(btnRemove);

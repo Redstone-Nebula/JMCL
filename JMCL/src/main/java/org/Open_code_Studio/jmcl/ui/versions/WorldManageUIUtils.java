@@ -115,7 +115,7 @@ public final class WorldManageUIUtils {
                                 }
                             })
                             .start();
-                }, "");
+                }, "", new RequiredValidator(), new Validator(i18n("world.duplicate.failed.invalid_name"), FileUtils::isNameValid));
     }
 
     public static void closeSessionLockChannel(World world, FileChannel sessionLockChannel) throws IOException {

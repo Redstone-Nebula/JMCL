@@ -63,7 +63,19 @@ public final class LocalModpackPage extends ModpackPage {
             txtModpackName.setText(name);
             txtModpackName.setDisable(true);
         } else {
-            // Validation is handled by ModpackPage base class
+            FXUtils.onChangeAndOperate(installAsVersion, installAsVersion -> {
+                if (installAsVersion) {
+                    txtModpackName.getValidators().setAll(
+                            new RequiredValidator(),
+                            new Validator(i18n("install.new_game.already_exists"), str -> !profile.getRepository().versionIdConflicts(str)),
+                            new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId));
+                } else {
+                    txtModpackName.getValidators().setAll(
+                            new RequiredValidator(),
+                            new Validator(i18n("install.new_game.already_exists"), str -> !ModpackHelper.isExternalGameNameConflicts(str) && Profiles.getProfiles().stream().noneMatch(p -> p.getName().equals(str))),
+                            new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId));
+                }
+            });
         }
 
         btnDescription.setVisible(false);

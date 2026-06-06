@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.terracotta;
 
-import io.github.palexdev.materialfx.controls.MFXProgressBar;
+import com.jfoenix.controls.JFXProgressBar;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -246,7 +246,7 @@ public class TerracottaControllerPage extends StackPane {
                         } else {
                             handler.resolve();
                         }
-                    }, "");
+                    }, "", new RequiredValidator(i18n("input.not_empty")));
                 });
 
                 if (ThreadLocalRandom.current().nextDouble() < 0.02D) {
@@ -510,7 +510,7 @@ public class TerracottaControllerPage extends StackPane {
                 {
                     Label status = new Label();
                     status.textProperty().bind(statusProperty);
-                    MFXProgressBar progress = new MFXProgressBar();
+                    JFXProgressBar progress = new JFXProgressBar();
                     progress.progressProperty().bind(progressProperty);
                     progress.setMaxWidth(Double.MAX_VALUE);
 

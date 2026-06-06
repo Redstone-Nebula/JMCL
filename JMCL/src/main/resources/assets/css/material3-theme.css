@@ -249,6 +249,40 @@
 }
 
 /* =============================================================================
+   MD3 Dialog — 28dp radius, elevated
+   ============================================================================= */
+.jfx-dialog-layout {
+    -fx-background-radius: 28px;
+    -fx-padding: 28px;
+    -fx-background-color: -monet-surface-container-high;
+    -fx-text-fill: -monet-on-surface;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0.0, 0, 4);
+}
+
+.jfx-layout-heading {
+    -fx-font-size: 22px;
+    -fx-font-weight: 400;
+    -fx-padding: 0 0 16px 0;
+}
+
+.jfx-layout-body {
+    -fx-pref-width: 400px;
+    -fx-wrap-text: true;
+    -fx-font-size: 14px;
+    -fx-line-spacing: 2px;
+}
+
+.jfx-layout-body Text {
+    -fx-fill: -monet-on-surface-variant;
+}
+
+.jfx-layout-actions {
+    -fx-padding: 24px 0 0 0;
+    -fx-alignment: center-right;
+    -fx-spacing: 8px;
+}
+
+/* =============================================================================
    MD3 Chips
    ============================================================================= */
 .chip {
@@ -296,9 +330,11 @@
    MD3 Ripple / Rippler
    ============================================================================= */
 .rippler-container {
+    -jfx-rippler-fill: -monet-on-surface-variant;
 }
 
 .advanced-list-item .rippler-container {
+    -jfx-rippler-fill: -monet-on-secondary-container;
 }
 
 /* =============================================================================

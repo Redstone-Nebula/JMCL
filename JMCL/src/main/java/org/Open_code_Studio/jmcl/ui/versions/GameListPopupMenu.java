@@ -17,6 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXPopup;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
@@ -32,8 +34,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Popup;
-import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.game.Version;
 import org.Open_code_Studio.jmcl.setting.Profile;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
@@ -49,27 +49,23 @@ import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 /// @author Glavo
 public final class GameListPopupMenu extends StackPane {
 
-    public static void show(Node owner, boolean showAbove, boolean alignRight,
+    public static void show(Node owner, JFXPopup.PopupVPosition vAlign, JFXPopup.PopupHPosition hAlign,
                             double initOffsetX, double initOffsetY,
                             Profile profile, List<Version> versions) {
         GameListPopupMenu menu = new GameListPopupMenu();
         menu.getItems().setAll(versions.stream().map(it -> new GameItem(profile, it.getId())).toList());
-        Popup popup = new Popup();
-        popup.getContent().add(menu);
-        popup.setAutoHide(true);
-        double screenX = owner.localToScreen(0, 0).getX() + (alignRight ? owner.getBoundsInLocal().getWidth() : 0) + initOffsetX;
-        double screenY = owner.localToScreen(0, 0).getY() + (showAbove ? -menu.getBoundsInParent().getHeight() : owner.getBoundsInLocal().getHeight()) + initOffsetY;
-        popup.show(owner, screenX, screenY);
+        JFXPopup popup = new JFXPopup(menu);
+        popup.show(owner, vAlign, hAlign, initOffsetX, initOffsetY);
     }
 
-    private final ListView<GameItem> listView = new ListView<>();
+    private final JFXListView<GameItem> listView = new JFXListView<>();
     private final BooleanBinding isEmpty = Bindings.isEmpty(listView.getItems());
 
     public GameListPopupMenu() {
         this.setMaxHeight(365);
         this.getStyleClass().add("popup-menu-content");
 
-        listView.setCellFactory((Callback<ListView<GameItem>, ListCell<GameItem>>) Cell::new);
+        listView.setCellFactory(Cell::new);
         listView.setFixedCellSize(60);
         listView.setPrefWidth(300);
 
@@ -130,7 +126,7 @@ public final class GameListPopupMenu extends StackPane {
                 GameItem item = getItem();
                 if (item != null) {
                     item.getProfile().setSelectedVersion(item.getId());
-                    if (getScene().getWindow() instanceof Popup popup)
+                    if (getScene().getWindow() instanceof JFXPopup popup)
                         popup.hide();
                 }
             });

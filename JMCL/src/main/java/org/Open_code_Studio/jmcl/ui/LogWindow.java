@@ -17,9 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
+import com.jfoenix.controls.*;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -31,11 +29,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.game.GameDumpGenerator;
 import org.Open_code_Studio.jmcl.game.Log;
 import org.Open_code_Studio.jmcl.setting.StyleSheets;
@@ -162,11 +158,11 @@ public final class LogWindow extends Stage {
 
     private final class LogWindowImpl extends Control {
 
-        private final ListView<Log> listView = new ListView<>();
+        private final ListView<Log> listView = new JFXListView<>();
         private final BooleanProperty autoScroll = new SimpleBooleanProperty();
         private final StringProperty[] buttonText = new StringProperty[LEVELS.length];
         private final BooleanProperty[] showLevel = new BooleanProperty[LEVELS.length];
-        private final MFXComboBox<Integer> cboLines = new MFXComboBox<>();
+        private final JFXComboBox<Integer> cboLines = new JFXComboBox<>();
         private final StackPane stackPane = new StackPane();
 
         LogWindowImpl() {
@@ -183,7 +179,7 @@ public final class LogWindow extends Stage {
 
             cboLines.getItems().setAll(500, 2000, 5000, 10000);
             cboLines.setValue(Log.getLogLines());
-            cboLines.valueProperty().addListener((a, b, newValue) -> config().setLogLines(newValue));
+            cboLines.getSelectionModel().selectedItemProperty().addListener((a, b, newValue) -> config().setLogLines(newValue));
 
             for (int i = 0; i < LEVELS.length; ++i) {
                 buttonText[i].bind(Bindings.concat(levelCountMap.get(LEVELS[i]), " " + LEVELS[i].name().toLowerCase(Locale.ROOT) + "s"));
@@ -263,6 +259,7 @@ public final class LogWindow extends Stage {
         private static final PseudoClass INFO = PseudoClass.getPseudoClass("info");
         private static final PseudoClass DEBUG = PseudoClass.getPseudoClass("debug");
         private static final PseudoClass TRACE = PseudoClass.getPseudoClass("trace");
+        private final JFXSnackbar snackbar = new JFXSnackbar();
 
         LogWindowSkin(LogWindowImpl control) {
             super(control);
@@ -271,6 +268,7 @@ public final class LogWindow extends Stage {
             vbox.setPadding(new Insets(3, 0, 3, 0));
             getSkinnable().stackPane.getChildren().setAll(vbox);
             getChildren().setAll(getSkinnable().stackPane);
+            snackbar.registerSnackbarContainer(getSkinnable().stackPane);
 
             {
                 BorderPane borderPane = new BorderPane();
@@ -363,7 +361,7 @@ public final class LogWindow extends Stage {
                         }
 
                         FXUtils.copyText(stringBuilder.toString(), null);
-                        Controllers.showToast(i18n("message.copied"));
+                        snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(i18n("message.copied"))));
                     }
                 });
 
@@ -379,19 +377,19 @@ public final class LogWindow extends Stage {
                 hBox.setAlignment(Pos.CENTER_RIGHT);
                 hBox.setPadding(new Insets(0, 3, 0, 3));
 
-                MFXCheckbox autoScrollCheckBox = new MFXCheckbox(i18n("logwindow.autoscroll"));
+                JFXCheckBox autoScrollCheckBox = new JFXCheckBox(i18n("logwindow.autoscroll"));
                 autoScrollCheckBox.setSelected(true);
                 control.autoScroll.bind(autoScrollCheckBox.selectedProperty());
 
-                MFXButton exportLogsButton = new MFXButton(i18n("button.export"));
+                JFXButton exportLogsButton = new JFXButton(i18n("button.export"));
                 exportLogsButton.setOnAction(e -> getSkinnable().onExportLogs());
 
-                MFXButton terminateButton = new MFXButton(i18n("logwindow.terminate_game"));
+                JFXButton terminateButton = new JFXButton(i18n("logwindow.terminate_game"));
                 terminateButton.setOnAction(e -> getSkinnable().onTerminateGame());
 
                 SpinnerPane exportDumpPane = new SpinnerPane();
                 exportDumpPane.getStyleClass().add("small-spinner-pane");
-                MFXButton exportDumpButton = new MFXButton(i18n("logwindow.export_dump"));
+                JFXButton exportDumpButton = new JFXButton(i18n("logwindow.export_dump"));
                 if (SystemUtils.supportJVMAttachment()) {
                     exportDumpButton.setOnAction(e -> getSkinnable().onExportDump(exportDumpPane));
                 } else {
@@ -400,7 +398,7 @@ public final class LogWindow extends Stage {
                 }
                 exportDumpPane.setContent(exportDumpButton);
 
-                MFXButton clearButton = new MFXButton(i18n("button.clear"));
+                JFXButton clearButton = new JFXButton(i18n("button.clear"));
                 clearButton.setOnAction(e -> getSkinnable().onClear());
                 hBox.getChildren().setAll(autoScrollCheckBox, exportLogsButton, terminateButton, exportDumpPane, clearButton);
 

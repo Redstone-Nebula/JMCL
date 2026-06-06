@@ -17,8 +17,10 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import io.github.palexdev.materialfx.controls.MFXRadioButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import com.jfoenix.controls.JFXColorPicker;
+import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.property.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -41,7 +43,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public final class MultiFileItem<T> extends VBox {
@@ -121,7 +122,7 @@ public final class MultiFileItem<T> extends VBox {
         protected String tooltip;
         protected final T data;
         protected final BooleanProperty selected = new SimpleBooleanProperty();
-        protected final MFXRadioButton left = new MFXRadioButton();
+        protected final JFXRadioButton left = new JFXRadioButton();
 
         public Option(String title, T data) {
             this.title = title;
@@ -190,13 +191,13 @@ public final class MultiFileItem<T> extends VBox {
     }
 
     public static final class StringOption<T> extends Option<T> {
-        private final MFXTextField customField = new MFXTextField();
+        private final JFXTextField customField = new JFXTextField();
 
         public StringOption(String title, T data) {
             super(title, data);
         }
 
-        public MFXTextField getCustomField() {
+        public JFXTextField getCustomField() {
             return customField;
         }
 
@@ -217,6 +218,11 @@ public final class MultiFileItem<T> extends VBox {
             return this;
         }
 
+        public StringOption<T> setValidators(ValidatorBase... validators) {
+            customField.setValidators(validators);
+            return this;
+        }
+
         @Override
         protected Node createItem(ToggleGroup group) {
             BorderPane pane = new BorderPane();
@@ -231,6 +237,10 @@ public final class MultiFileItem<T> extends VBox {
 
             BorderPane.setAlignment(customField, Pos.CENTER_RIGHT);
             customField.disableProperty().bind(left.selectedProperty().not());
+
+            if (!customField.getValidators().isEmpty()) {
+                FXUtils.setValidateWhileTextChanged(customField, true);
+            }
 
             pane.setRight(customField);
 
@@ -297,7 +307,7 @@ public final class MultiFileItem<T> extends VBox {
     }
 
     public static final class PaintOption<T> extends Option<T> {
-        private final ColorPicker colorPicker = new ColorPicker();
+        private final ColorPicker colorPicker = new JFXColorPicker();
 
         public PaintOption(String title, T data) {
             super(title, data);

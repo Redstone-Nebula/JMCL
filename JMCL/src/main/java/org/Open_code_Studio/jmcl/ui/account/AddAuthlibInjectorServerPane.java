@@ -17,9 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
-import javafx.geometry.Insets;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXTextField;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import org.Open_code_Studio.jmcl.auth.authlibinjector.AuthlibInjectorServer;
@@ -27,9 +27,9 @@ import org.Open_code_Studio.jmcl.task.Schedulers;
 import org.Open_code_Studio.jmcl.task.Task;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.ui.animation.ContainerAnimations;
-import org.Open_code_Studio.jmcl.util.Lang;
 import org.Open_code_Studio.jmcl.ui.animation.TransitionPane;
 import org.Open_code_Studio.jmcl.ui.construct.*;
+import org.Open_code_Studio.jmcl.util.Lang;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
@@ -45,11 +45,11 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
     private final Label lblServerName;
     private final Label lblCreationWarning;
     private final Label lblServerWarning;
-    private final MFXTextField txtServerUrl;
-    private final VBox addServerPane;
-    private final VBox confirmServerPane;
+    private final JFXTextField txtServerUrl;
+    private final JFXDialogLayout addServerPane;
+    private final JFXDialogLayout confirmServerPane;
     private final SpinnerPane nextPane;
-    private final MFXButton btnAddNext;
+    private final JFXButton btnAddNext;
 
     private AuthlibInjectorServer serverBeingAdded;
 
@@ -60,12 +60,10 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
     }
 
     public AddAuthlibInjectorServerPane() {
-        addServerPane = new VBox();
-        addServerPane.setSpacing(15);
-        addServerPane.setPadding(new Insets(24));
-        addServerPane.getChildren().add(new Label(i18n("account.injector.add")));
+        addServerPane = new JFXDialogLayout();
+        addServerPane.setHeading(new Label(i18n("account.injector.add")));
         {
-            txtServerUrl = new MFXTextField();
+            txtServerUrl = new JFXTextField();
             txtServerUrl.setPromptText(i18n("account.injector.server_url"));
             txtServerUrl.setOnAction(e -> onAddNext());
 
@@ -73,13 +71,13 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
             lblCreationWarning.setWrapText(true);
             HBox actions = new HBox();
             {
-                MFXButton cancel = new MFXButton(i18n("button.cancel"));
+                JFXButton cancel = new JFXButton(i18n("button.cancel"));
                 cancel.getStyleClass().add("dialog-accept");
                 cancel.setOnAction(e -> onAddCancel());
 
                 nextPane = new SpinnerPane();
                 nextPane.getStyleClass().add("small-spinner-pane");
-                btnAddNext = new MFXButton(i18n("wizard.next"));
+                btnAddNext = new JFXButton(i18n("wizard.next"));
                 btnAddNext.getStyleClass().add("dialog-accept");
                 btnAddNext.setOnAction(e -> onAddNext());
                 nextPane.setContent(btnAddNext);
@@ -87,15 +85,16 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
                 actions.getChildren().setAll(cancel, nextPane);
             }
 
-            addServerPane.getChildren().addAll(txtServerUrl, lblCreationWarning, actions);
+            addServerPane.setBody(txtServerUrl);
+            addServerPane.setActions(lblCreationWarning, actions);
 
-            btnAddNext.disableProperty().bind(txtServerUrl.lengthProperty().isEqualTo(0));
+            txtServerUrl.getValidators().addAll(new RequiredValidator(), new URLValidator());
+            FXUtils.setValidateWhileTextChanged(txtServerUrl, true);
+            btnAddNext.disableProperty().bind(txtServerUrl.activeValidatorProperty().isNotNull());
         }
 
-        confirmServerPane = new VBox();
-        confirmServerPane.setSpacing(15);
-        confirmServerPane.setPadding(new Insets(24));
-        confirmServerPane.getChildren().add(new Label(i18n("account.injector.add")));
+        confirmServerPane = new JFXDialogLayout();
+        confirmServerPane.setHeading(new Label(i18n("account.injector.add")));
         {
             GridPane body = new GridPane();
             body.setStyle("-fx-padding: 15 0 0 0;");
@@ -135,26 +134,25 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
                 );
             }
 
-            MFXButton prevButton = new MFXButton(i18n("wizard.prev"));
+            JFXButton prevButton = new JFXButton(i18n("wizard.prev"));
             prevButton.getStyleClass().add("dialog-cancel");
             prevButton.setOnAction(e -> onAddPrev());
 
-            MFXButton cancelButton = new MFXButton(i18n("button.cancel"));
+            JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
             cancelButton.getStyleClass().add("dialog-cancel");
             cancelButton.setOnAction(e -> onAddCancel());
 
-            MFXButton finishButton = new MFXButton(i18n("wizard.finish"));
+            JFXButton finishButton = new JFXButton(i18n("wizard.finish"));
             finishButton.getStyleClass().add("dialog-accept");
             finishButton.setOnAction(e -> onAddFinish());
 
-            HBox actions = new HBox(8, prevButton, cancelButton, finishButton);
-            actions.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
-            confirmServerPane.getChildren().addAll(body, actions);
+            confirmServerPane.setBody(body);
+            confirmServerPane.setActions(prevButton, cancelButton, finishButton);
         }
 
         this.setContent(addServerPane, ContainerAnimations.NONE);
 
-        lblCreationWarning.maxWidthProperty().bind(addServerPane.widthProperty());
+        lblCreationWarning.maxWidthProperty().bind(((FlowPane) lblCreationWarning.getParent()).widthProperty());
         nextPane.hideSpinner();
 
         onEscPressed(this, this::onAddCancel);

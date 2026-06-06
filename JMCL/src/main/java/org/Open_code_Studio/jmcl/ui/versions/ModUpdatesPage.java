@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXCheckbox;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -72,7 +72,7 @@ public class ModUpdatesPage extends BorderPane implements DecoratorPage {
         getStyleClass().add("gray-background");
 
         TableColumn<ModUpdateObject, Boolean> enabledColumn = new TableColumn<>();
-        var allEnabledBox = new MFXCheckbox();
+        var allEnabledBox = new JFXCheckBox();
         enabledColumn.setStyle("-fx-alignment: CENTER;");
         enabledColumn.setGraphic(allEnabledBox);
         enabledColumn.setCellFactory(JFXCheckBoxTableCell.forTableColumn(enabledColumn));
@@ -110,13 +110,13 @@ public class ModUpdatesPage extends BorderPane implements DecoratorPage {
         actions.setPadding(new Insets(8));
         actions.setAlignment(Pos.CENTER_RIGHT);
 
-        MFXButton exportListButton = FXUtils.newRaisedButton(i18n("button.export"));
+        JFXButton exportListButton = FXUtils.newRaisedButton(i18n("button.export"));
         exportListButton.setOnAction(e -> exportList());
 
-        MFXButton nextButton = FXUtils.newRaisedButton(i18n("mods.check_updates.confirm"));
+        JFXButton nextButton = FXUtils.newRaisedButton(i18n("mods.check_updates.confirm"));
         nextButton.setOnAction(e -> updateMods());
 
-        MFXButton cancelButton = FXUtils.newRaisedButton(i18n("button.cancel"));
+        JFXButton cancelButton = FXUtils.newRaisedButton(i18n("button.cancel"));
         cancelButton.setOnAction(e -> fireEvent(new PageCloseEvent()));
         onEscPressed(this, cancelButton::fire);
         onEscPressed(table, cancelButton::fire);

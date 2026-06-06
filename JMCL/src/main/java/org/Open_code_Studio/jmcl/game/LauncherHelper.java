@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.game;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import org.Open_code_Studio.jmcl.Launcher;
@@ -207,12 +207,12 @@ public final class LauncherHelper {
                         if (count >= 3 && !config().isOfflinePiracyPromptShown()) {
                             CompletableFuture<Void> future = new CompletableFuture<>();
                             runInFX(() -> {
-                                MFXButton buyButton = new MFXButton(i18n("instance.manager.buy_minecraft"));
+                                JFXButton buyButton = new JFXButton(i18n("instance.manager.buy_minecraft"));
                                 buyButton.setOnAction(e -> {
                                     config().setOfflinePiracyPromptShown(true);
                                     FXUtils.openLink("https://www.minecraft.net/zh-hans/store");
                                 });
-                                MFXButton laterButton = new MFXButton(i18n("instance.manager.remind_later"));
+                                JFXButton laterButton = new JFXButton(i18n("instance.manager.remind_later"));
                                 buyButton.addEventHandler(ActionEvent.ACTION, e -> future.complete(null));
                                 laterButton.addEventHandler(ActionEvent.ACTION, e -> future.complete(null));
                                 Controllers.dialog(
@@ -757,7 +757,7 @@ public final class LauncherHelper {
 
                 CompletableFuture<Task<AuthInfo>> future = new CompletableFuture<>();
                 runInFX(() -> {
-                    MFXButton loginOfflineButton = new MFXButton(i18n("account.login.skip"));
+                    JFXButton loginOfflineButton = new JFXButton(i18n("account.login.skip"));
                     loginOfflineButton.setOnAction(event -> {
                         try {
                             future.complete(Task.completed(account.playOffline()));
@@ -765,7 +765,7 @@ public final class LauncherHelper {
                             future.completeExceptionally(e2);
                         }
                     });
-                    MFXButton retryButton = new MFXButton(i18n("account.login.retry"));
+                    JFXButton retryButton = new JFXButton(i18n("account.login.retry"));
                     retryButton.setOnAction(event -> {
                         future.complete(logIn(account));
                     });

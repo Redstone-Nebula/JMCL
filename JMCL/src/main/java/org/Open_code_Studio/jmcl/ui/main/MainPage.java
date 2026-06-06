@@ -17,7 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPopup;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -27,7 +28,6 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -100,7 +100,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
     private TransitionPane announcementPane;
     private final StackPane updatePane;
-    private final MFXButton menuButton;
+    private final JFXButton menuButton;
 
     {
         HBox titleNode = new HBox(8);
@@ -138,7 +138,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
             titleBar.getStyleClass().add("title");
             titleBar.setLeft(new Label(title));
 
-            MFXButton btnHide = new MFXButton();
+            JFXButton btnHide = new JFXButton();
             btnHide.setOnAction(e -> {
                 announcementPane.setContent(new StackPane(), ContainerAnimations.FADE);
                 if (Metadata.isDev()) {
@@ -193,7 +193,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
                 hBox.getChildren().setAll(SVG.UPDATE.createIcon(20), prompt);
             }
 
-            MFXButton closeUpdateButton = new MFXButton();
+            JFXButton closeUpdateButton = new JFXButton();
             closeUpdateButton.setGraphic(SVG.CLOSE.createIcon(10));
             StackPane.setAlignment(closeUpdateButton, Pos.TOP_RIGHT);
             closeUpdateButton.getStyleClass().add("toggle-icon-tiny");
@@ -212,7 +212,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
         StackPane.setAlignment(launchPane, Pos.BOTTOM_RIGHT);
         {
-            MFXButton launchButton = new MFXButton();
+            JFXButton launchButton = new JFXButton();
             launchButton.getStyleClass().addAll("launch-button", "md3-contained-button");
             launchButton.setDefaultButton(true);
             {
@@ -250,12 +250,12 @@ public final class MainPage extends StackPane implements DecoratorPage {
                 launchButton.setGraphic(graphic);
             }
 
-            menuButton = new MFXButton();
+            menuButton = new JFXButton();
             menuButton.getStyleClass().addAll("menu-button", "md3-text-button");
             menuButton.setOnAction(e -> GameListPopupMenu.show(
                     menuButton,
-                    false,
-                    true,
+                    JFXPopup.PopupVPosition.BOTTOM,
+                    JFXPopup.PopupHPosition.RIGHT,
                     0,
                     -menuButton.getHeight(),
                     profile, versions

@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import io.github.palexdev.materialfx.controls.MFXSpinner;
+import com.jfoenix.controls.JFXSpinner;
 import javafx.beans.property.*;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -206,7 +206,7 @@ public class SpinnerPane extends Control {
             Node nextContent;
             if (control.isLoading()) {
                 if (spinnerPane == null) {
-                    spinnerPane = new StackPane(new MFXSpinner());
+                    spinnerPane = new StackPane(new JFXSpinner());
                     spinnerPane.getStyleClass().add("notice-pane");
                 }
                 nextContent = spinnerPane;

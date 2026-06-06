@@ -17,8 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import com.jfoenix.controls.*;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -32,7 +31,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import org.Open_code_Studio.jmcl.download.DownloadProvider;
-import javafx.util.Callback;
 import org.Open_code_Studio.jmcl.download.RemoteVersion;
 import org.Open_code_Studio.jmcl.download.VersionList;
 import org.Open_code_Studio.jmcl.download.cleanroom.CleanroomRemoteVersion;
@@ -174,13 +172,13 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
             actions.setAlignment(Pos.CENTER);
             {
                 if ("game".equals(control.libraryId)) {
-                    MFXButton wikiButton = newToggleButton4(SVG.GLOBE_BOOK);
+                    JFXButton wikiButton = newToggleButton4(SVG.GLOBE_BOOK);
                     wikiButton.setOnAction(event -> onOpenWiki());
                     FXUtils.installFastTooltip(wikiButton, i18n("wiki.tooltip"));
                     actions.getChildren().add(wikiButton);
                 }
 
-                MFXButton actionButton = newToggleButton4(SVG.ARROW_FORWARD);
+                JFXButton actionButton = newToggleButton4(SVG.ARROW_FORWARD);
                 actionButton.setOnAction(e -> onAction());
                 actions.getChildren().add(actionButton);
             }
@@ -291,13 +289,13 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
     }
 
     private static final class VersionsPageSkin extends SkinBase<VersionsPage> {
-        private final ListView<RemoteVersion> list;
+        private final JFXListView<RemoteVersion> list;
 
         private final TransitionPane transitionPane;
-        private final ProgressIndicator spinner;
+        private final JFXSpinner spinner;
 
-        private final MFXTextField nameField;
-        private final ComboBox<VersionTypeFilter> categoryField = new ComboBox<>();
+        private final JFXTextField nameField;
+        private final JFXComboBox<VersionTypeFilter> categoryField = new JFXComboBox<>();
 
         VersionsPageSkin(VersionsPage control) {
             super(control);
@@ -329,7 +327,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                 int rowIndex = 0;
 
                 {
-                    nameField = new MFXTextField();
+                    nameField = new JFXTextField();
                     nameField.setPromptText(i18n("version.search.prompt"));
                     nameField.textProperty().addListener(o -> updateList());
 
@@ -353,7 +351,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                     categoryField.setConverter(stringConverter(type -> i18n("version.game." + type.name().toLowerCase(Locale.ROOT))));
                     categoryField.getSelectionModel().selectedItemProperty().addListener(o -> updateList());
 
-                    MFXButton refreshButton = FXUtils.newRaisedButton(i18n("button.refresh"));
+                    JFXButton refreshButton = FXUtils.newRaisedButton(i18n("button.refresh"));
                     refreshButton.setOnAction(event -> control.onRefresh());
 
                     if (control.versionList.hasType()) {
@@ -376,7 +374,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                 root.setCenter(spinnerPane);
 
                 transitionPane = new TransitionPane();
-                spinner = new ProgressIndicator();
+                spinner = new JFXSpinner();
 
                 StackPane centerWrapper = new StackPane();
                 centerWrapper.setStyle("-fx-padding: 10;");
@@ -384,13 +382,13 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                     ComponentList centrePane = new ComponentList();
                     centrePane.getStyleClass().add("no-padding");
                     {
-                        list = new ListView<>();
+                        list = new JFXListView<>();
                         list.getStyleClass().add("jfx-list-view-float");
                         VBox.setVgrow(list, Priority.ALWAYS);
 
                         control.versions.addListener((InvalidationListener) o -> updateList());
 
-                        list.setCellFactory((Callback<ListView<RemoteVersion>, ListCell<RemoteVersion>>) listView -> new RemoteVersionListCell(control));
+                        list.setCellFactory(listView -> new RemoteVersionListCell(control));
 
                         ComponentList.setVgrow(list, Priority.ALWAYS);
 

@@ -17,8 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 import javafx.animation.PauseTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
@@ -28,7 +29,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
@@ -197,7 +197,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
             private final HBox searchBar;
             private final HBox toolbarNormal;
 
-            private final MFXTextField searchField;
+            private final JFXTextField searchField;
 
             public GameListSkin(GameList skinnable) {
                 super(skinnable);
@@ -208,7 +208,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
 
                 ComponentList root = new ComponentList();
                 root.getStyleClass().add("no-padding");
-                ListView<GameListItem> listView = new ListView<>();
+                JFXListView<GameListItem> listView = new JFXListView<>();
 
                 {
                     toolbarPane = new TransitionPane();
@@ -218,7 +218,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
 
                     searchBar.setAlignment(Pos.CENTER);
                     searchBar.setPadding(new Insets(0, 5, 0, 5));
-                    searchField = new MFXTextField();
+                    searchField = new JFXTextField();
                     searchField.setPromptText(i18n("search"));
                     HBox.setHgrow(searchField, Priority.ALWAYS);
                     PauseTransition pause = new PauseTransition(Duration.millis(100));
@@ -228,7 +228,7 @@ public class GameListPage extends DecoratorAnimatedPage implements DecoratorPage
                         pause.playFromStart();
                     });
 
-                    MFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE, () -> {
+                    JFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE, () -> {
                         changeToolbar(toolbarNormal);
                         searchField.clear();
                     });

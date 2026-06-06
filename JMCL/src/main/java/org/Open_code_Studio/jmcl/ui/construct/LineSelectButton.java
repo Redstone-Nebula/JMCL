@@ -17,6 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
+import com.jfoenix.controls.JFXPopup;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
@@ -24,13 +25,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.ui.SVG;
 import org.Open_code_Studio.jmcl.util.javafx.MappedObservableList;
@@ -49,7 +48,7 @@ public class LineSelectButton<T extends @UnknownNullability Object> extends Line
     private static final String DEFAULT_STYLE_CLASS = "line-select-button";
     private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
-    private Popup popup;
+    private JFXPopup popup;
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private ObservableList<Node> popupItems; // keep a reference
 
@@ -79,15 +78,14 @@ public class LineSelectButton<T extends @UnknownNullability Object> extends Line
     public void fire() {
         super.fire();
         if (popup == null) {
-            VBox popupMenu = new VBox();
-            this.popup = new Popup();
-            popup.getContent().add(popupMenu);
+            PopupMenu popupMenu = new PopupMenu();
+            this.popup = new JFXPopup(popupMenu);
 
             popupMenu.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyEvent);
 
             ripplerContainer.addEventFilter(ScrollEvent.ANY, ignored -> popup.hide());
 
-            Bindings.bindContent(popupMenu.getChildren(), popupItems = MappedObservableList.create(itemsProperty(), item -> {
+            Bindings.bindContent(popupMenu.getContent(), popupItems = MappedObservableList.create(itemsProperty(), item -> {
                 VBox vbox = new VBox();
 
                 var itemTitleLabel = new Label();
@@ -127,15 +125,19 @@ public class LineSelectButton<T extends @UnknownNullability Object> extends Line
 
                 return ripplerContainer;
             }));
+
+            popup.showingProperty().addListener((observable, oldValue, newValue) ->
+                    ripplerContainer.getRippler().setRipplerDisabled(newValue));
         }
 
         if (popup.isShowing()) {
             popup.hide();
         } else {
-            Side vPosition = determineOptimalPopupPosition(this, popup);
-            popup.show(this,
-                    vPosition == Side.TOP ? 0 : this.getHeight(),
-                    0);
+            JFXPopup.PopupVPosition vPosition = determineOptimalPopupPosition(this, popup);
+            popup.show(this, vPosition, JFXPopup.PopupHPosition.RIGHT,
+                    0,
+                    vPosition == JFXPopup.PopupVPosition.TOP ? this.getHeight() : -this.getHeight(),
+                    true);
         }
     }
 

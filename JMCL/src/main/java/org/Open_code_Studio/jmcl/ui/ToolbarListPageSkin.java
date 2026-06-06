@@ -17,13 +17,13 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.SkinBase;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -31,14 +31,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import org.Open_code_Studio.jmcl.ui.construct.ComponentList;
-import org.Open_code_Studio.jmcl.ui.construct.MDListCell;
 import org.Open_code_Studio.jmcl.ui.construct.SpinnerPane;
 
 import java.util.List;
 
 public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends SkinBase<P> {
 
-    protected final ListView<E> listView;
+    protected final JFXListView<E> listView;
 
     public ToolbarListPageSkin(P skinnable) {
         super(skinnable);
@@ -67,9 +66,9 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
         ComponentList.setVgrow(spinnerPane, Priority.ALWAYS);
 
         {
-            this.listView = new ListView<>();
+            this.listView = new JFXListView<>();
             this.listView.setPadding(Insets.EMPTY);
-            this.listView.setCellFactory(this::createListCell);
+            this.listView.setCellFactory(listView -> createListCell((JFXListView<E>) listView));
             this.listView.getStyleClass().add("no-horizontal-scrollbar");
             Bindings.bindContent(this.listView.getItems(), skinnable.itemsProperty());
             FXUtils.ignoreEvent(listView, KeyEvent.KEY_PRESSED, e -> e.getCode() == KeyCode.ESCAPE);
@@ -82,8 +81,8 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
         getChildren().setAll(container);
     }
 
-    public static MFXButton createToolbarButton2(String text, SVG svg, Runnable onClick) {
-        MFXButton ret = new MFXButton();
+    public static JFXButton createToolbarButton2(String text, SVG svg, Runnable onClick) {
+        JFXButton ret = new JFXButton();
         ret.getStyleClass().add("jfx-tool-bar-button");
         ret.setGraphic(svg.createIcon(20));
         ret.setText(text);
@@ -91,8 +90,8 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
         return ret;
     }
 
-    public static MFXButton createDecoratorButton(String tooltip, SVG svg, Runnable onClick) {
-        MFXButton ret = new MFXButton();
+    public static JFXButton createDecoratorButton(String tooltip, SVG svg, Runnable onClick) {
+        JFXButton ret = new JFXButton();
         ret.getStyleClass().add("jfx-decorator-button");
         ret.setGraphic(svg.createIcon(20));
         FXUtils.installFastTooltip(ret, tooltip);
@@ -102,14 +101,17 @@ public abstract class ToolbarListPageSkin<E, P extends ListPageBase<E>> extends 
 
     protected abstract List<Node> initializeToolbar(P skinnable);
 
-    protected ListCell<E> createListCell(ListView<E> listView) {
-        return new MDListCell<>(listView) {
+    protected ListCell<E> createListCell(JFXListView<E> listView) {
+        return new ListCell<>() {
             @Override
-            protected void updateControl(E item, boolean empty) {
+            protected void updateItem(E item, boolean empty) {
+                super.updateItem(item, empty);
                 if (!empty && item instanceof Node node) {
-                    getContainer().getChildren().setAll(node);
+                    setGraphic(node);
+                    setText(null);
                 } else {
-                    getContainer().getChildren().clear();
+                    setGraphic(null);
+                    setText(null);
                 }
             }
         };

@@ -17,10 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXTextField;
-import io.github.palexdev.materialfx.validation.Constraint;
-import javafx.beans.binding.Bindings;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -96,7 +94,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
             var worldNamePane = new LinePane();
             {
                 worldNamePane.setTitle(i18n("world.name"));
-                MFXTextField worldNameField = new MFXTextField();
+                JFXTextField worldNameField = new JFXTextField();
                 setRightTextField(worldNamePane, worldNameField, 200);
 
                 if (dataTag.get("LevelName") instanceof StringTag worldNameTag) {
@@ -132,8 +130,8 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
                     iconImageView.setImage(world.getIcon() == null ? FXUtils.newBuiltinImage("/assets/img/unknown_server.png") : world.getIcon());
                 }
 
-                MFXButton editIconButton = FXUtils.newToggleButton4(SVG.EDIT, 20);
-                MFXButton resetIconButton = FXUtils.newToggleButton4(SVG.RESTORE, 20);
+                JFXButton editIconButton = FXUtils.newToggleButton4(SVG.EDIT, 20);
+                JFXButton resetIconButton = FXUtils.newToggleButton4(SVG.RESTORE, 20);
                 {
                     editIconButton.setDisable(isReadOnly);
                     editIconButton.setOnAction(event -> Controllers.confirm(
@@ -162,7 +160,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
                 seedPane.setTitle(i18n("world.info.random_seed"));
 
                 SimpleBooleanProperty visibility = new SimpleBooleanProperty();
-                MFXButton visibilityButton = FXUtils.newToggleButton4(SVG.VISIBILITY_OFF);
+                JFXButton visibilityButton = FXUtils.newToggleButton4(SVG.VISIBILITY_OFF);
                 {
                     visibilityButton.setAlignment(Pos.CENTER);
                     visibilityButton.setOnAction((event) -> visibility.set(!visibility.get()));
@@ -429,7 +427,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
     }
 
     private void setRightTextField(LinePane linePane, int perfWidth, Tag tag) {
-        MFXTextField textField = new MFXTextField();
+        JFXTextField textField = new JFXTextField();
         setRightTextField(linePane, textField, perfWidth);
         if (tag instanceof IntTag intTag) {
             bindTagAndTextField(intTag, textField);
@@ -440,7 +438,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
         }
     }
 
-    private void setRightTextField(LinePane linePane, MFXTextField textField, int perfWidth) {
+    private void setRightTextField(LinePane linePane, JFXTextField textField, int perfWidth) {
         textField.setDisable(isReadOnly);
         textField.setPrefWidth(perfWidth);
         linePane.setRight(textField);
@@ -468,10 +466,10 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
         }
     }
 
-    private void bindTagAndTextField(IntTag intTag, MFXTextField mfxTextField) {
-        mfxTextField.setText(intTag.getValue().toString());
+    private void bindTagAndTextField(IntTag intTag, JFXTextField jfxTextField) {
+        jfxTextField.setText(intTag.getValue().toString());
 
-        mfxTextField.textProperty().addListener((o, oldValue, newValue) -> {
+        jfxTextField.textProperty().addListener((o, oldValue, newValue) -> {
             if (newValue != null) {
                 try {
                     Integer integer = Lang.toIntOrNull(newValue);
@@ -480,24 +478,19 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
                         saveWorldData();
                     }
                 } catch (Exception e) {
-                    mfxTextField.setText(oldValue);
+                    jfxTextField.setText(oldValue);
                     LOG.warning("Exception happened when saving world data", e);
                 }
             }
         });
-        FXUtils.setValidateWhileTextChanged(mfxTextField, true);
-        mfxTextField.getValidator().constraint(Constraint.of(
-                "Must be a valid integer",
-                Bindings.createBooleanBinding(
-                        () -> mfxTextField.getText().isEmpty() || mfxTextField.getText().matches("-?\\d+"),
-                        mfxTextField.textProperty())
-        ));
+        FXUtils.setValidateWhileTextChanged(jfxTextField, true);
+        jfxTextField.setValidators(new NumberValidator(i18n("input.number"), true));
     }
 
-    private void bindTagAndTextField(FloatTag floatTag, MFXTextField mfxTextField) {
-        mfxTextField.setText(new DecimalFormat("0.#").format(floatTag.getValue()));
+    private void bindTagAndTextField(FloatTag floatTag, JFXTextField jfxTextField) {
+        jfxTextField.setText(new DecimalFormat("0.#").format(floatTag.getValue()));
 
-        mfxTextField.textProperty().addListener((o, oldValue, newValue) -> {
+        jfxTextField.textProperty().addListener((o, oldValue, newValue) -> {
             if (newValue != null) {
                 try {
                     Float floatValue = Lang.toFloatOrNull(newValue);
@@ -506,18 +499,13 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
                         saveWorldData();
                     }
                 } catch (Exception e) {
-                    mfxTextField.setText(oldValue);
+                    jfxTextField.setText(oldValue);
                     LOG.warning("Exception happened when saving world data", e);
                 }
             }
         });
-        FXUtils.setValidateWhileTextChanged(mfxTextField, true);
-        mfxTextField.getValidator().constraint(Constraint.of(
-                "Must be a valid decimal number",
-                Bindings.createBooleanBinding(
-                        () -> mfxTextField.getText().isEmpty() || mfxTextField.getText().matches("-?\\d+\\.?\\d*"),
-                        mfxTextField.textProperty())
-        ));
+        FXUtils.setValidateWhileTextChanged(jfxTextField, true);
+        jfxTextField.setValidators(new DoubleValidator(i18n("input.number"), true));
     }
 
     private void saveWorldData() {

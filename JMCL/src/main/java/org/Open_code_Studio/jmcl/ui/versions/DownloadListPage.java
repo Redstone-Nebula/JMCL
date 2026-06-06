@@ -17,9 +17,10 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
-import io.github.palexdev.materialfx.controls.MFXTextField;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.*;
@@ -63,6 +64,7 @@ import java.util.stream.Collectors;
 import static org.Open_code_Studio.jmcl.ui.FXUtils.ignoreEvent;
 import static org.Open_code_Studio.jmcl.ui.FXUtils.stringConverter;
 import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
+import static org.Open_code_Studio.jmcl.util.javafx.ExtendedProperties.selectedItemPropertyFor;
 
 public class DownloadListPage extends Control implements DecoratorPage, VersionPage.VersionLoadable {
     protected final ReadOnlyObjectWrapper<State> state = new ReadOnlyObjectWrapper<>();
@@ -234,7 +236,7 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
     }
 
     private static class ModDownloadListPageSkin extends SkinBase<DownloadListPage> {
-        private final ListView<RemoteMod> listView = new ListView<>();
+        private final JFXListView<RemoteMod> listView = new JFXListView<>();
         private final RemoteImageLoader iconLoader;
 
         protected ModDownloadListPageSkin(DownloadListPage control) {
@@ -275,21 +277,21 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
                     int columns = 0;
                     Node lastNode = null;
                     if (control.versionSelection) {
-                        MFXComboBox<String> versionsComboBox = new MFXComboBox<>();
+                        JFXComboBox<String> versionsComboBox = new JFXComboBox<>();
                         versionsComboBox.setMaxWidth(Double.MAX_VALUE);
                         Bindings.bindContent(versionsComboBox.getItems(), control.versions);
-                        versionsComboBox.valueProperty().bindBidirectional(control.selectedVersion);
+                        selectedItemPropertyFor(versionsComboBox).bindBidirectional(control.selectedVersion);
 
                         searchPane.add(new Label(i18n("version")), columns++, rowIndex);
                         searchPane.add(lastNode = versionsComboBox, columns++, rowIndex);
                     }
 
                     if (control.downloadSources.getSize() > 1) {
-                        MFXComboBox<String> downloadSourceComboBox = new MFXComboBox<>();
+                        JFXComboBox<String> downloadSourceComboBox = new JFXComboBox<>();
                         downloadSourceComboBox.setMaxWidth(Double.MAX_VALUE);
                         downloadSourceComboBox.getItems().setAll(control.downloadSources.get());
                         downloadSourceComboBox.setConverter(stringConverter(I18n::i18n));
-                        downloadSourceComboBox.valueProperty().bindBidirectional(control.downloadSource);
+                        selectedItemPropertyFor(downloadSourceComboBox).bindBidirectional(control.downloadSource);
 
                         searchPane.add(new Label(i18n("settings.launcher.download_source")), columns++, rowIndex);
                         searchPane.add(lastNode = downloadSourceComboBox, columns++, rowIndex);
@@ -302,7 +304,7 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
                     rowIndex++;
                 }
 
-                MFXTextField nameField = new MFXTextField();
+                JFXTextField nameField = new JFXTextField();
                 nameField.setPromptText(getSkinnable().supportChinese.get() ? i18n("search.hint.chinese") : i18n("search.hint.english"));
                 if (getSkinnable().supportChinese.get()) {
                     FXUtils.installFastTooltip(nameField, i18n("search.hint.chinese"));
@@ -310,7 +312,7 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
                     FXUtils.installFastTooltip(nameField, i18n("search.hint.english"));
                 }
 
-                MFXComboBox<String> gameVersionField = new MFXComboBox<>();
+                JFXComboBox<String> gameVersionField = new JFXComboBox<>();
                 gameVersionField.setMaxWidth(Double.MAX_VALUE);
                 gameVersionField.setEditable(true);
                 gameVersionField.getItems().setAll(GameVersionNumber.getDefaultGameVersions());
@@ -334,17 +336,17 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
                 });
 
                 StackPane categoryStackPane = new StackPane();
-                MFXComboBox<CategoryIndented> categoryComboBox = new MFXComboBox<>();
+                JFXComboBox<CategoryIndented> categoryComboBox = new JFXComboBox<>();
                 categoryComboBox.getItems().setAll(CategoryIndented.ALL);
                 categoryStackPane.getChildren().setAll(categoryComboBox);
                 categoryComboBox.prefWidthProperty().bind(categoryStackPane.widthProperty());
                 categoryComboBox.getStyleClass().add("fit-width");
                 categoryComboBox.setPromptText(i18n("mods.category"));
-                categoryComboBox.getSelectionModel().selectIndex(0);
+                categoryComboBox.getSelectionModel().select(0);
                 categoryComboBox.setConverter(stringConverter(getSkinnable()::getLocalizedCategoryIndent));
                 FXUtils.onChangeAndOperate(getSkinnable().downloadSource, downloadSource -> {
                     categoryComboBox.getItems().setAll(CategoryIndented.ALL);
-                    categoryComboBox.getSelectionModel().selectIndex(0);
+                    categoryComboBox.getSelectionModel().select(0);
 
                     Task.supplyAsync(() -> getSkinnable().repository.getCategories())
                             .thenAcceptAsync(Schedulers.javafx(), categories -> {
@@ -358,18 +360,18 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
                                     resolveCategory(category, 0, result);
                                 }
                                 categoryComboBox.getItems().setAll(result);
-                                categoryComboBox.getSelectionModel().selectIndex(0);
+                                categoryComboBox.getSelectionModel().select(0);
                             }).start();
                 });
 
                 StackPane sortStackPane = new StackPane();
-                MFXComboBox<RemoteModRepository.SortType> sortComboBox = new MFXComboBox<>();
+                JFXComboBox<RemoteModRepository.SortType> sortComboBox = new JFXComboBox<>();
                 sortStackPane.getChildren().setAll(sortComboBox);
                 sortComboBox.prefWidthProperty().bind(sortStackPane.widthProperty());
                 sortComboBox.getStyleClass().add("fit-width");
                 sortComboBox.setConverter(stringConverter(sortType -> i18n("curse.sort." + sortType.name().toLowerCase(Locale.ROOT))));
                 sortComboBox.getItems().setAll(RemoteModRepository.SortType.values());
-                sortComboBox.getSelectionModel().selectIndex(0);
+                sortComboBox.getSelectionModel().select(0);
                 searchPane.addRow(rowIndex++, new Label(i18n("mods.category")), categoryStackPane, new Label(i18n("search.sort")), sortStackPane);
 
                 IntegerProperty filterID = new SimpleIntegerProperty(this, "Filter ID", 0);
@@ -395,10 +397,10 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
                         () -> filterID.set(filterID.get() + 1),
 
                         control.downloadSource,
-                        gameVersionField.valueProperty(),
-                        categoryComboBox.valueProperty(),
+                        gameVersionField.getSelectionModel().selectedItemProperty(),
+                        categoryComboBox.getSelectionModel().selectedItemProperty(),
                         nameField.textProperty(),
-                        sortComboBox.valueProperty()
+                        sortComboBox.getSelectionModel().selectedItemProperty()
                 ));
 
                 HBox actionsBox = new HBox(8);
@@ -409,14 +411,14 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
 
                     Holder<Runnable> changeButton = new Holder<>();
 
-                    MFXButton firstPageButton = FXUtils.newBorderButton(i18n("search.first_page"));
+                    JFXButton firstPageButton = FXUtils.newBorderButton(i18n("search.first_page"));
                     firstPageButton.setOnAction(event -> {
                         control.pageOffset.set(0);
                         searchAction.handle(event);
                         changeButton.value.run();
                     });
 
-                    MFXButton previousPageButton = FXUtils.newBorderButton(i18n("search.previous_page"));
+                    JFXButton previousPageButton = FXUtils.newBorderButton(i18n("search.previous_page"));
                     previousPageButton.setOnAction(event -> {
                         int pageOffset = control.pageOffset.get();
                         if (pageOffset > 0) {
@@ -432,7 +434,7 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
                         return i18n("search.page_n", control.pageOffset.get() + 1, pageCount == -1 ? "-" : String.valueOf(pageCount));
                     }, control.pageOffset, control.pageCount));
 
-                    MFXButton nextPageButton = FXUtils.newBorderButton(i18n("search.next_page"));
+                    JFXButton nextPageButton = FXUtils.newBorderButton(i18n("search.next_page"));
                     nextPageButton.setOnAction(event -> {
                         int nv = control.pageOffset.get() + 1;
                         if (nv < control.pageCount.get()) {
@@ -442,7 +444,7 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
                         }
                     });
 
-                    MFXButton lastPageButton = FXUtils.newBorderButton(i18n("search.last_page"));
+                    JFXButton lastPageButton = FXUtils.newBorderButton(i18n("search.last_page"));
                     lastPageButton.setOnAction(event -> {
                         control.pageOffset.set(control.pageCount.get() - 1);
                         searchAction.handle(event);
@@ -490,7 +492,7 @@ public class DownloadListPage extends Control implements DecoratorPage, VersionP
                     Pane placeholder = new Pane();
                     HBox.setHgrow(placeholder, Priority.SOMETIMES);
 
-                    MFXButton searchButton = FXUtils.newRaisedButton(i18n("search"));
+                    JFXButton searchButton = FXUtils.newRaisedButton(i18n("search"));
                     searchButton.setOnAction(searchAction);
 
                     actions.appendList(FXCollections.observableArrayList(firstPageButton, previousPageButton, pageDescription, nextPageButton, lastPageButton, placeholder, searchButton));

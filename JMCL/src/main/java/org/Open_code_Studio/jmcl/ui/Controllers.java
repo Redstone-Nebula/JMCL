@@ -17,7 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
-import io.github.palexdev.materialfx.controls.MFXButton;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.validation.base.ValidatorBase;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -33,7 +35,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -443,22 +444,21 @@ public final class Controllers {
         }
 
         if (globalConfig().getAgreementVersion() < 1) {
-            VBox agreementPane = new VBox(12);
-            agreementPane.setMaxWidth(400);
-            agreementPane.getChildren().add(new Label(i18n("launcher.agreement")));
-            agreementPane.getChildren().add(new Label(i18n("launcher.agreement.hint")));
+            JFXDialogLayout agreementPane = new JFXDialogLayout();
+            agreementPane.setHeading(new Label(i18n("launcher.agreement")));
+            agreementPane.setBody(new Label(i18n("launcher.agreement.hint")));
             JFXHyperlink agreementLink = new JFXHyperlink(i18n("launcher.agreement"));
             agreementLink.setExternalLink(Metadata.EULA_URL);
-            MFXButton yesButton = new MFXButton(i18n("launcher.agreement.accept"));
+            JFXButton yesButton = new JFXButton(i18n("launcher.agreement.accept"));
             yesButton.getStyleClass().add("dialog-accept");
             yesButton.setOnAction(e -> {
                 globalConfig().setAgreementVersion(1);
                 agreementPane.fireEvent(new DialogCloseEvent());
             });
-            MFXButton noButton = new MFXButton(i18n("launcher.agreement.decline"));
+            JFXButton noButton = new JFXButton(i18n("launcher.agreement.decline"));
             noButton.getStyleClass().add("dialog-cancel");
             noButton.setOnAction(e -> javafx.application.Platform.exit());
-            agreementPane.getChildren().addAll(agreementLink, yesButton, noButton);
+            agreementPane.setActions(agreementLink, yesButton, noButton);
             Controllers.dialog(agreementPane);
         }
 
@@ -552,7 +552,7 @@ public final class Controllers {
         if (seconds <= 0)
             throw new IllegalArgumentException("Seconds must be greater than 0");
 
-        MFXButton btnOk = new MFXButton(i18n("button.ok"));
+        JFXButton btnOk = new JFXButton(i18n("button.ok"));
         btnOk.getStyleClass().add(messageType == MessageType.WARNING || messageType == MessageType.ERROR
                 ? "dialog-error"
                 : "dialog-accept");
@@ -583,8 +583,8 @@ public final class Controllers {
         return prompt(title, onResult, "");
     }
 
-    public static CompletableFuture<String> prompt(String title, FutureCallback<String> onResult, String initialValue) {
-        InputDialogPane pane = new InputDialogPane(title, initialValue, onResult);
+    public static CompletableFuture<String> prompt(String title, FutureCallback<String> onResult, String initialValue, ValidatorBase... validators) {
+        InputDialogPane pane = new InputDialogPane(title, initialValue, onResult, validators);
         dialog(pane);
         return pane.getCompletableFuture();
     }

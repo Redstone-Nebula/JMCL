@@ -17,9 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.wizard;
 
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextArea;
 import javafx.scene.Node;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 
 /**
  * @author Open Code Studio
@@ -29,7 +29,7 @@ public final class Summary {
     private final Object result;
 
     public Summary(String[] items, Object result) {
-        ListView<String> view = new ListView<>();
+        JFXListView<String> view = new JFXListView<>();
         view.getItems().addAll(items);
 
         this.component = view;
@@ -37,7 +37,7 @@ public final class Summary {
     }
 
     public Summary(String text, Object result) {
-        TextArea area = new TextArea(text);
+        JFXTextArea area = new JFXTextArea(text);
         area.setEditable(false);
 
         this.component = area;

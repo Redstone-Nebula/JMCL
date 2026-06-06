@@ -17,13 +17,13 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import javafx.stage.Popup;
+import com.jfoenix.controls.JFXPopup;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.ui.SVG;
 
 public final class IconedMenuItem extends IconedItem {
 
-    public IconedMenuItem(SVG icon, String text, Runnable action, Popup popup) {
+    public IconedMenuItem(SVG icon, String text, Runnable action, JFXPopup popup) {
         super(icon != null ? icon.createIcon(14) : null, text);
 
         getStyleClass().setAll("iconed-menu-item");
