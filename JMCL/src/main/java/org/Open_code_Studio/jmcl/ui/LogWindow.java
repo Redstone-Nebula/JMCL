@@ -183,7 +183,7 @@ public final class LogWindow extends Stage {
 
             cboLines.getItems().setAll(500, 2000, 5000, 10000);
             cboLines.setValue(Log.getLogLines());
-            ((SingleSelectionModel<Integer>) cboLines.getSelectionModel()).selectedItemProperty().addListener((a, b, newValue) -> config().setLogLines(newValue));
+            cboLines.valueProperty().addListener((a, b, newValue) -> config().setLogLines(newValue));
 
             for (int i = 0; i < LEVELS.length; ++i) {
                 buttonText[i].bind(Bindings.concat(levelCountMap.get(LEVELS[i]), " " + LEVELS[i].name().toLowerCase(Locale.ROOT) + "s"));

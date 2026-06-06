@@ -177,7 +177,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                         LOG.warning("Failed to create directory: " + targetDir, e);
                         handler.reject(i18n("schematics.create_directory.failed", targetDir));
                     }
-                }, "", new RequiredValidator(), new Validator(i18n("schematics.create_directory.failed.invalid_name"), FileUtils::isNameValid));
+                }, "");
     }
 
     private DirItem loadAll(Path dir, @Nullable DirItem parent) {

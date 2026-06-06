@@ -149,9 +149,7 @@ public final class Versions {
             } else {
                 handler.reject(i18n("version.manage.rename.fail"));
             }
-        }, version,
-            new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId),
-            new Validator(i18n("install.new_game.already_exists"), newVersionName -> !profile.getRepository().versionIdConflicts(newVersionName) || newVersionName.equals(version)));
+        }, version);
     }
 
     public static void exportVersion(Profile profile, String version) {
@@ -196,7 +194,7 @@ public final class Versions {
                                             DownloadProviders.localizeErrorMessage(exception), i18n("install.failed"), MessageDialogPane.MessageType.ERROR);
                                 }
                             }), i18n("install.new_game"), TaskCancellationAction.NORMAL);
-        }, FileUtils.getNameWithoutExtension(file), new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId), new Validator(i18n("install.new_game.already_exists"), newVersionName -> !profile.getRepository().versionIdConflicts(newVersionName)));
+        }, FileUtils.getNameWithoutExtension(file));
     }
 
     public static void duplicateVersion(Profile profile, String version) {

@@ -21,6 +21,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import io.github.palexdev.materialfx.controls.MFXPasswordField;
 import io.github.palexdev.materialfx.controls.MFXTextField;
+import io.github.palexdev.virtualizedfx.cells.base.VFXCell;
 import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -376,7 +377,18 @@ public class CreateAccountPane extends VBox implements DialogAware {
                 add(lblServers, 0, rowIndex);
 
                 cboServers = new MFXComboBox<>();
-                cboServers.setCellFactory((Callback<ListView<AuthlibInjectorServer>, ListCell<AuthlibInjectorServer>>) jfxListCellFactory(server -> new TwoLineListItem(server.getName(), server.getUrl())));
+                cboServers.setCellFactory(server -> new VFXCell<AuthlibInjectorServer>() {
+                    @Override
+                    public Node toNode() {
+                        return new TwoLineListItem(server.getName(), server.getUrl());
+                    }
+
+                    @Override
+                    public void updateItem(AuthlibInjectorServer newItem) {}
+
+                    @Override
+                    public void updateIndex(int index) {}
+                });
                 cboServers.setConverter(stringConverter(AuthlibInjectorServer::getName));
                 bindContent(cboServers.getItems(), config().getAuthlibInjectorServers());
                 cboServers.getItems().addListener(onInvalidating(

@@ -22,6 +22,9 @@ import io.github.palexdev.materialfx.controls.MFXCheckbox;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -167,7 +170,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
                                     else
                                         handler.reject(i18n("world.add.failed", e.getClass().getName() + ": " + e.getLocalizedMessage()));
                                 }).start();
-                    }, world.getWorldName(), new Validator(i18n("install.new_game.malformed"), FileUtils::isNameValid));
+                    }, world.getWorldName());
                 }, e -> {
                     LOG.warning("Unable to parse world file " + zipFile, e);
                     Controllers.dialog(i18n("world.add.invalid"));

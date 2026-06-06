@@ -512,7 +512,12 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
             }
         });
         FXUtils.setValidateWhileTextChanged(mfxTextField, true);
-        mfxTextField.setValidators(new DoubleValidator(true));
+        mfxTextField.getValidator().constraint(Constraint.of(
+                "Must be a valid decimal number",
+                Bindings.createBooleanBinding(
+                        () -> mfxTextField.getText().isEmpty() || mfxTextField.getText().matches("-?\\d+\\.?\\d*"),
+                        mfxTextField.textProperty())
+        ));
     }
 
     private void saveWorldData() {
