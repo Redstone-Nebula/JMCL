@@ -17,9 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXProgressBar;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.application.Platform;
 import javafx.beans.WeakListener;
 import javafx.beans.binding.Bindings;
@@ -31,6 +30,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -91,7 +91,7 @@ public final class TaskListPane extends StackPane {
     private static final Insets STAGED_PROGRESS_NODE_PADDING = new Insets(0, 0, 4, 26);
 
     private TaskExecutor executor;
-    private final JFXListView<Node> listView = new JFXListView<>();
+    private final ListView<Node> listView = new ListView<>();
     private final Map<Task<?>, ProgressListNode> nodes = new HashMap<>();
     private final Map<String, StageNode> stageNodes = new HashMap<>();
     private final ObjectProperty<Insets> progressNodePadding = new SimpleObjectProperty<>(Insets.EMPTY);
@@ -106,7 +106,7 @@ public final class TaskListPane extends StackPane {
             cellWidth.set(w <= 12.0 ? w : w - 12.0);
         });
 
-        JFXButton viewLogButton = new JFXButton(i18n("log.viewer.view_logs"));
+        Button viewLogButton = new Button(i18n("log.viewer.view_logs"));
         viewLogButton.getStyleClass().add("jfx-button-border");
         viewLogButton.setMaxWidth(Double.MAX_VALUE);
         viewLogButton.visibleProperty().bind(ConfigHolder.globalConfig().showInstallationLogProperty());
@@ -308,12 +308,13 @@ public final class TaskListPane extends StackPane {
         private final StackPane left = new StackPane();
         private final Label title = new Label();
         private final Label message = new Label();
-        private final JFXProgressBar bar = new JFXProgressBar();
+        private final ProgressBar bar = new ProgressBar();
 
         private WeakReference<StageNode> prevStageNodeRef;
         private StatusChangeListener statusChangeListener;
 
         private Cell() {
+            bar.getStyleClass().add("md3-linear-progress");
             setPadding(new Insets(0, 0, 4, 0));
 
             prefWidthProperty().bind(cellWidth);

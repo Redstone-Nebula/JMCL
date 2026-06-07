@@ -216,6 +216,7 @@ val addOpens = listOf(
     "javafx.graphics/javafx.stage",
     "javafx.graphics/javafx.scene",
     "javafx.graphics/com.sun.glass.ui",
+    "javafx.graphics/com.sun.javafx.scene",
     "javafx.graphics/com.sun.javafx.stage",
     "javafx.graphics/com.sun.javafx.util",
     "javafx.graphics/com.sun.prism",
@@ -358,7 +359,16 @@ val makeExecutables by tasks.registering {
                 }
 
                 output.outputStream().use { outputStream ->
-                    zipFile.getInputStream(entry).use { it.copyTo(outputStream) }
+                    val launcherBytes = zipFile.getInputStream(entry).readBytes()
+                    
+                    // Patch old HMCL metadata → JMCL in the EXE launcher
+                    val patchedBytes = if (extension == "exe") {
+                        patchExeMetadata(launcherBytes)
+                    } else {
+                        launcherBytes
+                    }
+                    
+                    outputStream.write(patchedBytes)
                     outputStream.write(jarContent)
                 }
 
@@ -366,6 +376,47 @@ val makeExecutables by tasks.registering {
             }
         }
     }
+}
+
+/// Patch UTF-16LE encoded "HMCL" strings to "JMCL" in the EXE VERSIONINFO metadata.
+/// This is a same-length byte replacement so it does not break the PE structure.
+private fun patchExeMetadata(data: ByteArray): ByteArray {
+    val result = data.copyOf()
+    // UTF-16LE byte sequences
+    val hmcl = byteArrayOf(0x48, 0x00, 0x4D, 0x00, 0x43, 0x00, 0x4C, 0x00) // H M C L
+    val jmcl = byteArrayOf(0x4A, 0x00, 0x4D, 0x00, 0x43, 0x00, 0x4C, 0x00) // J M C L
+    val launcherOld = byteArrayOf(
+        0x48, 0x00, 0x4D, 0x00, 0x43, 0x00, 0x4C, 0x00, // H M C L
+        0x61, 0x00, 0x75, 0x00, 0x6E, 0x00, 0x63, 0x00, 0x68, 0x00, 0x65, 0x00, 0x72, 0x00 // a u n c h e r
+    )
+    val launcherNew = byteArrayOf(
+        0x4A, 0x00, 0x4D, 0x00, 0x43, 0x00, 0x4C, 0x00, // J M C L
+        0x61, 0x00, 0x75, 0x00, 0x6E, 0x00, 0x63, 0x00, 0x68, 0x00, 0x65, 0x00, 0x72, 0x00 // a u n c h e r
+    )
+
+    var i = 0
+    while (i <= result.size - minOf(hmcl.size, launcherOld.size)) {
+        when {
+            result.matchesAt(i, launcherOld) -> {
+                launcherNew.forEachIndexed { j, b -> result[i + j] = b }
+                i += launcherOld.size
+            }
+            result.matchesAt(i, hmcl) -> {
+                jmcl.forEachIndexed { j, b -> result[i + j] = b }
+                i += hmcl.size
+            }
+            else -> i++
+        }
+    }
+    return result
+}
+
+private fun ByteArray.matchesAt(offset: Int, pattern: ByteArray): Boolean {
+    if (offset + pattern.size > size) return false
+    for (i in pattern.indices) {
+        if (this[offset + i] != pattern[i]) return false
+    }
+    return true
 }
 
 val makeDeb by tasks.registering(CreateDeb::class) {

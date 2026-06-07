@@ -505,47 +505,23 @@
 }
 
 /* =============================================================================
- * MD3 Main Page — Launch Button
+ * MD3 Main Page — Launch Button (MD3 Elevated + Icon)
  * ============================================================================= */
 .launch-pane {
     -fx-max-height: 72px;
     -fx-min-height: 72px;
-    -fx-max-width: 280px;
+    -fx-max-width: 300px;
     -fx-min-width: 280px;
-}
-
-.launch-pane > .jfx-button {
-    -fx-translate-y: 1px;
-    -fx-max-height: 70px;
-    -fx-min-height: 70px;
-    -fx-background-color: -monet-primary-container;
-    -fx-opacity: 1;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 8, 0.0, 0, 2);
+    -fx-spacing: 8px;
+    -fx-alignment: center-right;
 }
 
 .launch-pane > .jfx-button.launch-button {
     -fx-max-width: 250px;
-    -fx-min-width: 250px;
-    -fx-border-width: 0 3px 0 0;
-    -fx-border-color: -monet-outline-variant;
-    -fx-background-radius: 32px 0 0 32px;
+    -fx-min-width: 200px;
 }
 
-.launch-pane > .jfx-button.menu-button {
-    -fx-max-width: 24px;
-    -fx-min-width: 24px;
-    -fx-font-size: 15px;
-    -fx-background-radius: 0 28px 28px 0;
-}
-
-.launch-pane > .jfx-button > StackPane > .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-primary-container;
-    -jfx-mask-type: CIRCLE;
-    -fx-padding: 0;
-}
-
-.launch-pane > .jfx-button, .jfx-button * {
+.launch-pane > .jfx-button.launch-button, .launch-pane > .jfx-button.launch-button * {
     -fx-text-fill: -monet-on-primary-container;
     -fx-font-size: 16px;
     -fx-font-weight: 600;
@@ -646,7 +622,7 @@
     -fx-spacing: 8px;
 }
 
-/* MD3 dialog buttons — text style */
+/* MD3 dialog buttons — text style, pill-shaped */
 .dialog-error {
     -fx-text-fill: -monet-error;
     -fx-font-weight: 600;
@@ -656,15 +632,29 @@
 .dialog-accept {
     -fx-text-fill: -monet-on-primary;
     -fx-font-weight: 600;
-    -fx-padding: 0.7em 1.0em;
+    -fx-padding: 0.7em 1.5em;
     -fx-background-color: -monet-primary;
-    -fx-background-radius: 24px;
+    -fx-background-radius: 999px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.10), 4, 0.0, 0, 1);
+}
+
+.dialog-accept:pressed {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.16), 8, 0.0, 0, 3);
+    -fx-background-color: -monet-primary;
+    -fx-opacity: 0.92;
 }
 
 .dialog-cancel {
     -fx-text-fill: -monet-on-surface-variant;
     -fx-font-weight: 600;
     -fx-padding: 0.7em 1.0em;
+    -fx-background-radius: 999px;
+    -fx-cursor: hand;
+}
+
+.dialog-cancel:pressed {
+    -fx-background-color: -monet-secondary-container-transparent-50;
 }
 
 .task-executor-dialog-layout {
@@ -828,14 +818,11 @@
 
 .jfx-tool-bar-button {
     -fx-text-fill: -monet-on-surface;
-    -fx-toggle-icon4-size: 37px;
-    -fx-pref-height: -fx-toggle-icon4-size;
-    -fx-max-height: -fx-toggle-icon4-size;
-    -fx-min-height: -fx-toggle-icon4-size;
-    -fx-background-radius: 10px;
+    -fx-background-radius: 999px;
     -fx-background-color: transparent;
-    -jfx-toggle-color: -monet-on-surface;
-    -jfx-untoggle-color: transparent;
+    -fx-padding: 8 12 8 12;
+    -fx-cursor: hand;
+    -fx-effect: none;
 }
 
 .jfx-tool-bar-button .icon {
@@ -843,11 +830,20 @@
     -fx-padding: 10.0;
 }
 
+.jfx-tool-bar-button:pressed {
+    -fx-background-color: -monet-secondary-container;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0.0, 0, 2);
+}
+
 .jfx-decorator-button {
     -fx-max-width: 48px;
-    -fx-background-radius: 10px;
+    -fx-background-radius: 999px;
     -fx-max-height: 48px;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
     -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-effect: none;
 }
 
 .jfx-decorator-button .icon {
@@ -858,6 +854,11 @@
 .jfx-decorator-button .jfx-rippler {
     -jfx-mask-type: CIRCLE;
     -fx-padding: 0.0;
+}
+
+.jfx-decorator-button:pressed {
+    -fx-background-color: -monet-secondary-container;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0.0, 0, 2);
 }
 
 /* =============================================================================
@@ -916,31 +917,18 @@
 }
 
 /* =============================================================================
- * MD3 Buttons — pill-shaped, elevated/layered
+ * MD3 Buttons — pill-shaped (999px), elevated/layered, icon-only styles
  * ============================================================================= */
 .jfx-button {
-    -jfx-disable-visual-focus: true;
     -fx-cursor: hand;
 }
 
-.jfx-button .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-surface;
-    -jfx-mask-type: CIRCLE;
-    -fx-padding: 0.0;
-}
-
-/* MD3 Filled / Elevated Button */
+/* ── MD3 Filled / Elevated Button ───────────────────────────────────── */
 .jfx-button-raised {
     -fx-background-color: -monet-primary;
-    -fx-background-radius: 100px;
+    -fx-background-radius: 999px;
     -fx-padding: 10 24 10 24;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0.0, 0, 2);
-}
-
-.jfx-button-raised .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-primary;
-    -jfx-mask-type: CIRCLE;
-    -fx-padding: 0.0;
 }
 
 .jfx-button-raised, .jfx-button-raised * {
@@ -949,11 +937,17 @@
     -fx-font-weight: 500;
 }
 
-/* MD3 Outlined Button */
+.jfx-button-raised:pressed {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 10, 0.0, 0, 4);
+    -fx-background-color: -monet-primary;
+    -fx-opacity: 0.92;
+}
+
+/* ── MD3 Outlined Button ─────────────────────────────────────────────── */
 .jfx-button-border {
     -fx-background-color: transparent;
     -fx-border-color: -monet-outline;
-    -fx-border-radius: 100px;
+    -fx-border-radius: 999px;
     -fx-border-width: 1px;
     -fx-padding: 10 24 10 24;
 }
@@ -963,10 +957,15 @@
     -fx-font-weight: 500;
 }
 
-/* MD3 Filled Tonal Button (rounded container) */
+.jfx-button-border:pressed {
+    -fx-background-color: -monet-primary-container;
+    -fx-border-color: -monet-primary;
+}
+
+/* ── MD3 Filled Tonal Button ─────────────────────────────────────────── */
 .jfx-button-raised-round {
     -fx-background-color: -monet-primary-container;
-    -fx-background-radius: 100px;
+    -fx-background-radius: 999px;
     -fx-padding: 10 24 10 24;
 }
 
@@ -974,43 +973,161 @@
     -fx-font-weight: 500;
 }
 
+.jfx-button-raised-round:pressed {
+    -fx-background-color: -monet-secondary-container;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.14), 8, 0.0, 0, 3);
+}
+
+/* ── MD3 Icon Button (small, oval, elevated shadow on press) ─────────── */
+.md3-icon-button {
+    -fx-min-width: 40px;
+    -fx-max-width: 40px;
+    -fx-pref-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 999px;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-effect: none;
+}
+
+.md3-icon-button .jfx-rippler {
+    -jfx-rippler-fill: -monet-on-surface-variant;
+    -jfx-mask-type: CIRCLE;
+}
+
+.md3-icon-button:hover {
+    -fx-background-color: -monet-secondary-container-transparent-50;
+}
+
+.md3-icon-button:pressed {
+    -fx-background-color: -monet-secondary-container;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0.0, 0, 2);
+}
+
+.md3-icon-button .svg {
+    -fx-fill: -monet-on-surface-variant;
+}
+
+/* ── MD3 Small Icon Button (28px — for compact toolbars) ─────────────── */
+.md3-icon-button-small {
+    -fx-min-width: 28px;
+    -fx-max-width: 28px;
+    -fx-pref-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-height: 28px;
+    -fx-pref-height: 28px;
+    -fx-background-radius: 999px;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-effect: none;
+}
+
+.md3-icon-button-small:hover {
+    -fx-background-color: -monet-secondary-container-transparent-50;
+}
+
+.md3-icon-button-small:pressed {
+    -fx-background-color: -monet-secondary-container;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0.0, 0, 2);
+}
+
+.md3-icon-button-small .svg {
+    -fx-fill: -monet-on-surface-variant;
+}
+
+/* ── MD3 Text Button (no background, just text/icon) ─────────────────── */
+.md3-text-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -monet-primary;
+    -fx-background-radius: 999px;
+    -fx-padding: 8 16 8 16;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-cursor: hand;
+}
+
+.md3-text-button:pressed {
+    -fx-background-color: -monet-primary-container-transparent-50;
+}
+
+/* ── MD3 Elevated Button (tonal + shadow, press lifts more) ──────────── */
+.md3-elevated-button {
+    -fx-background-color: -monet-primary-container;
+    -fx-text-fill: -monet-on-primary-container;
+    -fx-background-radius: 999px;
+    -fx-padding: 12 28 12 28;
+    -fx-font-size: 15px;
+    -fx-font-weight: 500;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.10), 4, 0.0, 0, 2);
+}
+
+.md3-elevated-button:pressed {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 10, 0.0, 0, 5);
+    -fx-background-color: -monet-secondary-container;
+}
+
 .menu-up-down-button .label {
     -fx-text-fill: -monet-on-surface;
 }
 
 /* =============================================================================
- * MD3 Checkbox
+ * MD3 Checkbox — standard javafx CheckBox
  * ============================================================================= */
-.jfx-check-box {
+.check-box {
     -fx-font-weight: 500;
     -fx-text-fill: -monet-on-surface;
     -fx-font-size: 14px;
-    -jfx-checked-color: -monet-primary;
-    -jfx-unchecked-color: transparent;
+    -fx-cursor: hand;
 }
 
-.table-view .jfx-check-box .jfx-rippler {
-    -jfx-rippler-disabled: true;
-}
-
-/* =============================================================================
- * MD3 Progress Bar
- * ============================================================================= */
-.jfx-progress-bar > .track {
-    -fx-background-color: -monet-secondary-container;
+.check-box .box {
     -fx-background-radius: 4px;
+    -fx-background-color: transparent;
+    -fx-border-color: -monet-outline;
+    -fx-border-radius: 4px;
+    -fx-border-width: 2px;
+    -fx-min-width: 18px;
+    -fx-max-width: 18px;
+    -fx-min-height: 18px;
+    -fx-max-height: 18px;
+    -fx-padding: 0;
 }
 
-.jfx-progress-bar > .bar {
+.check-box:selected .box {
     -fx-background-color: -monet-primary;
-    -fx-background-radius: 4px;
-    -fx-padding: 3px;
+    -fx-border-color: -monet-primary;
+}
+
+.check-box .mark {
+    -fx-background-color: -monet-on-primary;
+    -fx-shape: "M10 14.5L5.5 10l1.41-1.41L10 11.67l5.59-5.58L17 7.5z";
+    -fx-min-width: 18px;
+    -fx-max-width: 18px;
+    -fx-min-height: 18px;
+    -fx-max-height: 18px;
+    -fx-scale-x: 0.75;
+    -fx-scale-y: 0.75;
+}
+
+.check-box:indeterminate .box {
+    -fx-background-color: -monet-primary;
+    -fx-border-color: -monet-primary;
+}
+
+.check-box:indeterminate .mark {
+    -fx-background-color: -monet-on-primary;
+    -fx-shape: "M5 11h14v2H5z";
 }
 
 /* =============================================================================
- * MD3 Text Field — Outlined style
+ * MD3 Text Field — Outlined style (std javafx)
  * ============================================================================= */
-.jfx-text-field, .jfx-password-field, .jfx-text-area {
+.text-field, .password-field, .text-area {
     -fx-background-color: -monet-surface-container-highest;
     -fx-highlight-fill: -monet-primary;
     -fx-text-fill: -monet-on-surface;
@@ -1019,13 +1136,144 @@
     -fx-prompt-text-fill: -monet-on-surface-variant;
     -fx-alignment: top-left;
     -fx-max-width: 1000000000;
-    -jfx-focus-color: -monet-primary;
     -fx-padding: 12;
-    -jfx-unfocus-color: transparent;
-    -fx-background-radius: 8;
+    -fx-background-radius: 8px;
+    -fx-border-color: -monet-outline;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-focus-color: -monet-primary;
 }
 
-.jfx-text-field .context-menu {
+.text-field:focused, .password-field:focused, .text-area:focused {
+    -fx-border-color: -monet-primary;
+    -fx-border-width: 2px;
+}
+
+/* =============================================================================
+ * MD3 ComboBox — standard javafx
+ * ============================================================================= */
+.combo-box {
+    -fx-background-color: -monet-surface-container-highest;
+    -fx-background-radius: 8px;
+    -fx-border-color: -monet-outline;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 4 8 4 8;
+    -fx-font-size: 14px;
+    -fx-text-fill: -monet-on-surface;
+    -fx-cursor: hand;
+}
+
+.combo-box:focused {
+    -fx-border-color: -monet-primary;
+    -fx-border-width: 2px;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -monet-on-surface;
+    -fx-padding: 4 8;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow {
+    -fx-background-color: -monet-on-surface-variant;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: -monet-surface-container;
+    -fx-background-radius: 8px;
+    -fx-border-color: -monet-outline-variant;
+    -fx-border-radius: 8px;
+    -fx-border-width: 0.5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0.0, 0, 4);
+}
+
+.combo-box-popup .list-cell {
+    -fx-padding: 8 12;
+    -fx-background-color: transparent;
+    -fx-text-fill: -monet-on-surface;
+}
+
+.combo-box-popup .list-cell:hover,
+.combo-box-popup .list-cell:focused {
+    -fx-background-color: -monet-secondary-container;
+}
+
+/* =============================================================================
+ * MD3 ListView — standard javafx
+ * ============================================================================= */
+.list-view {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12px;
+    -fx-padding: 4;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -monet-on-surface;
+    -fx-padding: 10 16;
+    -fx-background-radius: 8px;
+    -fx-font-size: 14px;
+}
+
+.list-view .list-cell:filled:selected,
+.list-view .list-cell:filled:hover {
+    -fx-background-color: -monet-secondary-container;
+}
+
+.list-view .list-cell:odd {
+    -fx-background-color: transparent;
+}
+
+.list-view > .virtual-flow > .scroll-bar {
+    -fx-skin: "org.Open_code_Studio.jmcl.ui.construct.FloatScrollBarSkin";
+}
+
+.list-view > .virtual-flow > .scroll-bar .track {
+    -fx-fill: transparent;
+}
+
+/* ── MD3 Floating Label ListView variant ────────────────────────────── */
+.jfx-list-view-float {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* =============================================================================
+ * MD3 Hyperlink — standard javafx
+ * ============================================================================= */
+.hyperlink {
+    -fx-text-fill: -monet-primary;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+    -fx-border-color: transparent;
+    -fx-underline: false;
+    -fx-cursor: hand;
+    -fx-padding: 4 8;
+}
+
+.hyperlink:visited {
+    -fx-text-fill: -monet-tertiary;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: -monet-primary-container;
+    -fx-underline: true;
+}
+
+.hyperlink:focused {
+    -fx-background-color: -monet-secondary-container-transparent-50;
+    -fx-background-radius: 4px;
+}
+
+/* =============================================================================
+ * MD3 Context Menu inside text inputs
+ * ============================================================================= */
+.context-menu {
     -fx-background-color: -monet-surface-container;
     -fx-text-fill: -monet-on-surface;
 }
@@ -1501,20 +1749,24 @@
 }
 
 /* =============================================================================
- * MD3 Icon Toggle Buttons — circular
+ * MD3 Icon Toggle Buttons — oval (999px radius), elevated shadow on press
  * ============================================================================= */
 .toggle-icon4 {
-    -fx-toggle-icon4-size: 36px;
+    -fx-toggle-icon4-size: 40px;
     -fx-pref-width: -fx-toggle-icon4-size;
     -fx-max-width: -fx-toggle-icon4-size;
     -fx-min-width: -fx-toggle-icon4-size;
     -fx-pref-height: -fx-toggle-icon4-size;
     -fx-max-height: -fx-toggle-icon4-size;
     -fx-min-height: -fx-toggle-icon4-size;
-    -fx-background-radius: 50px;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-radius: 999px;
     -fx-background-color: transparent;
     -jfx-toggle-color: -monet-primary;
     -jfx-untoggle-color: transparent;
+    -fx-effect: none;
+    -fx-cursor: hand;
 }
 
 .toggle-icon4 .icon {
@@ -1527,18 +1779,31 @@
     -jfx-mask-type: CIRCLE;
 }
 
+.toggle-icon4:selected {
+    -fx-background-color: -monet-secondary-container;
+}
+
+.toggle-icon4:pressed {
+    -fx-background-color: -monet-secondary-container;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0.0, 0, 2);
+}
+
 .toggle-icon-tiny {
-    -fx-toggle-icon-tiny-size: 15px;
+    -fx-toggle-icon-tiny-size: 28px;
     -fx-pref-width: -fx-toggle-icon-tiny-size;
     -fx-max-width: -fx-toggle-icon-tiny-size;
     -fx-min-width: -fx-toggle-icon-tiny-size;
     -fx-pref-height: -fx-toggle-icon-tiny-size;
     -fx-max-height: -fx-toggle-icon-tiny-size;
     -fx-min-height: -fx-toggle-icon-tiny-size;
-    -fx-background-radius: 25px;
+    -fx-min-width: 28px;
+    -fx-min-height: 28px;
+    -fx-background-radius: 999px;
     -fx-background-color: transparent;
     -jfx-toggle-color: -monet-primary;
     -jfx-untoggle-color: transparent;
+    -fx-effect: none;
+    -fx-cursor: hand;
 }
 
 .toggle-icon-tiny .icon {
@@ -1549,6 +1814,11 @@
 .toggle-icon-tiny .jfx-rippler {
     -jfx-rippler-fill: -monet-primary;
     -jfx-mask-type: CIRCLE;
+}
+
+.toggle-icon-tiny:pressed {
+    -fx-background-color: -monet-secondary-container;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0.0, 0, 2);
 }
 
 .announcement-close-button {
@@ -2000,6 +2270,67 @@
 }
 
 /* =============================================================================
+ * MD3 Line Component — Card-like list item with rounded corners
+ * ============================================================================= */
+.line-component {
+    -fx-background-color: -monet-surface;
+    -fx-background-radius: 12px;
+    -fx-border-color: -monet-outline-variant;
+    -fx-border-width: 0.5px;
+    -fx-border-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 4, 0.0, 0, 1);
+    -fx-padding: 0 0 4px 0;
+    -fx-cursor: hand;
+    -fx-transition: all 0.15s ease-in-out;
+}
+
+.line-component:pressed {
+    -fx-background-color: -monet-secondary-container-transparent-50;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0.0, 0, 2);
+}
+
+.line-component .title-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: 500;
+    -fx-text-fill: -monet-on-surface;
+}
+
+.line-component .subtitle-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: 400;
+    -fx-text-fill: -monet-on-surface-variant;
+}
+
+/* =============================================================================
+ * MD3 Crash Window — clean error surface
+ * ============================================================================= */
+.crash-window {
+    -fx-background-color: -monet-surface-container-high;
+    -fx-background-radius: 12px;
+    -fx-padding: 4px;
+}
+
+.crash-window .crash-header {
+    -fx-padding: 8px 16px;
+    -fx-background-color: -monet-error-container;
+    -fx-background-radius: 8px;
+    -fx-text-fill: -monet-on-error-container;
+    -fx-font-weight: 600;
+    -fx-font-size: 14px;
+}
+
+.crash-window .crash-text-area {
+    -fx-background-color: -monet-surface-container;
+    -fx-background-radius: 8px;
+    -fx-border-color: -monet-outline-variant;
+    -fx-border-radius: 8px;
+    -fx-border-width: 0.5px;
+    -fx-font-family: "SF Mono", "Menlo", monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: -monet-on-surface;
+}
+
+/* =============================================================================
  * Scroll Pane — transparent, clean
  * ============================================================================= */
 .scroll-pane {
@@ -2325,22 +2656,19 @@
 
 /* =============================================================================
  * MD3 Linear Progress — determinate & indeterminate
+ * Applied via .getStyleClass().add("md3-linear-progress") on a ProgressBar
  * ============================================================================= */
-.md3-linear-progress {
-    -fx-min-height: 4px;
-    -fx-max-height: 4px;
+.progress-bar.md3-linear-progress > .track {
     -fx-background-color: -monet-secondary-container;
-    -fx-background-radius: 2px;
+    -fx-background-radius: 4px;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
 }
 
-.md3-linear-progress .bar {
+.progress-bar.md3-linear-progress > .bar {
     -fx-background-color: -monet-primary;
-    -fx-background-radius: 2px;
-}
-
-.md3-linear-progress .track {
-    -fx-background-color: -monet-secondary-container;
-    -fx-background-radius: 2px;
+    -fx-background-radius: 4px;
+    -fx-padding: 3px;
 }
 
 /* =============================================================================

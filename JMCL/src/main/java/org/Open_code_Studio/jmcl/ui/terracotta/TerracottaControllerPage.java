@@ -17,7 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.terracotta;
 
-import com.jfoenix.controls.JFXProgressBar;
+import javafx.scene.control.ProgressBar;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -498,11 +499,14 @@ public class TerracottaControllerPage extends StackPane {
                 {
                     Label status = new Label();
                     status.textProperty().bind(statusProperty);
-                    JFXProgressBar progress = new JFXProgressBar();
-                    progress.progressProperty().bind(progressProperty);
+                    ProgressBar progress = new ProgressBar();
+                    progress.getStyleClass().add("md3-linear-progress");
                     progress.setMaxWidth(Double.MAX_VALUE);
+                    progress.setProgress(0.0);
 
                     statusPane.getChildren().setAll(status, progress);
+                    // Bind progress after scene attachment to ensure skin is fully initialized
+                    Platform.runLater(() -> progress.progressProperty().bind(progressProperty));
                 }
 
                 ObservableList<Node> children = components.getContent();

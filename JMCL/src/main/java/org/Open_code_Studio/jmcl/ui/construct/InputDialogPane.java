@@ -17,10 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.base.ValidatorBase;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -36,22 +35,13 @@ import static org.Open_code_Studio.jmcl.util.i18n.I18n.i18n;
 public class InputDialogPane extends JFXDialogLayout implements DialogAware {
     private final CompletableFuture<String> future = new CompletableFuture<>();
 
-    private final JFXTextField textField;
+    private final TextField textField;
     private final Label lblCreationWarning;
     private final SpinnerPane acceptPane;
-    private final JFXButton acceptButton;
-
-    public InputDialogPane(String text, String initialValue, FutureCallback<String> onResult, ValidatorBase... validators) {
-        this(text, initialValue, onResult);
-        if (validators != null && validators.length > 0) {
-            textField.getValidators().addAll(validators);
-            FXUtils.setValidateWhileTextChanged(textField, true);
-            acceptButton.disableProperty().bind(textField.activeValidatorProperty().isNotNull());
-        }
-    }
+    private final Button acceptButton;
 
     public InputDialogPane(String text, String initialValue, FutureCallback<String> onResult) {
-        textField = new JFXTextField(initialValue);
+        textField = new TextField(initialValue);
 
         this.setHeading(new HBox(new Label(text)));
         this.setBody(new VBox(textField));
@@ -61,11 +51,11 @@ public class InputDialogPane extends JFXDialogLayout implements DialogAware {
 
         acceptPane = new SpinnerPane();
         acceptPane.getStyleClass().add("small-spinner-pane");
-        acceptButton = new JFXButton(i18n("button.ok"));
+        acceptButton = new Button(i18n("button.ok"));
         acceptButton.getStyleClass().add("dialog-accept");
         acceptPane.setContent(acceptButton);
 
-        JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
+        Button cancelButton = new Button(i18n("button.cancel"));
         cancelButton.getStyleClass().add("dialog-cancel");
 
         this.setActions(lblCreationWarning, acceptPane, cancelButton);

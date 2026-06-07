@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
@@ -46,7 +46,7 @@ public abstract class AbstractInstallersPage extends Control implements WizardPa
     protected final WizardController controller;
 
     protected InstallerItem.InstallerItemGroup group;
-    protected JFXTextField txtName = new JFXTextField();
+    protected TextField txtName = new TextField();
 
     protected BooleanProperty installable = new SimpleBooleanProperty();
 
@@ -150,7 +150,7 @@ public abstract class AbstractInstallersPage extends Control implements WizardPa
             }
 
             {
-                JFXButton installButton = FXUtils.newRaisedButton(i18n("button.install"));
+                Button installButton = FXUtils.newRaisedButton(i18n("button.install"));
                 installButton.disableProperty().bind(control.installable.not());
                 installButton.setPrefWidth(100);
                 installButton.setPrefHeight(40);

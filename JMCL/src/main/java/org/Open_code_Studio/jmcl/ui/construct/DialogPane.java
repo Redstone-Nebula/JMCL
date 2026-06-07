@@ -17,9 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.control.Button;
 import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXProgressBar;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,6 +26,7 @@ import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
 
 import static org.Open_code_Studio.jmcl.ui.FXUtils.onEscPressed;
@@ -36,11 +36,12 @@ public class DialogPane extends JFXDialogLayout {
     private final StringProperty title = new SimpleStringProperty();
     private final BooleanProperty valid = new SimpleBooleanProperty(true);
     protected final SpinnerPane acceptPane = new SpinnerPane();
-    protected final JFXButton cancelButton = new JFXButton();
+    protected final Button cancelButton = new Button();
     protected final Label warningLabel = new Label();
-    private final JFXProgressBar progressBar = new JFXProgressBar();
+    private final ProgressBar progressBar = new ProgressBar();
 
     public DialogPane() {
+        progressBar.getStyleClass().add("md3-linear-progress");
         Label titleLabel = new Label();
         titleLabel.textProperty().bind(title);
         setHeading(titleLabel);
@@ -51,7 +52,7 @@ public class DialogPane extends JFXDialogLayout {
         StackPane.setAlignment(progressBar, Pos.TOP_CENTER);
         progressBar.setMaxWidth(Double.MAX_VALUE);
 
-        JFXButton acceptButton = new JFXButton(i18n("button.ok"));
+        Button acceptButton = new Button(i18n("button.ok"));
         acceptButton.setOnAction(e -> onAccept());
         acceptButton.disableProperty().bind(valid.not());
         acceptButton.getStyleClass().add("dialog-accept");
@@ -66,7 +67,7 @@ public class DialogPane extends JFXDialogLayout {
         setActions(warningLabel, acceptPane, cancelButton);
     }
 
-    protected JFXProgressBar getProgressBar() {
+    protected ProgressBar getProgressBar() {
         return progressBar;
     }
 

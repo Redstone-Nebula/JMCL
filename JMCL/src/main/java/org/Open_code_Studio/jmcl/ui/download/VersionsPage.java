@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXSpinner;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -172,13 +172,13 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
             actions.setAlignment(Pos.CENTER);
             {
                 if ("game".equals(control.libraryId)) {
-                    JFXButton wikiButton = newToggleButton4(SVG.GLOBE_BOOK);
+                    Button wikiButton = newToggleButton4(SVG.GLOBE_BOOK);
                     wikiButton.setOnAction(event -> onOpenWiki());
                     FXUtils.installFastTooltip(wikiButton, i18n("wiki.tooltip"));
                     actions.getChildren().add(wikiButton);
                 }
 
-                JFXButton actionButton = newToggleButton4(SVG.ARROW_FORWARD);
+                Button actionButton = newToggleButton4(SVG.ARROW_FORWARD);
                 actionButton.setOnAction(e -> onAction());
                 actions.getChildren().add(actionButton);
             }
@@ -289,13 +289,13 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
     }
 
     private static final class VersionsPageSkin extends SkinBase<VersionsPage> {
-        private final JFXListView<RemoteVersion> list;
+        private final ListView<RemoteVersion> list;
 
         private final TransitionPane transitionPane;
         private final JFXSpinner spinner;
 
-        private final JFXTextField nameField;
-        private final JFXComboBox<VersionTypeFilter> categoryField = new JFXComboBox<>();
+        private final TextField nameField;
+        private final ComboBox<VersionTypeFilter> categoryField = new ComboBox<>();
 
         VersionsPageSkin(VersionsPage control) {
             super(control);
@@ -327,7 +327,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                 int rowIndex = 0;
 
                 {
-                    nameField = new JFXTextField();
+                    nameField = new TextField();
                     nameField.setPromptText(i18n("version.search.prompt"));
                     nameField.textProperty().addListener(o -> updateList());
 
@@ -351,7 +351,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                     categoryField.setConverter(stringConverter(type -> i18n("version.game." + type.name().toLowerCase(Locale.ROOT))));
                     categoryField.getSelectionModel().selectedItemProperty().addListener(o -> updateList());
 
-                    JFXButton refreshButton = FXUtils.newRaisedButton(i18n("button.refresh"));
+                    Button refreshButton = FXUtils.newRaisedButton(i18n("button.refresh"));
                     refreshButton.setOnAction(event -> control.onRefresh());
 
                     if (control.versionList.hasType()) {
@@ -382,7 +382,7 @@ public final class VersionsPage extends Control implements WizardPage, Refreshab
                     ComponentList centrePane = new ComponentList();
                     centrePane.getStyleClass().add("no-padding");
                     {
-                        list = new JFXListView<>();
+                        list = new ListView<>();
                         list.getStyleClass().add("jfx-list-view-float");
                         VBox.setVgrow(list, Priority.ALWAYS);
 

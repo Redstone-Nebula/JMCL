@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.control.Button;
 import com.jfoenix.controls.JFXPopup;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -100,7 +100,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
     private TransitionPane announcementPane;
     private final StackPane updatePane;
-    private final JFXButton menuButton;
+    private final Button menuButton;
 
     {
         HBox titleNode = new HBox(8);
@@ -139,7 +139,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
             titleBar.getStyleClass().add("title");
             titleBar.setLeft(new Label(title));
 
-            JFXButton btnHide = new JFXButton();
+            Button btnHide = new Button();
             btnHide.setOnAction(e -> {
                 announcementPane.setContent(new StackPane(), ContainerAnimations.FADE);
                 if (Metadata.isDev()) {
@@ -195,7 +195,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
                 hBox.getChildren().setAll(SVG.UPDATE.createIcon(20), prompt);
             }
 
-            JFXButton closeUpdateButton = new JFXButton();
+            Button closeUpdateButton = new Button();
             closeUpdateButton.setGraphic(SVG.CLOSE.createIcon(10));
             StackPane.setAlignment(closeUpdateButton, Pos.TOP_RIGHT);
             closeUpdateButton.getStyleClass().add("toggle-icon-tiny");
@@ -214,8 +214,8 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
         StackPane.setAlignment(launchPane, Pos.BOTTOM_RIGHT);
         {
-            JFXButton launchButton = new JFXButton();
-            launchButton.getStyleClass().addAll("launch-button", "md3-contained-button");
+            Button launchButton = new Button();
+            launchButton.getStyleClass().addAll("launch-button", "md3-elevated-button");
             launchButton.setDefaultButton(true);
             {
                 VBox graphic = new VBox();
@@ -252,8 +252,8 @@ public final class MainPage extends StackPane implements DecoratorPage {
                 launchButton.setGraphic(graphic);
             }
 
-            menuButton = new JFXButton();
-            menuButton.getStyleClass().addAll("menu-button", "md3-text-button");
+            menuButton = new Button();
+            menuButton.getStyleClass().addAll("menu-button", "md3-icon-button");
             menuButton.setOnAction(e -> GameListPopupMenu.show(
                     menuButton,
                     JFXPopup.PopupVPosition.BOTTOM,

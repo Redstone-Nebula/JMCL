@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXPopup;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
@@ -361,22 +361,14 @@ public final class FXUtils {
     }
 
     public static void setValidateWhileTextChanged(Node field, boolean validate) {
-        if (field instanceof JFXTextField) {
+        if (field instanceof TextField) {
             if (validate) {
-                addListener(field, "FXUtils.validation", ((JFXTextField) field).textProperty(), o -> ((JFXTextField) field).validate());
+                addListener(field, "FXUtils.validation", ((TextField) field).textProperty(), o -> { });
             } else {
                 removeListener(field, "FXUtils.validation");
             }
-            ((JFXTextField) field).validate();
-        } else if (field instanceof JFXPasswordField) {
-            if (validate) {
-                addListener(field, "FXUtils.validation", ((JFXPasswordField) field).textProperty(), o -> ((JFXPasswordField) field).validate());
-            } else {
-                removeListener(field, "FXUtils.validation");
-            }
-            ((JFXPasswordField) field).validate();
         } else
-            throw new IllegalArgumentException("Only JFXTextField and JFXPasswordField allowed");
+            throw new IllegalArgumentException("Only TextField and PasswordField allowed");
     }
 
     public static boolean getValidateWhileTextChanged(Node field) {
@@ -653,7 +645,7 @@ public final class FXUtils {
         });
     }
 
-    public static <T> void bind(JFXTextField textField, Property<T> property, StringConverter<T> converter) {
+    public static <T> void bind(TextField textField, Property<T> property, StringConverter<T> converter) {
         TextFieldBinding<T> binding = new TextFieldBinding<>(textField, property, converter);
         binding.updateTextField();
         textField.getProperties().put("FXUtils.bind.binding", binding);
@@ -662,15 +654,15 @@ public final class FXUtils {
         property.addListener(binding.propertyListener);
     }
 
-    public static void bindInt(JFXTextField textField, Property<Number> property) {
+    public static void bindInt(TextField textField, Property<Number> property) {
         bind(textField, property, SafeStringConverter.fromInteger());
     }
 
-    public static void bindString(JFXTextField textField, Property<String> property) {
+    public static void bindString(TextField textField, Property<String> property) {
         bind(textField, property, null);
     }
 
-    public static void unbind(JFXTextField textField, Property<?> property) {
+    public static void unbind(TextField textField, Property<?> property) {
         TextFieldBinding<?> binding = (TextFieldBinding<?>) textField.getProperties().remove("FXUtils.bind.binding");
         if (binding != null) {
             textField.focusedProperty().removeListener(binding.focusedListener);
@@ -680,7 +672,7 @@ public final class FXUtils {
     }
 
     private static final class TextFieldBinding<T> {
-        private final JFXTextField textField;
+        private final TextField textField;
         private final Property<T> property;
         private final StringConverter<T> converter;
 
@@ -688,28 +680,20 @@ public final class FXUtils {
         public final ChangeListener<Scene> sceneListener;
         public final InvalidationListener propertyListener;
 
-        public TextFieldBinding(JFXTextField textField, Property<T> property, StringConverter<T> converter) {
+        public TextFieldBinding(TextField textField, Property<T> property, StringConverter<T> converter) {
             this.textField = textField;
             this.property = property;
             this.converter = converter;
 
             focusedListener = (observable, oldFocused, newFocused) -> {
                 if (oldFocused && !newFocused) {
-                    if (textField.validate()) {
-                        updateProperty();
-                    } else {
-                        // Rollback to old value
-                        updateTextField();
-                    }
+                    updateProperty();
                 }
             };
 
             sceneListener = (observable, oldScene, newScene) -> {
                 if (oldScene != null && newScene == null) {
-                    // Component is being removed from scene
-                    if (textField.validate()) {
-                        updateProperty();
-                    }
+                    updateProperty();
                 }
             };
 
@@ -735,13 +719,13 @@ public final class FXUtils {
     }
 
     private static final class EnumBidirectionalBinding<E extends Enum<E>> implements InvalidationListener, WeakListener {
-        private final WeakReference<JFXComboBox<E>> comboBoxRef;
+        private final WeakReference<ComboBox<E>> comboBoxRef;
         private final WeakReference<Property<E>> propertyRef;
         private final int hashCode;
 
         private boolean updating = false;
 
-        private EnumBidirectionalBinding(JFXComboBox<E> comboBox, Property<E> property) {
+        private EnumBidirectionalBinding(ComboBox<E> comboBox, Property<E> property) {
             this.comboBoxRef = new WeakReference<>(comboBox);
             this.propertyRef = new WeakReference<>(property);
             this.hashCode = System.identityHashCode(comboBox) ^ System.identityHashCode(property);
@@ -750,7 +734,7 @@ public final class FXUtils {
         @Override
         public void invalidated(Observable sourceProperty) {
             if (!updating) {
-                final JFXComboBox<E> comboBox = comboBoxRef.get();
+                final ComboBox<E> comboBox = comboBoxRef.get();
                 final Property<E> property = propertyRef.get();
 
                 if (comboBox == null || property == null) {
@@ -797,10 +781,10 @@ public final class FXUtils {
 
             EnumBidirectionalBinding<?> that = (EnumBidirectionalBinding<?>) o;
 
-            final JFXComboBox<E> comboBox = this.comboBoxRef.get();
+            final ComboBox<E> comboBox = this.comboBoxRef.get();
             final Property<E> property = this.propertyRef.get();
 
-            final JFXComboBox<?> thatComboBox = that.comboBoxRef.get();
+            final ComboBox<?> thatComboBox = that.comboBoxRef.get();
             final Property<?> thatProperty = that.propertyRef.get();
 
             if (comboBox == null || property == null || thatComboBox == null || thatProperty == null)
@@ -816,10 +800,10 @@ public final class FXUtils {
      *
      * @param comboBox the combo box being bound with {@code property}.
      * @param property the property being bound with {@code combo box}.
-     * @see #unbindEnum(JFXComboBox, Property)
+     * @see #unbindEnum(ComboBox, Property)
      * @see ExtendedProperties#selectedItemPropertyFor(ComboBox)
      */
-    public static <T extends Enum<T>> void bindEnum(JFXComboBox<T> comboBox, Property<T> property) {
+    public static <T extends Enum<T>> void bindEnum(ComboBox<T> comboBox, Property<T> property) {
         EnumBidirectionalBinding<T> binding = new EnumBidirectionalBinding<>(comboBox, property);
 
         comboBox.getSelectionModel().selectedItemProperty().removeListener(binding);
@@ -835,10 +819,10 @@ public final class FXUtils {
      * You should <b>only and always</b> use {@code bindEnum} as well as {@code unbindEnum} at the same time.
      *
      * @param comboBox the combo box being bound with the property which can be inferred by {@code bindEnum}.
-     * @see #bindEnum(JFXComboBox, Property)
+     * @see #bindEnum(ComboBox, Property)
      * @see ExtendedProperties#selectedItemPropertyFor(ComboBox)
      */
-    public static <T extends Enum<T>> void unbindEnum(JFXComboBox<T> comboBox, Property<T> property) {
+    public static <T extends Enum<T>> void unbindEnum(ComboBox<T> comboBox, Property<T> property) {
         EnumBidirectionalBinding<T> binding = new EnumBidirectionalBinding<>(comboBox, property);
         comboBox.getSelectionModel().selectedItemProperty().removeListener(binding);
         property.removeListener(binding);
@@ -939,7 +923,7 @@ public final class FXUtils {
     }
 
     private static final class WindowsSizeBidirectionalBinding implements InvalidationListener, WeakListener {
-        private final WeakReference<JFXComboBox<String>> comboBoxRef;
+        private final WeakReference<ComboBox<String>> comboBoxRef;
         private final WeakReference<IntegerProperty> widthPropertyRef;
         private final WeakReference<IntegerProperty> heightPropertyRef;
 
@@ -947,7 +931,7 @@ public final class FXUtils {
 
         private boolean updating = false;
 
-        private WindowsSizeBidirectionalBinding(JFXComboBox<String> comboBox,
+        private WindowsSizeBidirectionalBinding(ComboBox<String> comboBox,
                                                 IntegerProperty widthProperty,
                                                 IntegerProperty heightProperty) {
             this.comboBoxRef = new WeakReference<>(comboBox);
@@ -1061,7 +1045,7 @@ public final class FXUtils {
         }
     }
 
-    public static void bindWindowsSize(JFXComboBox<String> comboBox, IntegerProperty widthProperty, IntegerProperty heightProperty) {
+    public static void bindWindowsSize(ComboBox<String> comboBox, IntegerProperty widthProperty, IntegerProperty heightProperty) {
         comboBox.setValue(widthProperty.get() + "x" + heightProperty.get());
         var binding = new WindowsSizeBidirectionalBinding(comboBox, widthProperty, heightProperty);
         comboBox.focusedProperty().addListener(binding);
@@ -1070,7 +1054,7 @@ public final class FXUtils {
         heightProperty.addListener(binding);
     }
 
-    public static void unbindWindowsSize(JFXComboBox<String> comboBox, IntegerProperty widthProperty, IntegerProperty heightProperty) {
+    public static void unbindWindowsSize(ComboBox<String> comboBox, IntegerProperty widthProperty, IntegerProperty heightProperty) {
         var binding = new WindowsSizeBidirectionalBinding(comboBox, widthProperty, heightProperty);
         comboBox.focusedProperty().removeListener(binding);
         comboBox.sceneProperty().removeListener(binding);
@@ -1262,30 +1246,60 @@ public final class FXUtils {
         return image;
     }
 
-    public static JFXButton newRaisedButton(String text) {
-        JFXButton button = new JFXButton(text);
+    public static Button newRaisedButton(String text) {
+        Button button = new Button(text);
         button.getStyleClass().add("jfx-button-raised");
-        button.setButtonType(JFXButton.ButtonType.RAISED);
         return button;
     }
 
-    public static JFXButton newBorderButton(String text) {
-        JFXButton button = new JFXButton(text);
+    public static Button newBorderButton(String text) {
+        Button button = new Button(text);
         button.getStyleClass().add("jfx-button-border");
         return button;
     }
 
-    public static JFXButton newToggleButton4(SVG icon) {
-        JFXButton button = new JFXButton();
+    public static Button newToggleButton4(SVG icon) {
+        Button button = new Button();
         button.getStyleClass().add("toggle-icon4");
         button.setGraphic(icon.createIcon());
         return button;
     }
 
-    public static JFXButton newToggleButton4(SVG icon, int size) {
-        JFXButton button = new JFXButton();
+    public static Button newToggleButton4(SVG icon, int size) {
+        Button button = new Button();
         button.getStyleClass().add("toggle-icon4");
         button.setGraphic(icon.createIcon(size));
+        return button;
+    }
+
+    // ── MD3 Icon Button (oval, 40dp, elevated shadow on press) ───────────
+    public static Button newMD3IconButton(SVG icon) {
+        return newMD3IconButton(icon, 20);
+    }
+
+    public static Button newMD3IconButton(SVG icon, int iconSize) {
+        Button button = new Button();
+        button.getStyleClass().add("md3-icon-button");
+        button.setGraphic(icon.createIcon(iconSize));
+        return button;
+    }
+
+    // ── MD3 Small Icon Button (oval, 28dp, for compact toolbars) ─────────
+    public static Button newMD3IconButtonSmall(SVG icon) {
+        return newMD3IconButtonSmall(icon, 16);
+    }
+
+    public static Button newMD3IconButtonSmall(SVG icon, int iconSize) {
+        Button button = new Button();
+        button.getStyleClass().add("md3-icon-button-small");
+        button.setGraphic(icon.createIcon(iconSize));
+        return button;
+    }
+
+    // ── MD3 Elevated Button (tonal, pill-shaped, with shadow) ────────────
+    public static Button newMD3ElevatedButton(String text) {
+        Button button = new Button(text);
+        button.getStyleClass().add("md3-elevated-button");
         return button;
     }
 
@@ -1383,7 +1397,7 @@ public final class FXUtils {
     }
 
     public static <T> Callback<ListView<T>, ListCell<T>> jfxListCellFactory(Function<T, Node> graphicBuilder) {
-        return view -> new JFXListCell<T>() {
+        return view -> new ListCell<T>() {
             @Override
             public void updateItem(T item, boolean empty) {
                 super.updateItem(item, empty);

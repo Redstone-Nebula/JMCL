@@ -39,14 +39,18 @@ import org.Open_code_Studio.jmcl.util.io.FileUtils;
 import org.Open_code_Studio.jmcl.util.io.HttpRequest;
 import org.Open_code_Studio.jmcl.util.io.NetworkUtils;
 import org.Open_code_Studio.jmcl.util.platform.ManagedProcess;
+import org.Open_code_Studio.jmcl.util.platform.OperatingSystem;
 import org.Open_code_Studio.jmcl.util.platform.SystemUtils;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -258,7 +262,27 @@ public final class TerracottaManager {
     private static void launch(TerracottaState.Launching state, boolean removeLegacy) {
         Task.supplyAsync(() -> {
             Path path = Files.createTempDirectory(String.format("jmcl-terracotta-%d", ThreadLocalRandom.current().nextLong())).resolve("http").toAbsolutePath();
-            ManagedProcess process = new ManagedProcess(new ProcessBuilder(getProvider().ofCommandLine(path)));
+            List<String> command = getProvider().ofCommandLine(path);
+
+            // On macOS, wrap with /bin/bash -c to avoid posix_spawn failure
+            // (Java's ProcessBuilder may fail to spawn native binaries directly)
+            if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
+                Path exePath = Paths.get(command.get(0));
+                if (!Files.isExecutable(exePath)) {
+                    try {
+                        Files.setPosixFilePermissions(exePath, Set.of(
+                                PosixFilePermission.OWNER_EXECUTE,
+                                PosixFilePermission.GROUP_EXECUTE,
+                                PosixFilePermission.OTHERS_EXECUTE
+                        ));
+                    } catch (IOException e) {
+                        LOG.warning("Cannot set execute permission for Terracotta binary.", e);
+                    }
+                }
+                command = List.of("/bin/bash", "-c", String.join(" ", command));
+            }
+
+            ManagedProcess process = new ManagedProcess(new ProcessBuilder(command));
             process.pumpInputStream(SystemUtils::onLogLine);
             process.pumpErrorStream(SystemUtils::onLogLine);
 

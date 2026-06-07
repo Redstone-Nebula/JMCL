@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.control.Button;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.effects.JFXDepthManager;
 import javafx.beans.binding.Bindings;
@@ -90,7 +90,7 @@ public final class AccountListItemSkin extends SkinBase<AccountListItem> {
         HBox right = new HBox();
         right.setAlignment(Pos.CENTER_RIGHT);
 
-        JFXButton btnMove = new JFXButton();
+        Button btnMove = new Button();
         SpinnerPane spinnerMove = new SpinnerPane();
         spinnerMove.getStyleClass().add("small-spinner-pane");
         btnMove.setOnAction(e -> {
@@ -125,7 +125,7 @@ public final class AccountListItemSkin extends SkinBase<AccountListItem> {
         spinnerMove.setContent(btnMove);
         right.getChildren().add(spinnerMove);
 
-        JFXButton btnRefresh = FXUtils.newToggleButton4(SVG.REFRESH);
+        Button btnRefresh = FXUtils.newToggleButton4(SVG.REFRESH);
         SpinnerPane spinnerRefresh = new SpinnerPane();
         spinnerRefresh.getStyleClass().setAll("small-spinner-pane");
         if (skinnable.getAccount() instanceof MicrosoftAccount && Accounts.OAUTH_CALLBACK.getClientId().isEmpty()) {
@@ -148,7 +148,7 @@ public final class AccountListItemSkin extends SkinBase<AccountListItem> {
         spinnerRefresh.setContent(btnRefresh);
         right.getChildren().add(spinnerRefresh);
 
-        JFXButton btnUpload = FXUtils.newToggleButton4(SVG.CHECKROOM);
+        Button btnUpload = FXUtils.newToggleButton4(SVG.CHECKROOM);
         SpinnerPane spinnerUpload = new SpinnerPane();
         btnUpload.setOnAction(e -> {
             Task<?> uploadTask = skinnable.uploadSkin();
@@ -165,7 +165,7 @@ public final class AccountListItemSkin extends SkinBase<AccountListItem> {
         spinnerUpload.getStyleClass().add("small-spinner-pane");
         right.getChildren().add(spinnerUpload);
 
-        JFXButton btnCopyUUID = FXUtils.newToggleButton4(SVG.CONTENT_COPY);
+        Button btnCopyUUID = FXUtils.newToggleButton4(SVG.CONTENT_COPY);
         SpinnerPane spinnerCopyUUID = new SpinnerPane();
         spinnerCopyUUID.getStyleClass().add("small-spinner-pane");
         btnCopyUUID.setOnAction(e -> FXUtils.copyText(skinnable.getAccount().getUUID().toString()));
@@ -173,7 +173,7 @@ public final class AccountListItemSkin extends SkinBase<AccountListItem> {
         spinnerCopyUUID.setContent(btnCopyUUID);
         right.getChildren().add(spinnerCopyUUID);
 
-        JFXButton btnRemove = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
+        Button btnRemove = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
         btnRemove.setOnAction(e -> Controllers.confirm(i18n("button.remove.confirm"), i18n("button.remove"), skinnable::remove, null));
         BorderPane.setAlignment(btnRemove, Pos.CENTER);
         FXUtils.installFastTooltip(btnRemove, i18n("button.delete"));

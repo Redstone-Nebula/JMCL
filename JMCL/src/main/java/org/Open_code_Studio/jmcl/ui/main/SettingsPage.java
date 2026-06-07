@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.control.Button;
 import javafx.beans.InvalidationListener;
 import javafx.beans.WeakInvalidationListener;
 import javafx.beans.property.ObjectProperty;
@@ -87,7 +87,7 @@ public final class SettingsPage extends ScrollPane {
                 ObjectProperty<UpdateChannel> updateChannel;
                 LineSelectButton<UpdateChannel> updatePane;
                 {
-                    JFXButton updateButton = FXUtils.newToggleButton4(SVG.UPDATE, 20);
+                    Button updateButton = FXUtils.newToggleButton4(SVG.UPDATE, 20);
                     updateButton.setOnAction(e -> onUpdate());
                     updateButton.setPadding(Insets.EMPTY);
                     FXUtils.installFastTooltip(updateButton, i18n("update.tooltip"));
@@ -231,7 +231,7 @@ public final class SettingsPage extends ScrollPane {
                     BorderPane.setAlignment(left, Pos.CENTER_LEFT);
                     debugPane.setLeft(left);
 
-                    JFXButton openLogFolderButton = new JFXButton(i18n("settings.launcher.launcher_log.reveal"));
+                    Button openLogFolderButton = new Button(i18n("settings.launcher.launcher_log.reveal"));
                     openLogFolderButton.setOnAction(e -> openLogFolder());
                     openLogFolderButton.getStyleClass().add("jfx-button-border");
                     if (LOG.getLogFile() == null)
@@ -239,7 +239,7 @@ public final class SettingsPage extends ScrollPane {
 
                     SpinnerPane exportLogPane = new SpinnerPane();
 
-                    JFXButton logButton = FXUtils.newBorderButton(i18n("settings.launcher.launcher_log.export"));
+                    Button logButton = FXUtils.newBorderButton(i18n("settings.launcher.launcher_log.export"));
                     exportLogPane.setContent(logButton);
                     logButton.setOnAction(e -> {
                         exportLogPane.showSpinner();

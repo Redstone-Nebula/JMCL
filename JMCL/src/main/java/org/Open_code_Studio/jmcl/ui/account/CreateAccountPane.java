@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.validation.base.ValidatorBase;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
@@ -29,8 +29,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.*;
 import org.Open_code_Studio.jmcl.auth.AccountFactory;
@@ -77,7 +81,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
     private AccountFactory<?> factory;
 
     private final Label lblErrorMessage;
-    private final JFXButton btnAccept;
+    private final Button btnAccept;
     private final SpinnerPane spinner;
     private final Node body;
     private final HBox actions;
@@ -126,7 +130,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
             lblErrorMessage.setWrapText(true);
             lblErrorMessage.setMaxWidth(400);
 
-            btnAccept = new JFXButton(i18n("account.login"));
+            btnAccept = new Button(i18n("account.login"));
             btnAccept.getStyleClass().add("dialog-accept");
             btnAccept.setOnAction(e -> onAccept());
 
@@ -134,7 +138,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
             spinner.getStyleClass().add("small-spinner-pane");
             spinner.setContent(btnAccept);
 
-            JFXButton btnCancel = new JFXButton(i18n("button.cancel"));
+            Button btnCancel = new Button(i18n("button.cancel"));
             btnCancel.getStyleClass().add("dialog-cancel");
             btnCancel.setOnAction(e -> onCancel());
             onEscPressed(this, btnCancel::fire);
@@ -302,7 +306,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
             for (String key : ALLOWED_LINKS) {
                 String value = links.get(key);
                 if (value != null) {
-                    JFXHyperlink link = new JFXHyperlink(i18n("account.injector.link." + key));
+                    Hyperlink link = new Hyperlink(i18n("account.injector.link." + key));
                     FXUtils.installSlowTooltip(link, value);
                     link.setOnAction(e -> FXUtils.openLink(value));
                     result.add(link);
@@ -314,10 +318,10 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
 
         private final AccountFactory<?> factory;
         private @Nullable AuthlibInjectorServer server;
-        private @Nullable JFXComboBox<AuthlibInjectorServer> cboServers;
-        private @Nullable JFXTextField txtUsername;
-        private @Nullable JFXPasswordField txtPassword;
-        private @Nullable JFXTextField txtUUID;
+        private @Nullable ComboBox<AuthlibInjectorServer> cboServers;
+        private @Nullable TextField txtUsername;
+        private @Nullable PasswordField txtPassword;
+        private @Nullable TextField txtUUID;
         private final BooleanBinding valid;
 
         public AccountDetailsInputPane(AccountFactory<?> factory, Runnable onAction) {
@@ -362,7 +366,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 setHalignment(lblServers, HPos.LEFT);
                 add(lblServers, 0, rowIndex);
 
-                cboServers = new JFXComboBox<>();
+                cboServers = new ComboBox<>();
                 cboServers.setCellFactory(jfxListCellFactory(server -> new TwoLineListItem(server.getName(), server.getUrl())));
                 cboServers.setConverter(stringConverter(AuthlibInjectorServer::getName));
                 bindContent(cboServers.getItems(), config().getAuthlibInjectorServers());
@@ -389,7 +393,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 });
                 linksContainer.setMinWidth(USE_PREF_SIZE);
 
-                JFXButton btnAddServer = FXUtils.newToggleButton4(SVG.ADD, 20);
+                Button btnAddServer = FXUtils.newToggleButton4(SVG.ADD, 20);
                 btnAddServer.setOnAction(e -> {
                     Controllers.dialog(new AddAuthlibInjectorServerPane());
                 });
@@ -405,7 +409,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 setHalignment(lblUsername, HPos.LEFT);
                 add(lblUsername, 0, rowIndex);
 
-                txtUsername = new JFXTextField();
+                txtUsername = new TextField();
                 txtUsername.setValidators(
                         new RequiredValidator(),
                         new Validator(i18n("input.email"), username -> {
@@ -427,7 +431,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 setHalignment(lblPassword, HPos.LEFT);
                 add(lblPassword, 0, rowIndex);
 
-                txtPassword = new JFXPasswordField();
+                txtPassword = new PasswordField();
                 txtPassword.setValidators(new RequiredValidator());
                 setValidateWhileTextChanged(txtPassword, true);
                 txtPassword.setOnAction(e -> onAction.run());
@@ -440,7 +444,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 txtUsername.setPromptText(i18n("account.methods.offline.name.special_characters"));
                 FXUtils.installFastTooltip(txtUsername, i18n("account.methods.offline.name.special_characters"));
 
-                JFXHyperlink purchaseLink = new JFXHyperlink(i18n("account.methods.microsoft.purchase"));
+                Hyperlink purchaseLink = new Hyperlink(i18n("account.methods.microsoft.purchase"));
                 purchaseLink.setExternalLink(YggdrasilService.PURCHASE_URL);
                 HBox linkPane = new HBox(purchaseLink);
                 GridPane.setColumnSpan(linkPane, 2);
@@ -463,7 +467,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 setHalignment(lblUUID, HPos.LEFT);
                 add(lblUUID, 0, rowIndex);
 
-                txtUUID = new JFXTextField();
+                txtUUID = new TextField();
                 txtUUID.managedProperty().bind(advancedButton.selectedProperty());
                 txtUUID.visibleProperty().bind(advancedButton.selectedProperty());
                 txtUUID.setValidators(new UUIDValidator());
@@ -557,7 +561,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
     public static class DialogCharacterSelector extends JFXDialogLayout implements CharacterSelector {
 
         private final AdvancedListBox listBox = new AdvancedListBox();
-        private final JFXButton cancel = new JFXButton();
+        private final Button cancel = new Button();
 
         private final CountDownLatch latch = new CountDownLatch(1);
         private GameProfile selectedProfile = null;

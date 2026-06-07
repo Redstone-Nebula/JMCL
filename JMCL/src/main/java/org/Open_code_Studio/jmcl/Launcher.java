@@ -305,6 +305,13 @@ public final class Launcher extends Application {
         AsyncTaskExecutor.setUncaughtExceptionHandler(new CrashReporter(false));
 
         try {
+            // Force fork()+exec() on macOS to avoid posix_spawn failures (errno=0).
+            // ProcessImpl reads jdk.lang.Process.launchMechanism lazily on first
+            // ProcessBuilder.start() call, so setting it before any process spawn works.
+            if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
+                System.setProperty("jdk.lang.Process.launchMechanism", "FORK");
+            }
+
             LOG.info("*** " + Metadata.TITLE + " ***");
             LOG.info("Operating System: " + (OperatingSystem.OS_RELEASE_PRETTY_NAME == null
                     ? OperatingSystem.SYSTEM_NAME + ' ' + OperatingSystem.SYSTEM_VERSION.getVersion()

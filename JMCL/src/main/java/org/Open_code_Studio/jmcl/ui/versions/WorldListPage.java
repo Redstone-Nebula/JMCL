@@ -17,8 +17,6 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import javafx.beans.property.BooleanProperty;
@@ -27,6 +25,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.Skin;
 import javafx.scene.control.Tooltip;
@@ -220,7 +220,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
 
         @Override
         protected List<Node> initializeToolbar(WorldListPage skinnable) {
-            JFXCheckBox chkShowAll = new JFXCheckBox(i18n("world.show_all"));
+            CheckBox chkShowAll = new CheckBox(i18n("world.show_all"));
             chkShowAll.selectedProperty().bindBidirectional(skinnable.showAllProperty());
 
             return Arrays.asList(
@@ -245,7 +245,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
         private final ImageContainer imageView;
         private final Tooltip leftTooltip;
         private final TwoLineListItem content;
-        private final JFXButton btnLaunch;
+        private final Button btnLaunch;
 
         public WorldListCell(WorldListPage page) {
             this.page = page;
@@ -287,7 +287,7 @@ public final class WorldListPage extends ListPageBase<World> implements VersionP
                         page.launch(world);
                 });
 
-                JFXButton btnMore = FXUtils.newToggleButton4(SVG.MORE_VERT);
+                Button btnMore = FXUtils.newToggleButton4(SVG.MORE_VERT);
                 right.getChildren().add(btnMore);
                 btnMore.setOnAction(event -> {
                     World world = getItem();

@@ -43,6 +43,12 @@ public final class EntryPoint {
     }
 
     public static void main(String[] args) {
+        // On macOS, force traditional FORK process spawning to avoid
+        // posix_spawn failures when spawning native binaries via ProcessBuilder
+        if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
+            System.getProperties().putIfAbsent("jdk.lang.Process.launchMechanism", "FORK");
+        }
+
         System.getProperties().putIfAbsent("java.net.useSystemProxies", "true");
         System.getProperties().putIfAbsent("javafx.autoproxy.disable", "true");
         System.getProperties().putIfAbsent("http.agent", "JVM-MCL/" + Metadata.VERSION);

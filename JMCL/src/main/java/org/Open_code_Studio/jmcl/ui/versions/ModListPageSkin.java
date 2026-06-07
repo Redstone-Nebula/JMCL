@@ -17,7 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXPopup;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -28,7 +29,11 @@ import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -89,8 +94,8 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
     private final HBox toolbarNormal;
     private final HBox toolbarSelecting;
 
-    private final JFXListView<ModInfoObject> listView;
-    private final JFXTextField searchField;
+    private final ListView<ModInfoObject> listView;
+    private final TextField searchField;
 
     // FXThread
     private boolean isSearching = false;
@@ -104,7 +109,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
 
         ComponentList root = new ComponentList();
         root.getStyleClass().add("no-padding");
-        listView = new JFXListView<>();
+        listView = new ListView<>();
         listView.getStyleClass().add("no-horizontal-scrollbar");
 
         {
@@ -117,7 +122,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             // Search Bar
             searchBar.setAlignment(Pos.CENTER);
             searchBar.setPadding(new Insets(0, 5, 0, 5));
-            searchField = new JFXTextField();
+            searchField = new TextField();
             searchField.setPromptText(i18n("search"));
             HBox.setHgrow(searchField, Priority.ALWAYS);
             PauseTransition pause = new PauseTransition(Duration.millis(100));
@@ -127,7 +132,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                 pause.playFromStart();
             });
 
-            JFXButton closeSearchBar = createToolbarButton2(null, SVG.CLOSE,
+            Button closeSearchBar = createToolbarButton2(null, SVG.CLOSE,
                     () -> {
                         changeToolbar(toolbarNormal);
 
@@ -476,7 +481,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                         pair("mods.modrinth", ModrinthRemoteModRepository.MODS)
                 )) {
                     RemoteModRepository repository = item.getValue();
-                    JFXHyperlink button = new JFXHyperlink(i18n(item.getKey()));
+                    Hyperlink button = new Hyperlink(i18n(item.getKey()));
                     Task.runAsync(() -> {
                         Optional<RemoteMod.Version> versionOptional = repository.getRemoteVersionByLocalFile(modInfo.getModInfo(), modInfo.getModInfo().getFile());
                         if (versionOptional.isPresent()) {
@@ -521,7 +526,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             }
 
             if (StringUtils.isNotBlank(modInfo.getModInfo().getUrl())) {
-                JFXHyperlink officialPageButton = new JFXHyperlink(i18n("mods.url"));
+                Hyperlink officialPageButton = new Hyperlink(i18n("mods.url"));
                 officialPageButton.setOnAction(e -> {
                     fireEvent(new DialogCloseEvent());
                     FXUtils.openLink(modInfo.getModInfo().getUrl());
@@ -531,7 +536,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
             }
 
             if (modInfo.getModTranslations() == null || StringUtils.isBlank(modInfo.getModTranslations().getMcmod())) {
-                JFXHyperlink searchButton = new JFXHyperlink(i18n("mods.mcmod.search"));
+                Hyperlink searchButton = new Hyperlink(i18n("mods.mcmod.search"));
                 searchButton.setOnAction(e -> {
                     fireEvent(new DialogCloseEvent());
                     FXUtils.openLink(NetworkUtils.withQuery("https://search.mcmod.cn/s", mapOf(
@@ -542,7 +547,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                 });
                 getActions().add(searchButton);
             } else {
-                JFXHyperlink mcmodButton = new JFXHyperlink(i18n("mods.mcmod.page"));
+                Hyperlink mcmodButton = new Hyperlink(i18n("mods.mcmod.page"));
                 mcmodButton.setOnAction(e -> {
                     fireEvent(new DialogCloseEvent());
                     FXUtils.openLink(ModTranslations.MOD.getMcmodUrl(modInfo.getModTranslations()));
@@ -550,7 +555,7 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
                 getActions().add(mcmodButton);
             }
 
-            JFXButton okButton = new JFXButton();
+            Button okButton = new Button();
             okButton.getStyleClass().add("dialog-accept");
             okButton.setText(i18n("button.ok"));
             okButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
@@ -566,17 +571,17 @@ final class ModListPageSkin extends SkinBase<ModListPage> {
     final class ModInfoListCell extends MDListCell<ModInfoObject> {
         private static final PseudoClass WARNING = PseudoClass.getPseudoClass("warning");
 
-        JFXCheckBox checkBox = new JFXCheckBox();
+        CheckBox checkBox = new CheckBox();
         ImageContainer imageContainer = new ImageContainer(24);
         TwoLineListItem content = new TwoLineListItem();
-        JFXButton restoreButton = FXUtils.newToggleButton4(SVG.RESTORE);
-        JFXButton infoButton = FXUtils.newToggleButton4(SVG.INFO);
-        JFXButton revealButton = FXUtils.newToggleButton4(SVG.FOLDER);
+        Button restoreButton = FXUtils.newToggleButton4(SVG.RESTORE);
+        Button infoButton = FXUtils.newToggleButton4(SVG.INFO);
+        Button revealButton = FXUtils.newToggleButton4(SVG.FOLDER);
         BooleanProperty booleanProperty;
 
         Tooltip warningTooltip;
 
-        ModInfoListCell(JFXListView<ModInfoObject> listView) {
+        ModInfoListCell(ListView<ModInfoObject> listView) {
             super(listView);
 
             this.getStyleClass().add("mod-info-list-cell");

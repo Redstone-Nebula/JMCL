@@ -17,7 +17,6 @@
  */
 package org.Open_code_Studio.jmcl.terracotta.provider;
 
-import org.Open_code_Studio.jmcl.Metadata;
 import org.Open_code_Studio.jmcl.task.Task;
 import org.Open_code_Studio.jmcl.terracotta.TerracottaBundle;
 import org.Open_code_Studio.jmcl.util.io.FileUtils;
@@ -59,7 +58,7 @@ public final class MacOSProvider extends AbstractTerracottaProvider {
                 throw new IllegalStateException("Cannot locate 'osascript' system executable on MacOS for installing Terracotta.");
             }
 
-            Path movedInstaller = Files.createTempDirectory(Metadata.GLOBAL_DIRECTORY, "terracotta-pkg")
+            Path movedInstaller = Files.createTempDirectory("terracotta-pkg")
                     .toRealPath()
                     .resolve(FileUtils.getName(installer));
             Files.copy(installer, movedInstaller, StandardCopyOption.REPLACE_EXISTING);

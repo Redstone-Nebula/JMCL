@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.upgrade;
 
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.control.Button;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -174,13 +174,13 @@ public final class UpdateChecker {
             content.setPadding(new Insets(24));
             content.getStyleClass().add("jfx-dialog-layout");
 
-            JFXButton goButton = new JFXButton("去 GitHub 看看");
+            Button goButton = new Button("去 GitHub 看看");
             goButton.getStyleClass().addAll("dialog-accept", "md3-contained-button");
             goButton.setOnAction(e -> {
                 FXUtils.openLink(Metadata.DOWNLOAD_URL);
             });
 
-            JFXButton closeButton = new JFXButton("知道了");
+            Button closeButton = new Button("知道了");
             closeButton.getStyleClass().addAll("md3-text-button");
             closeButton.setOnAction(e -> {
                 content.fireEvent(new DialogCloseEvent());

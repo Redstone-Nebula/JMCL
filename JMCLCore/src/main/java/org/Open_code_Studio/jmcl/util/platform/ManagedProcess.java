@@ -42,11 +42,48 @@ public final class ManagedProcess {
 
     public ManagedProcess(ProcessBuilder processBuilder) throws IOException {
         if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
-            processBuilder.environment().put("_JAVA_OPTIONS", "-Djdk.lang.Process.launchMechanism=FORK");
+            // Ensure the JVM uses fork()+exec() instead of posix_spawn on macOS.
+            // posix_spawn may fail with errno=0 for adhoc-signed native binaries
+            // on macOS 26.x+ with certain JDK builds (e.g. Microsoft OpenJDK 21).
+            // The jdk.lang.Process.launchMechanism property is read lazily by
+            // ProcessImpl on first use, so setting it here works as long as this
+            // is the first ProcessBuilder.start() call (ensured by Launcher.main()).
+            System.setProperty("jdk.lang.Process.launchMechanism", "FORK");
+
+            // Retry up to 3 times on posix_spawn failures (intermittent macOS kernel bug)
+            this.process = startWithRetry(processBuilder);
+            this.commands = processBuilder.command();
+            this.classpath = null;
+        } else {
+            this.process = processBuilder.start();
+            this.commands = processBuilder.command();
+            this.classpath = null;
         }
-        this.process = processBuilder.start();
-        this.commands = processBuilder.command();
-        this.classpath = null;
+    }
+
+    /// Start a process with retry logic for intermittent macOS posix_spawn failures.
+    private static Process startWithRetry(ProcessBuilder processBuilder) throws IOException {
+        int maxAttempts = 3;
+        IOException lastException = null;
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                return processBuilder.start();
+            } catch (IOException e) {
+                String msg = e.getMessage();
+                if (msg != null && msg.contains("posix_spawn")) {
+                    lastException = e;
+                    try {
+                        Thread.sleep(100L * attempt);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw e;
+                    }
+                } else {
+                    throw e;
+                }
+            }
+        }
+        throw lastException;
     }
 
     /**

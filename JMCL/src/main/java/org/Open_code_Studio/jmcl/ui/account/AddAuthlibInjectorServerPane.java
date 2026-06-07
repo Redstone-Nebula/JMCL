@@ -17,9 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXTextField;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import org.Open_code_Studio.jmcl.auth.authlibinjector.AuthlibInjectorServer;
@@ -45,11 +45,11 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
     private final Label lblServerName;
     private final Label lblCreationWarning;
     private final Label lblServerWarning;
-    private final JFXTextField txtServerUrl;
+    private final TextField txtServerUrl;
     private final JFXDialogLayout addServerPane;
     private final JFXDialogLayout confirmServerPane;
     private final SpinnerPane nextPane;
-    private final JFXButton btnAddNext;
+    private final Button btnAddNext;
 
     private AuthlibInjectorServer serverBeingAdded;
 
@@ -63,7 +63,7 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
         addServerPane = new JFXDialogLayout();
         addServerPane.setHeading(new Label(i18n("account.injector.add")));
         {
-            txtServerUrl = new JFXTextField();
+            txtServerUrl = new TextField();
             txtServerUrl.setPromptText(i18n("account.injector.server_url"));
             txtServerUrl.setOnAction(e -> onAddNext());
 
@@ -71,13 +71,13 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
             lblCreationWarning.setWrapText(true);
             HBox actions = new HBox();
             {
-                JFXButton cancel = new JFXButton(i18n("button.cancel"));
+                Button cancel = new Button(i18n("button.cancel"));
                 cancel.getStyleClass().add("dialog-accept");
                 cancel.setOnAction(e -> onAddCancel());
 
                 nextPane = new SpinnerPane();
                 nextPane.getStyleClass().add("small-spinner-pane");
-                btnAddNext = new JFXButton(i18n("wizard.next"));
+                btnAddNext = new Button(i18n("wizard.next"));
                 btnAddNext.getStyleClass().add("dialog-accept");
                 btnAddNext.setOnAction(e -> onAddNext());
                 nextPane.setContent(btnAddNext);
@@ -134,15 +134,15 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
                 );
             }
 
-            JFXButton prevButton = new JFXButton(i18n("wizard.prev"));
+            Button prevButton = new Button(i18n("wizard.prev"));
             prevButton.getStyleClass().add("dialog-cancel");
             prevButton.setOnAction(e -> onAddPrev());
 
-            JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
+            Button cancelButton = new Button(i18n("button.cancel"));
             cancelButton.getStyleClass().add("dialog-cancel");
             cancelButton.setOnAction(e -> onAddCancel());
 
-            JFXButton finishButton = new JFXButton(i18n("wizard.finish"));
+            Button finishButton = new Button(i18n("wizard.finish"));
             finishButton.getStyleClass().add("dialog-accept");
             finishButton.setOnAction(e -> onAddFinish());
 

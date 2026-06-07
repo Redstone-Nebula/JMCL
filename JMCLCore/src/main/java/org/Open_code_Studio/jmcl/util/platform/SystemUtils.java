@@ -111,40 +111,100 @@ public final class SystemUtils {
                 }
             }
 
+            // Wrap with bash -c, quoting each argument individually to handle spaces in paths
             List<String> wrappedCommand = new ArrayList<>();
             wrappedCommand.add("/bin/bash");
             wrappedCommand.add("-c");
-            wrappedCommand.add(String.join(" ", command));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < command.size(); i++) {
+                if (i > 0) sb.append(' ');
+                String arg = command.get(i);
+                // Quote arguments that contain spaces or special chars
+                if (arg.contains(" ") || arg.contains("\t") || arg.contains("\\") || arg.contains("'")) {
+                    sb.append('"');
+                    // Escape double quotes and backticks
+                    sb.append(arg.replace("\\", "\\\\").replace("\"", "\\\"").replace("`", "\\`").replace("$", "\\$"));
+                    sb.append('"');
+                } else {
+                    sb.append(arg);
+                }
+            }
+            wrappedCommand.add(sb.toString());
             actualCommand = wrappedCommand;
         } else if (OperatingSystem.CURRENT_OS == OperatingSystem.WINDOWS) {
             List<String> wrappedCommand = new ArrayList<>();
             wrappedCommand.add("cmd.exe");
             wrappedCommand.add("/c");
-            wrappedCommand.add(String.join(" ", command));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < command.size(); i++) {
+                if (i > 0) sb.append(' ');
+                String arg = command.get(i);
+                if (arg.contains(" ") || arg.contains("\t")) {
+                    sb.append('"').append(arg.replace("\"", "\\\"")).append('"');
+                } else {
+                    sb.append(arg);
+                }
+            }
+            wrappedCommand.add(sb.toString());
             actualCommand = wrappedCommand;
         }
 
-        ProcessBuilder processBuilder = new ProcessBuilder(actualCommand)
-                .redirectError(ProcessBuilder.Redirect.DISCARD);
+        // Retry up to 3 times on macOS posix_spawn failures (intermittent kernel bug)
+        int maxAttempts = OperatingSystem.CURRENT_OS == OperatingSystem.MACOS ? 3 : 1;
+        IOException lastException = null;
+        
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            ProcessBuilder processBuilder = new ProcessBuilder(actualCommand)
+                    .redirectErrorStream(true);
 
-        Process process = processBuilder.start();
-        try {
-            InputStream inputStream = process.getInputStream();
-            CompletableFuture<T> future = CompletableFuture.supplyAsync(
-                    Lang.wrap(() -> convert.apply(inputStream)),
-                    Schedulers.io());
+            try {
+                Process process = processBuilder.start();
+                try {
+                    InputStream inputStream = process.getInputStream();
+                    CompletableFuture<T> future = CompletableFuture.supplyAsync(
+                            Lang.wrap(() -> convert.apply(inputStream)),
+                            Schedulers.io());
 
-            if (!process.waitFor(maxWaitTime.toMillis(), TimeUnit.MILLISECONDS))
-                throw new TimeoutException();
+                    if (!process.waitFor(maxWaitTime.toMillis(), TimeUnit.MILLISECONDS))
+                        throw new TimeoutException();
 
-            if (process.exitValue() != 0)
-                throw new IOException("Bad exit code: " + process.exitValue());
+                    // Read output even when exit code is non-zero, so we can include it in the error
+                    T output;
+                    String errorMsg = null;
+                    try {
+                        output = future.get();
+                    } catch (Exception e) {
+                        output = null;
+                        errorMsg = "(failed to read output: " + e.getMessage() + ")";
+                    }
 
-            return future.get();
-        } finally {
-            if (process.isAlive())
-                process.destroy();
+                    if (process.exitValue() != 0)
+                        throw new IOException("Bad exit code: " + process.exitValue()
+                                + ". Process output: " + (errorMsg != null ? errorMsg : String.valueOf(output)));
+
+                    return output;
+                } finally {
+                    if (process.isAlive())
+                        process.destroy();
+                }
+            } catch (IOException e) {
+                String msg = e.getMessage();
+                if (msg != null && msg.contains("posix_spawn")) {
+                    LOG.warning("posix_spawn failed (attempt " + attempt + "/" + maxAttempts + "), retrying...", e);
+                    lastException = e;
+                    try {
+                        Thread.sleep(100L * attempt);
+                    } catch (InterruptedException ignored) {
+                        Thread.currentThread().interrupt();
+                        throw e;
+                    }
+                } else {
+                    throw e;
+                }
+            }
         }
+        
+        throw lastException;
     }
 
     public static boolean supportJVMAttachment() {

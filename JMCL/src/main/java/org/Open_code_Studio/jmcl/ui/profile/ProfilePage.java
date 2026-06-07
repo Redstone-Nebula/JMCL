@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.profile;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.binding.Bindings;
@@ -50,7 +50,7 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
     private final ReadOnlyObjectWrapper<State> state = new ReadOnlyObjectWrapper<>();
     private final StringProperty location;
     private final Profile profile;
-    private final JFXTextField txtProfileName;
+    private final TextField txtProfileName;
     private final LineFileChooserButton gameDir;
     private final LineToggleButton toggleUseRelativePath;
 
@@ -83,7 +83,7 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
                         profileNamePane.setLeft(label);
                         BorderPane.setAlignment(label, Pos.CENTER_LEFT);
 
-                        txtProfileName = new JFXTextField();
+                        txtProfileName = new TextField();
                         profileNamePane.setRight(txtProfileName);
                         RequiredFieldValidator validator = new RequiredFieldValidator();
                         validator.setMessage(i18n("input.not_empty"));
@@ -98,7 +98,7 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
 
                             @Override
                             protected void eval() {
-                                JFXTextField control = (JFXTextField) this.getSrcControl();
+                                TextField control = (TextField) this.getSrcControl();
                                 hasErrors.set(Profiles.getProfiles().stream().anyMatch(profile -> profile.getName().equals(control.getText())));
                             }
                         });
@@ -133,7 +133,7 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
         savePane.setStyle("-fx-padding: 20;");
         StackPane.setAlignment(savePane, Pos.BOTTOM_RIGHT);
         {
-            JFXButton saveButton = FXUtils.newRaisedButton(i18n("button.save"));
+            Button saveButton = FXUtils.newRaisedButton(i18n("button.save"));
             savePane.setRight(saveButton);
             BorderPane.setAlignment(savePane, Pos.BOTTOM_RIGHT);
             StackPane.setAlignment(saveButton, Pos.BOTTOM_RIGHT);

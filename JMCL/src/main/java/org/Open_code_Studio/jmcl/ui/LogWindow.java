@@ -17,7 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSnackbarLayout;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
@@ -158,11 +159,11 @@ public final class LogWindow extends Stage {
 
     private final class LogWindowImpl extends Control {
 
-        private final ListView<Log> listView = new JFXListView<>();
+        private final ListView<Log> listView = new ListView<>();
         private final BooleanProperty autoScroll = new SimpleBooleanProperty();
         private final StringProperty[] buttonText = new StringProperty[LEVELS.length];
         private final BooleanProperty[] showLevel = new BooleanProperty[LEVELS.length];
-        private final JFXComboBox<Integer> cboLines = new JFXComboBox<>();
+        private final ComboBox<Integer> cboLines = new ComboBox<>();
         private final StackPane stackPane = new StackPane();
 
         LogWindowImpl() {
@@ -377,19 +378,22 @@ public final class LogWindow extends Stage {
                 hBox.setAlignment(Pos.CENTER_RIGHT);
                 hBox.setPadding(new Insets(0, 3, 0, 3));
 
-                JFXCheckBox autoScrollCheckBox = new JFXCheckBox(i18n("logwindow.autoscroll"));
+                CheckBox autoScrollCheckBox = new CheckBox(i18n("logwindow.autoscroll"));
                 autoScrollCheckBox.setSelected(true);
                 control.autoScroll.bind(autoScrollCheckBox.selectedProperty());
 
-                JFXButton exportLogsButton = new JFXButton(i18n("button.export"));
+                Button exportLogsButton = new Button(i18n("button.export"));
+                exportLogsButton.getStyleClass().add("md3-text-button");
                 exportLogsButton.setOnAction(e -> getSkinnable().onExportLogs());
 
-                JFXButton terminateButton = new JFXButton(i18n("logwindow.terminate_game"));
+                Button terminateButton = new Button(i18n("logwindow.terminate_game"));
+                terminateButton.getStyleClass().add("md3-text-button");
                 terminateButton.setOnAction(e -> getSkinnable().onTerminateGame());
 
                 SpinnerPane exportDumpPane = new SpinnerPane();
                 exportDumpPane.getStyleClass().add("small-spinner-pane");
-                JFXButton exportDumpButton = new JFXButton(i18n("logwindow.export_dump"));
+                Button exportDumpButton = new Button(i18n("logwindow.export_dump"));
+                exportDumpButton.getStyleClass().add("md3-text-button");
                 if (SystemUtils.supportJVMAttachment()) {
                     exportDumpButton.setOnAction(e -> getSkinnable().onExportDump(exportDumpPane));
                 } else {
@@ -398,7 +402,8 @@ public final class LogWindow extends Stage {
                 }
                 exportDumpPane.setContent(exportDumpButton);
 
-                JFXButton clearButton = new JFXButton(i18n("button.clear"));
+                Button clearButton = new Button(i18n("button.clear"));
+                clearButton.getStyleClass().add("md3-text-button");
                 clearButton.setOnAction(e -> getSkinnable().onClear());
                 hBox.getChildren().setAll(autoScrollCheckBox, exportLogsButton, terminateButton, exportDumpPane, clearButton);
 

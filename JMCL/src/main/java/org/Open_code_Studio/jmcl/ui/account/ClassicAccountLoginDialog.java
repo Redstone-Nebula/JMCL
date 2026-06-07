@@ -17,13 +17,13 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.control.Button;
 import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXProgressBar;
+import javafx.scene.control.PasswordField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.Open_code_Studio.jmcl.auth.AuthInfo;
@@ -46,16 +46,17 @@ public class ClassicAccountLoginDialog extends StackPane {
     private final Consumer<AuthInfo> success;
     private final Runnable failed;
 
-    private final JFXPasswordField txtPassword;
+    private final PasswordField txtPassword;
     private final Label lblCreationWarning = new Label();
-    private final JFXProgressBar progressBar;
+    private final ProgressBar progressBar;
 
     public ClassicAccountLoginDialog(ClassicAccount oldAccount, Consumer<AuthInfo> success, Runnable failed) {
         this.oldAccount = oldAccount;
         this.success = success;
         this.failed = failed;
 
-        progressBar = new JFXProgressBar();
+        progressBar = new ProgressBar();
+        progressBar.getStyleClass().add("md3-linear-progress");
         StackPane.setAlignment(progressBar, Pos.TOP_CENTER);
         progressBar.setVisible(false);
 
@@ -71,7 +72,7 @@ public class ClassicAccountLoginDialog extends StackPane {
 
             Label usernameLabel = new Label(oldAccount.getUsername());
 
-            txtPassword = new JFXPasswordField();
+            txtPassword = new PasswordField();
             txtPassword.setOnAction(e -> onAccept());
             txtPassword.getValidators().add(new RequiredValidator());
             txtPassword.setLabelFloat(true);
@@ -82,11 +83,11 @@ public class ClassicAccountLoginDialog extends StackPane {
         }
 
         {
-            JFXButton acceptButton = new JFXButton(i18n("button.ok"));
+            Button acceptButton = new Button(i18n("button.ok"));
             acceptButton.setOnAction(e -> onAccept());
             acceptButton.getStyleClass().add("dialog-accept");
 
-            JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
+            Button cancelButton = new Button(i18n("button.cancel"));
             cancelButton.setOnAction(e -> onCancel());
             cancelButton.getStyleClass().add("dialog-cancel");
 

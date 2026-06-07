@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
@@ -95,7 +95,7 @@ public final class JavaInstallPage extends WizardSinglePage {
 
         private final ComponentList componentList = new ComponentList();
 
-        private final JFXTextField nameField;
+        private final TextField nameField;
 
         private final Set<String> usedNames = new HashSet<>();
 
@@ -112,7 +112,7 @@ public final class JavaInstallPage extends WizardSinglePage {
                 {
                     namePane.setTitle(i18n("java.install.name"));
 
-                    nameField = new JFXTextField();
+                    nameField = new TextField();
                     nameField.textProperty().bindBidirectional(control.nameProperty);
                     FXUtils.setLimitWidth(nameField, 200);
                     namePane.setRight(nameField);
@@ -148,7 +148,7 @@ public final class JavaInstallPage extends WizardSinglePage {
 
                 BorderPane installPane = new BorderPane();
                 {
-                    JFXButton installButton = FXUtils.newRaisedButton(i18n("button.install"));
+                    Button installButton = FXUtils.newRaisedButton(i18n("button.install"));
                     installButton.setOnAction(e -> {
                         String name = control.nameProperty.get();
                         if (JavaManager.REPOSITORY.isInstalled(control.info.getPlatform(), name)) {

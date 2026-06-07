@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.control.Button;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -83,7 +83,7 @@ public class MenuUpDownButton extends Control {
             Node up = SVG.ARROW_DROP_UP.createIcon(16);
             Node down = SVG.ARROW_DROP_DOWN.createIcon(16);
 
-            JFXButton button = new JFXButton();
+            Button button = new Button();
             button.setGraphic(content);
             button.setOnAction(e -> {
                 control.selected.set(!control.isSelected());
