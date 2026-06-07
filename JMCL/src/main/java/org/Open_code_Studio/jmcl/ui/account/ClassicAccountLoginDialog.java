@@ -33,7 +33,6 @@ import org.Open_code_Studio.jmcl.setting.Accounts;
 import org.Open_code_Studio.jmcl.task.Schedulers;
 import org.Open_code_Studio.jmcl.task.Task;
 import org.Open_code_Studio.jmcl.ui.construct.DialogCloseEvent;
-import org.Open_code_Studio.jmcl.ui.construct.RequiredValidator;
 
 import java.util.function.Consumer;
 
@@ -74,8 +73,6 @@ public class ClassicAccountLoginDialog extends StackPane {
 
             txtPassword = new PasswordField();
             txtPassword.setOnAction(e -> onAccept());
-            txtPassword.getValidators().add(new RequiredValidator());
-            txtPassword.setLabelFloat(true);
             txtPassword.setPromptText(i18n("account.password"));
 
             body.getChildren().setAll(usernameLabel, txtPassword);

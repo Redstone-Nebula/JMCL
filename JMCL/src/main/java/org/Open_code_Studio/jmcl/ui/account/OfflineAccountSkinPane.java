@@ -112,8 +112,6 @@ public class OfflineAccountSkinPane extends StackPane {
         layout.setBody(pane);
 
         cslApiField.setPromptText(i18n("account.skin.type.csl_api.location.hint"));
-        cslApiField.setValidators(new URLValidator());
-        FXUtils.setValidateWhileTextChanged(cslApiField, true);
 
         skinItem.loadChildren(Arrays.asList(
                 new MultiFileItem.Option<>(i18n("message.default"), Skin.Type.DEFAULT),
@@ -170,7 +168,7 @@ public class OfflineAccountSkinPane extends StackPane {
             Skin.Type selectedType = skinItem.getSelectedData();
 
             if (selectedType == Skin.Type.CUSTOM_SKIN_LOADER_API) {
-                if (!cslApiField.validate()) {
+                if (cslApiField.getText().isEmpty()) {
                     pauseTransition.stop();
                     return;
                 }
@@ -243,7 +241,7 @@ public class OfflineAccountSkinPane extends StackPane {
 
         acceptButton.disableProperty().bind(
                 skinItem.selectedDataProperty().isEqualTo(Skin.Type.CUSTOM_SKIN_LOADER_API)
-                        .and(cslApiField.activeValidatorProperty().isNotNull()));
+                        .and(cslApiField.textProperty().isEmpty()));
 
         layout.setActions(littleSkinLink, acceptButton, cancelButton);
     }

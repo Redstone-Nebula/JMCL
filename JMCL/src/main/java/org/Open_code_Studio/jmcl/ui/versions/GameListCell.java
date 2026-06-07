@@ -17,14 +17,16 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXPopup;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -44,10 +46,10 @@ public final class GameListCell extends ListCell<GameListItem> {
     private final ImageContainer imageView;
     private final TwoLineListItem content;
 
-    private final JFXRadioButton chkSelected;
-    private final JFXButton btnUpgrade;
-    private final JFXButton btnLaunch;
-    private final JFXButton btnManage;
+    private final RadioButton chkSelected;
+    private final Button btnUpgrade;
+    private final Button btnLaunch;
+    private final Button btnManage;
 
     private final HBox right;
 
@@ -62,7 +64,7 @@ public final class GameListCell extends ListCell<GameListItem> {
         this.graphic = container;
 
         {
-            this.chkSelected = new JFXRadioButton() {
+            this.chkSelected = new RadioButton() {
                 @Override
                 public void fire() {
                     if (!isDisable() && !isSelected()) {

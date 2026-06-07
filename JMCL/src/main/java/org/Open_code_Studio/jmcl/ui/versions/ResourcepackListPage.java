@@ -153,7 +153,7 @@ public final class ResourcepackListPage extends ListPageBase<ResourcepackListPag
         }
 
         @Override
-        protected ListCell<ResourcepackInfoObject> createListCell(JFXListView<ResourcepackInfoObject> listView) {
+        protected ListCell<ResourcepackInfoObject> createListCell(ListView<ResourcepackInfoObject> listView) {
             return new ResourcepackListCell(listView, getSkinnable());
         }
     }

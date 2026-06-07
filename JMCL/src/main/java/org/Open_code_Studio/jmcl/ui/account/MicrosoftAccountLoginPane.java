@@ -239,9 +239,9 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
         }
 
         Hyperlink profileLink = new Hyperlink(i18n("account.methods.microsoft.profile"));
-        profileLink.setExternalLink("https://account.live.com/editprof.aspx");
+        profileLink.setOnAction(e -> FXUtils.openLink("https://account.live.com/editprof.aspx"));
         Hyperlink purchaseLink = new Hyperlink(i18n("account.methods.microsoft.purchase"));
-        purchaseLink.setExternalLink(YggdrasilService.PURCHASE_URL);
+        purchaseLink.setOnAction(e -> FXUtils.openLink(YggdrasilService.PURCHASE_URL));
 
         linkBox.getChildren().addAll(profileLink, purchaseLink);
         rootContainer.getChildren().add(linkBox);

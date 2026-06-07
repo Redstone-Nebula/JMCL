@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import com.jfoenix.controls.JFXListView;
+import javafx.scene.control.ListView;
 import javafx.beans.binding.DoubleBinding;
 import javafx.css.PseudoClass;
 import javafx.scene.control.ListCell;
@@ -31,7 +31,7 @@ public abstract class MDListCell<T> extends ListCell<T> {
     private final StackPane container = new StackPane();
     private final StackPane root = new StackPane();
 
-    public MDListCell(JFXListView<T> listView) {
+    public MDListCell(ListView<T> listView) {
 
         setText(null);
         setGraphic(null);

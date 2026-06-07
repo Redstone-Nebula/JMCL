@@ -20,8 +20,6 @@ package org.Open_code_Studio.jmcl.ui.export;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import com.jfoenix.controls.JFXSlider;
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
@@ -172,8 +170,6 @@ public final class ModpackInfoPage extends Control implements WizardPage {
     public static class ModpackInfoPageSkin extends SkinBase<ModpackInfoPage> {
         private ObservableList<Node> originList;
 
-        private final List<TextField> validatingFields = new ArrayList<>();
-
         public ModpackInfoPageSkin(ModpackInfoPage skinnable) {
             super(skinnable);
 
@@ -215,21 +211,19 @@ public final class ModpackInfoPage extends Control implements WizardPage {
 
 
                     list.getContent().addAll(
-                            createTextFieldLinePane(i18n("modpack.name"), skinnable.name, new RequiredValidator()),
-                            createTextFieldLinePane(i18n("archive.version"), skinnable.version, new RequiredValidator())
+                            createTextFieldLinePane(i18n("modpack.name"), skinnable.name),
+                            createTextFieldLinePane(i18n("archive.version"), skinnable.version)
                     );
 
                     if (skinnable.options.isRequireAuthor()) {
                         list.getContent().add(
-                                createTextFieldLinePane(i18n("archive.author"), skinnable.author, new RequiredValidator())
+                                createTextFieldLinePane(i18n("archive.author"), skinnable.author)
                         );
                     }
 
                     if (skinnable.options.isRequireFileApi()) {
                         list.getContent().add(createTextFieldLinePane(
-                                i18n("modpack.file_api"), skinnable.fileApi,
-                                skinnable.options.isValidateFileApi() ? new RequiredValidator() : null,
-                                new URLValidator(true)
+                                i18n("modpack.file_api"), skinnable.fileApi
                         ));
                     }
 
@@ -253,8 +247,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
 
                     if (skinnable.options.isRequireOrigins()) {
                         list.getContent().add(createTextFieldLinePane(
-                                i18n("modpack.origin.mcbbs"), skinnable.mcbbsThreadId,
-                                new NumberValidator(i18n("input.number"), true)
+                                i18n("modpack.origin.mcbbs"), skinnable.mcbbsThreadId
                         ));
                     }
 
@@ -288,9 +281,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
 
                             TextField txtMinMemory = new TextField();
                             FXUtils.bindInt(txtMinMemory, skinnable.minMemory);
-                            txtMinMemory.getValidators().add(new NumberValidator(i18n("input.number"), false));
                             FXUtils.setLimitWidth(txtMinMemory, 60);
-                            validatingFields.add(txtMinMemory);
 
                             lowerBoundPane.getChildren().setAll(label, slider, txtMinMemory, new Label("MiB"));
                         }
@@ -301,7 +292,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
 
                     {
                         VBox pane = new VBox(8);
-                        JFXTextArea area = new JFXTextArea();
+                        TextArea area = new TextArea();
                         area.textProperty().bindBidirectional(skinnable.description);
                         area.setMinHeight(400);
                         pane.getChildren().setAll(new Label(i18n("modpack.desc")), area);
@@ -367,12 +358,8 @@ public final class ModpackInfoPage extends Control implements WizardPage {
                     nextButton.setPrefWidth(100);
                     nextButton.setPrefHeight(40);
                     nextButton.disableProperty().bind(
-                            // Disable nextButton if any text of TextFields in validatingFields does not fulfill
-                            // our requirement.
-                            Bindings.createBooleanBinding(() -> validatingFields.stream()
-                                            .map(field -> !field.validate())
-                                            .reduce(false, (left, right) -> left || right),
-                                    validatingFields.stream().map(TextField::textProperty).toArray(StringProperty[]::new)));
+                            Bindings.createBooleanBinding(() -> skinnable.name.get().isEmpty(),
+                                    skinnable.name));
                     hbox.getChildren().add(nextButton);
                 }
             }
@@ -380,7 +367,7 @@ public final class ModpackInfoPage extends Control implements WizardPage {
             FXUtils.smoothScrolling(scroll);
         }
 
-        private LinePane createTextFieldLinePane(String title, StringProperty property, ValidatorBase... validators) {
+        private LinePane createTextFieldLinePane(String title, StringProperty property) {
             LinePane linePane = new LinePane();
             TextField textField = new TextField();
             textField.setMinWidth(500);
@@ -388,20 +375,6 @@ public final class ModpackInfoPage extends Control implements WizardPage {
             linePane.setTitle(title);
             linePane.setRight(textField);
             textField.textProperty().bindBidirectional(property);
-
-            boolean needValidation = false;
-            if (validators != null) {
-                for (ValidatorBase validator : validators) {
-                    if (validator != null) {
-                        needValidation = true;
-                        textField.getValidators().add(validator);
-                    }
-                }
-            }
-            if (needValidation) {
-                FXUtils.setValidateWhileTextChanged(textField, true);
-                validatingFields.add(textField);
-            }
 
             return linePane;
         }

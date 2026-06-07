@@ -24,8 +24,6 @@ import org.Open_code_Studio.jmcl.game.JMCLGameRepository;
 import org.Open_code_Studio.jmcl.ui.Controllers;
 import org.Open_code_Studio.jmcl.ui.InstallerItem;
 import org.Open_code_Studio.jmcl.ui.construct.MessageDialogPane;
-import org.Open_code_Studio.jmcl.ui.construct.RequiredValidator;
-import org.Open_code_Studio.jmcl.ui.construct.Validator;
 import org.Open_code_Studio.jmcl.ui.wizard.WizardController;
 import org.Open_code_Studio.jmcl.util.SettingsMap;
 import org.Open_code_Studio.jmcl.util.i18n.I18n;
@@ -40,11 +38,7 @@ public class InstallersPage extends AbstractInstallersPage {
     public InstallersPage(WizardController controller, JMCLGameRepository repository, String gameVersion, DownloadProvider downloadProvider) {
         super(controller, gameVersion, downloadProvider);
 
-        txtName.getValidators().addAll(
-                new RequiredValidator(),
-                new Validator(i18n("install.new_game.already_exists"), str -> !repository.versionIdConflicts(str)),
-                new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId));
-        installable.bind(createBooleanBinding(txtName::validate, txtName.textProperty()));
+        installable.bind(createBooleanBinding(() -> !txtName.getText().isBlank(), txtName.textProperty()));
 
         txtName.textProperty().addListener((obs, oldText, newText) -> isNameModifiedByUser = true);
     }

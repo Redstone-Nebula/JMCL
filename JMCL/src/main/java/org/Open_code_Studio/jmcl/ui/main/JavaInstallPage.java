@@ -19,6 +19,7 @@ package org.Open_code_Studio.jmcl.ui.main;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
@@ -116,18 +117,12 @@ public final class JavaInstallPage extends WizardSinglePage {
                     nameField.textProperty().bindBidirectional(control.nameProperty);
                     FXUtils.setLimitWidth(nameField, 200);
                     namePane.setRight(nameField);
-                    nameField.setValidators(
-                            new RequiredValidator(),
-                            new Validator(i18n("java.install.warning.invalid_character"),
-                                    text -> !text.startsWith(JMCLJavaRepository.MOJANG_JAVA_PREFIX) && NAME_PATTERN.matcher(text).matches()),
-                            new Validator(i18n("java.install.failed.exists"), text -> !usedNames.contains(text))
-                    );
+                    // JFoenix TextField validators removed
                     String defaultName = control.nameProperty.get();
                     if (JavaManager.REPOSITORY.isInstalled(control.info.getPlatform(), defaultName)) {
                         usedNames.add(defaultName);
                     }
-                    nameField.textProperty().addListener(o -> nameField.validate());
-                    nameField.validate();
+                    // Text change listener and initial validation removed
 
                     componentList.getContent().add(namePane);
                 }
@@ -154,11 +149,11 @@ public final class JavaInstallPage extends WizardSinglePage {
                         if (JavaManager.REPOSITORY.isInstalled(control.info.getPlatform(), name)) {
                             Controllers.dialog(i18n("java.install.failed.exists"), null, MessageDialogPane.MessageType.WARNING);
                             usedNames.add(name);
-                            nameField.validate();
+                            // Validation removed (dialog already shown above)
                         } else
                             control.onFinish.run();
                     });
-                    installButton.disableProperty().bind(nameField.activeValidatorProperty().isNotNull());
+                    installButton.disableProperty().bind(Bindings.createBooleanBinding(() -> nameField.getText().isEmpty(), nameField.textProperty()));
                     installPane.setRight(installButton);
 
                     componentList.getContent().add(installPane);

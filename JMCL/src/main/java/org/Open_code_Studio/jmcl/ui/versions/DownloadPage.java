@@ -19,7 +19,6 @@ package org.Open_code_Studio.jmcl.ui.versions;
 
 import com.jfoenix.controls.JFXDialogLayout;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -233,13 +232,13 @@ public class DownloadPage extends Control implements DecoratorPage {
                 descriptionPane.getChildren().add(content);
 
                 if (getSkinnable().mod != null) {
-                    Hyperlink openMcmodButton = new Hyperlink(i18n("mods.mcmod"));
+                    JFXHyperlink openMcmodButton = new JFXHyperlink(i18n("mods.mcmod"));
                     openMcmodButton.setExternalLink(getSkinnable().translations.getMcmodUrl(getSkinnable().mod));
                     descriptionPane.getChildren().add(openMcmodButton);
                     openMcmodButton.setMinWidth(Region.USE_PREF_SIZE);
                 }
 
-                Hyperlink openUrlButton = new Hyperlink(control.page.getLocalizedOfficialPage());
+                JFXHyperlink openUrlButton = new JFXHyperlink(control.page.getLocalizedOfficialPage());
                 openUrlButton.setExternalLink(getSkinnable().addon.getPageUrl());
                 descriptionPane.getChildren().add(openUrlButton);
                 openUrlButton.setMinWidth(Region.USE_PREF_SIZE);

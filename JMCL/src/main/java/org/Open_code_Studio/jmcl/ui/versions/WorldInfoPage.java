@@ -484,7 +484,6 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
             }
         });
         FXUtils.setValidateWhileTextChanged(jfxTextField, true);
-        jfxTextField.setValidators(new NumberValidator(i18n("input.number"), true));
     }
 
     private void bindTagAndTextField(FloatTag floatTag, TextField jfxTextField) {

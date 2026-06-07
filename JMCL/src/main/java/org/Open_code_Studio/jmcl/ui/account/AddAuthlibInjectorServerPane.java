@@ -17,6 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
+import javafx.beans.binding.Bindings;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import com.jfoenix.controls.JFXDialogLayout;
@@ -88,9 +89,8 @@ public final class AddAuthlibInjectorServerPane extends TransitionPane implement
             addServerPane.setBody(txtServerUrl);
             addServerPane.setActions(lblCreationWarning, actions);
 
-            txtServerUrl.getValidators().addAll(new RequiredValidator(), new URLValidator());
             FXUtils.setValidateWhileTextChanged(txtServerUrl, true);
-            btnAddNext.disableProperty().bind(txtServerUrl.activeValidatorProperty().isNotNull());
+            btnAddNext.disableProperty().bind(Bindings.createBooleanBinding(() -> txtServerUrl.getText().isEmpty(), txtServerUrl.textProperty()));
         }
 
         confirmServerPane = new JFXDialogLayout();

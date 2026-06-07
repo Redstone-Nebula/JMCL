@@ -18,15 +18,11 @@
 package org.Open_code_Studio.jmcl.ui.download;
 
 import javafx.application.Platform;
-import org.Open_code_Studio.jmcl.game.JMCLGameRepository;
 import org.Open_code_Studio.jmcl.mod.Modpack;
 import org.Open_code_Studio.jmcl.mod.server.ServerModpackManifest;
-import org.Open_code_Studio.jmcl.setting.Profile;
 import org.Open_code_Studio.jmcl.ui.Controllers;
 import org.Open_code_Studio.jmcl.ui.WebPage;
 import org.Open_code_Studio.jmcl.ui.construct.MessageDialogPane;
-import org.Open_code_Studio.jmcl.ui.construct.RequiredValidator;
-import org.Open_code_Studio.jmcl.ui.construct.Validator;
 import org.Open_code_Studio.jmcl.ui.wizard.WizardController;
 import org.Open_code_Studio.jmcl.util.SettingsMap;
 import org.Open_code_Studio.jmcl.util.StringUtils;
@@ -57,7 +53,6 @@ public final class RemoteModpackPage extends ModpackPage {
         versionProperty.set(manifest.getVersion());
         authorProperty.set(manifest.getAuthor());
 
-        Profile profile = controller.getSettings().get(ModpackPage.PROFILE);
         String name = controller.getSettings().get(MODPACK_NAME);
         if (name != null) {
             txtModpackName.setText(name);
@@ -65,10 +60,6 @@ public final class RemoteModpackPage extends ModpackPage {
         } else {
             // trim: https://github.com/Open-code-Studio/JMCL/issues/962
             txtModpackName.setText(manifest.getName().trim());
-            txtModpackName.getValidators().addAll(
-                    new RequiredValidator(),
-                    new Validator(i18n("install.new_game.already_exists"), str -> !profile.getRepository().versionIdConflicts(str)),
-                    new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId));
         }
 
         btnDescription.setVisible(StringUtils.isNotBlank(manifest.getDescription()));
@@ -80,7 +71,7 @@ public final class RemoteModpackPage extends ModpackPage {
     }
 
     protected void onInstall() {
-        if (!txtModpackName.validate()) return;
+        if (txtModpackName.getText().isEmpty()) return;
         controller.getSettings().put(MODPACK_NAME, txtModpackName.getText());
         controller.onFinish();
     }

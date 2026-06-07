@@ -19,8 +19,7 @@ package org.Open_code_Studio.jmcl.ui.profile;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import com.jfoenix.validation.RequiredFieldValidator;
-import com.jfoenix.validation.base.ValidatorBase;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
@@ -85,23 +84,9 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
 
                         txtProfileName = new TextField();
                         profileNamePane.setRight(txtProfileName);
-                        RequiredFieldValidator validator = new RequiredFieldValidator();
-                        validator.setMessage(i18n("input.not_empty"));
-                        txtProfileName.getValidators().add(validator);
                         BorderPane.setMargin(txtProfileName, new Insets(8, 0, 8, 0));
 
                         txtProfileName.setText(profileDisplayName);
-                        txtProfileName.getValidators().add(new ValidatorBase() {
-                            {
-                                setMessage(i18n("profile.already_exists"));
-                            }
-
-                            @Override
-                            protected void eval() {
-                                TextField control = (TextField) this.getSrcControl();
-                                hasErrors.set(Profiles.getProfiles().stream().anyMatch(profile -> profile.getName().equals(control.getText())));
-                            }
-                        });
                     }
 
                     gameDir = new LineFileChooserButton();
@@ -140,7 +125,7 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
             saveButton.setPrefSize(100, 40);
             saveButton.setOnAction(e -> onSave());
             saveButton.disableProperty().bind(Bindings.createBooleanBinding(
-                    () -> !txtProfileName.validate() || StringUtils.isBlank(getLocation()),
+                    () -> txtProfileName.getText().isEmpty() || StringUtils.isBlank(getLocation()),
                     txtProfileName.textProperty(), location));
         }
 

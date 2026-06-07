@@ -17,10 +17,10 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import com.jfoenix.controls.JFXButton;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import org.Open_code_Studio.jmcl.download.*;
 import org.Open_code_Studio.jmcl.download.game.GameRemoteVersion;
 import org.Open_code_Studio.jmcl.mod.RemoteMod;
@@ -93,7 +93,7 @@ public class DownloadPage extends DecoratorAnimatedPage implements DecoratorPage
                 Versions.downloadModpackImpl(downloadProvider, profile, uploadVersion, mod, file);
             }, false);
 
-            JFXButton installLocalModpackButton = FXUtils.newRaisedButton(i18n("install.modpack"));
+            Button installLocalModpackButton = FXUtils.newRaisedButton(i18n("install.modpack"));
             installLocalModpackButton.setOnAction(e -> Versions.importModpack());
 
             page.getActions().add(installLocalModpackButton);
@@ -171,7 +171,7 @@ public class DownloadPage extends DecoratorAnimatedPage implements DecoratorPage
                 }
             }), i18n("message.downloading"), TaskCancellationAction.NORMAL);
             handler.resolve();
-        }, file.getFile().getFilename(), new Validator(i18n("install.new_game.malformed"), FileUtils::isNameValidForJar), new Validator(i18n("profile.already_exists"), (it) -> !finalExistingFiles.contains(it)));
+        }, file.getFile().getFilename());
 
     }
 

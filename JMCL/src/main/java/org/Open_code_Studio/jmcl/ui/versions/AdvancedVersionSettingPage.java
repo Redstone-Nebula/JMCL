@@ -160,7 +160,6 @@ public final class AdvancedVersionSettingPage extends StackPane implements Decor
             txtMetaspace.setPromptText(i18n("settings.advanced.java_permanent_generation_space.prompt"));
             txtMetaspace.getStyleClass().add("fit-width");
             FXUtils.setValidateWhileTextChanged(txtMetaspace, true);
-            txtMetaspace.setValidators(new NumberValidator(i18n("input.number"), true));
             pane.addRow(1, new Label(i18n("settings.advanced.java_permanent_generation_space")), txtMetaspace);
 
             txtEnvironmentVariables = new TextField();

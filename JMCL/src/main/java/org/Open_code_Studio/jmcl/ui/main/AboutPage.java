@@ -18,8 +18,8 @@
 package org.Open_code_Studio.jmcl.ui.main;
 
 import com.google.gson.*;
-import com.jfoenix.controls.JFXButton;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -140,7 +140,7 @@ public final class AboutPage extends SpinnerPane {
             scrollPane.setFitToWidth(true);
             scrollPane.setPrefSize(620, 520);
 
-            JFXButton closeButton = FXUtils.newToggleButton4(SVG.CLOSE);
+            Button closeButton = FXUtils.newToggleButton4(SVG.CLOSE);
             closeButton.getStyleClass().add("license-close-button");
 
             HBox header = new HBox(closeButton);

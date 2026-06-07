@@ -18,9 +18,7 @@
 package org.Open_code_Studio.jmcl.ui.account;
 
 import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.validation.base.ValidatorBase;
 import javafx.application.Platform;
-import javafx.beans.NamedArg;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -35,7 +33,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.*;
 import org.Open_code_Studio.jmcl.auth.AccountFactory;
 import org.Open_code_Studio.jmcl.auth.CharacterSelector;
@@ -387,9 +384,6 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 onChangeAndOperate(cboServers.valueProperty(), server -> {
                     this.server = server;
                     linksContainer.getChildren().setAll(createHyperlinks(server));
-
-                    if (txtUsername != null)
-                        txtUsername.validate();
                 });
                 linksContainer.setMinWidth(USE_PREF_SIZE);
 
@@ -410,15 +404,6 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 add(lblUsername, 0, rowIndex);
 
                 txtUsername = new TextField();
-                txtUsername.setValidators(
-                        new RequiredValidator(),
-                        new Validator(i18n("input.email"), username -> {
-                            if (requiresEmailAsUsername()) {
-                                return username.contains("@");
-                            } else {
-                                return true;
-                            }
-                        }));
                 setValidateWhileTextChanged(txtUsername, true);
                 txtUsername.setOnAction(e -> onAction.run());
                 add(txtUsername, 1, rowIndex);
@@ -432,7 +417,6 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 add(lblPassword, 0, rowIndex);
 
                 txtPassword = new PasswordField();
-                txtPassword.setValidators(new RequiredValidator());
                 setValidateWhileTextChanged(txtPassword, true);
                 txtPassword.setOnAction(e -> onAction.run());
                 add(txtPassword, 1, rowIndex);
@@ -445,7 +429,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 FXUtils.installFastTooltip(txtUsername, i18n("account.methods.offline.name.special_characters"));
 
                 Hyperlink purchaseLink = new Hyperlink(i18n("account.methods.microsoft.purchase"));
-                purchaseLink.setExternalLink(YggdrasilService.PURCHASE_URL);
+                purchaseLink.setOnAction(e -> FXUtils.openLink(YggdrasilService.PURCHASE_URL));
                 HBox linkPane = new HBox(purchaseLink);
                 GridPane.setColumnSpan(linkPane, 2);
                 add(linkPane, 0, rowIndex);
@@ -470,7 +454,6 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 txtUUID = new TextField();
                 txtUUID.managedProperty().bind(advancedButton.selectedProperty());
                 txtUUID.visibleProperty().bind(advancedButton.selectedProperty());
-                txtUUID.setValidators(new UUIDValidator());
                 txtUUID.promptTextProperty().bind(BindingMapping.of(txtUsername.textProperty()).map(name -> OfflineAccountFactory.getUUIDFromUserName(name).toString()));
                 txtUUID.setOnAction(e -> onAction.run());
                 add(txtUUID, 1, rowIndex);
@@ -503,12 +486,11 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
                 protected boolean computeValue() {
                     if (cboServers != null && cboServers.getValue() == null)
                         return false;
-                    if (txtUsername != null && !txtUsername.validate())
+                    if (txtUsername != null && txtUsername.getText().isEmpty())
                         return false;
-                    if (txtPassword != null && !txtPassword.validate())
+                    if (txtPassword != null && txtPassword.getText().isEmpty())
                         return false;
-                    if (txtUUID != null && !txtUUID.validate())
-                        return false;
+                    // UUID is optional — no required-field validation needed
                     return true;
                 }
             };
@@ -621,39 +603,6 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
     public void onDialogShown() {
         if (detailsPane instanceof AccountDetailsInputPane) {
             ((AccountDetailsInputPane) detailsPane).focus();
-        }
-    }
-
-    private static class UUIDValidator extends ValidatorBase {
-
-        public UUIDValidator() {
-            this(i18n("account.methods.offline.uuid.malformed"));
-        }
-
-        public UUIDValidator(@NamedArg("message") String message) {
-            super(message);
-        }
-
-        @Override
-        protected void eval() {
-            if (srcControl.get() instanceof TextInputControl) {
-                evalTextInputField();
-            }
-        }
-
-        private void evalTextInputField() {
-            TextInputControl textField = ((TextInputControl) srcControl.get());
-            if (StringUtils.isBlank(textField.getText())) {
-                hasErrors.set(false);
-                return;
-            }
-
-            try {
-                UUIDTypeAdapter.fromString(textField.getText());
-                hasErrors.set(false);
-            } catch (IllegalArgumentException ignored) {
-                hasErrors.set(true);
-            }
         }
     }
 
