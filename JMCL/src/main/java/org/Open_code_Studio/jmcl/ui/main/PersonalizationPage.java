@@ -23,7 +23,6 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -131,7 +130,7 @@ public class PersonalizationPage extends StackPane {
                                 .fallbackTo(12.0)
                                 .asPredicate(Validator.addTo(txtLogFontSize)));
 
-                        Button clearButton = FXUtils.newToggleButton4(SVG.RESTORE);
+                        JFXButton clearButton = FXUtils.newToggleButton4(SVG.RESTORE);
                         clearButton.setOnAction(e -> cboLogFont.setValue(null));
 
                         FXUtils.installFastTooltip(clearButton, i18n("button.reset"));
@@ -179,7 +178,7 @@ public class PersonalizationPage extends StackPane {
                         cboFont.setValue(config().getLauncherFontFamily());
                         FXUtils.onChange(cboFont.valueProperty(), FontManager::setFontFamily);
 
-                        Button clearButton = FXUtils.newToggleButton4(SVG.RESTORE);
+                        JFXButton clearButton = FXUtils.newToggleButton4(SVG.RESTORE);
                         clearButton.setOnAction(e -> cboFont.setValue(null));
 
                         FXUtils.installFastTooltip(clearButton, i18n("button.reset"));

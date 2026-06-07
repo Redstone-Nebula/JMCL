@@ -21,15 +21,20 @@ import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.stage.FileChooser;
+import org.Open_code_Studio.jmcl.game.JMCLGameRepository;
 import org.Open_code_Studio.jmcl.game.ManuallyCreatedModpackException;
 import org.Open_code_Studio.jmcl.game.ModpackHelper;
 import org.Open_code_Studio.jmcl.mod.Modpack;
 import org.Open_code_Studio.jmcl.setting.Profile;
+import org.Open_code_Studio.jmcl.setting.Profiles;
 import org.Open_code_Studio.jmcl.task.Schedulers;
 import org.Open_code_Studio.jmcl.task.Task;
 import org.Open_code_Studio.jmcl.ui.Controllers;
+import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.ui.WebPage;
 import org.Open_code_Studio.jmcl.ui.construct.MessageDialogPane;
+import org.Open_code_Studio.jmcl.ui.construct.RequiredValidator;
+import org.Open_code_Studio.jmcl.ui.construct.Validator;
 import org.Open_code_Studio.jmcl.ui.wizard.WizardController;
 import org.Open_code_Studio.jmcl.util.SettingsMap;
 import org.Open_code_Studio.jmcl.util.StringUtils;
@@ -57,6 +62,20 @@ public final class LocalModpackPage extends ModpackPage {
         if (name != null) {
             txtModpackName.setText(name);
             txtModpackName.setDisable(true);
+        } else {
+            FXUtils.onChangeAndOperate(installAsVersion, installAsVersion -> {
+                if (installAsVersion) {
+                    txtModpackName.getValidators().setAll(
+                            new RequiredValidator(),
+                            new Validator(i18n("install.new_game.already_exists"), str -> !profile.getRepository().versionIdConflicts(str)),
+                            new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId));
+                } else {
+                    txtModpackName.getValidators().setAll(
+                            new RequiredValidator(),
+                            new Validator(i18n("install.new_game.already_exists"), str -> !ModpackHelper.isExternalGameNameConflicts(str) && Profiles.getProfiles().stream().noneMatch(p -> p.getName().equals(str))),
+                            new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId));
+                }
+            });
         }
 
         btnDescription.setVisible(false);

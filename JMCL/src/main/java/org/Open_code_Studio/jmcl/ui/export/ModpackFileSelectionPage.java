@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.export;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTreeView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -76,7 +76,7 @@ public final class ModpackFileSelectionPage extends BorderPane implements Wizard
         nextPane.setPadding(new Insets(16, 16, 16, 0));
         nextPane.setAlignment(Pos.CENTER_RIGHT);
         {
-            Button btnNext = FXUtils.newRaisedButton(i18n("wizard.next"));
+            JFXButton btnNext = FXUtils.newRaisedButton(i18n("wizard.next"));
             btnNext.setPrefSize(100, 40);
             btnNext.setOnAction(e -> onNext());
 
@@ -145,7 +145,7 @@ public final class ModpackFileSelectionPage extends BorderPane implements Wizard
         }
 
         HBox graphic = new HBox();
-        CheckBox checkBox = new CheckBox();
+        JFXCheckBox checkBox = new JFXCheckBox();
         checkBox.selectedProperty().bindBidirectional(node.selectedProperty());
         checkBox.indeterminateProperty().bindBidirectional(node.indeterminateProperty());
         graphic.getChildren().add(checkBox);

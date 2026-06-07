@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXButton;
 import javafx.beans.DefaultProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -50,10 +50,10 @@ public final class ImagePickerItem extends BorderPane {
         imageContainer = new ImageContainer(32);
         imageContainer.setSmooth(false);
 
-        Button selectButton = FXUtils.newToggleButton4(SVG.EDIT, 20);
+        JFXButton selectButton = FXUtils.newToggleButton4(SVG.EDIT, 20);
         selectButton.onActionProperty().bind(onSelectButtonClicked);
 
-        Button deleteButton = FXUtils.newToggleButton4(SVG.RESTORE, 20);
+        JFXButton deleteButton = FXUtils.newToggleButton4(SVG.RESTORE, 20);
         deleteButton.onActionProperty().bind(onDeleteButtonClicked);
 
         FXUtils.installFastTooltip(selectButton, i18n("button.edit"));

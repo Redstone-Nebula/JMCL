@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
@@ -45,7 +45,7 @@ public class TaskExecutorDialogPane extends BorderPane {
 
     private final Label lblTitle;
     private final Label lblProgress;
-    private final Button btnCancel;
+    private final JFXButton btnCancel;
     private final TaskListPane taskListPane;
 
     public TaskExecutorDialogPane(@NotNull TaskCancellationAction cancel) {
@@ -74,7 +74,7 @@ public class TaskExecutorDialogPane extends BorderPane {
             lblProgress = new Label();
             bottom.setLeft(lblProgress);
 
-            btnCancel = new Button(i18n("button.cancel"));
+            btnCancel = new JFXButton(i18n("button.cancel"));
             btnCancel.getStyleClass().add("dialog-cancel");
             bottom.setRight(btnCancel);
         }

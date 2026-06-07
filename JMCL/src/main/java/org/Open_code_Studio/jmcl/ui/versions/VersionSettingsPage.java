@@ -26,7 +26,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Toggle;
@@ -169,7 +168,7 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
             enableSpecificCheckBox.setText(i18n("settings.type.special.enable"));
             BorderPane.setAlignment(enableSpecificCheckBox, Pos.CENTER_RIGHT);
 
-            Button editGlobalSettingsButton = FXUtils.newRaisedButton(i18n("settings.type.global.edit"));
+            JFXButton editGlobalSettingsButton = FXUtils.newRaisedButton(i18n("settings.type.global.edit"));
             settingsTypePane.setRight(editGlobalSettingsButton);
             editGlobalSettingsButton.disableProperty().bind(enableSpecificCheckBox.selectedProperty());
             BorderPane.setAlignment(editGlobalSettingsButton, Pos.CENTER_RIGHT);
@@ -202,6 +201,7 @@ public final class VersionSettingsPage extends StackPane implements DecoratorPag
             javaSublist.setHasSubtitle(true);
             javaAutoDeterminedOption = new MultiFileItem.Option<>(i18n("settings.game.java_directory.auto"), pair(JavaVersionType.AUTO, null));
             javaVersionOption = new MultiFileItem.StringOption<>(i18n("settings.game.java_directory.version"), pair(JavaVersionType.VERSION, null));
+            javaVersionOption.setValidators(new NumberValidator(true));
             FXUtils.setLimitWidth(javaVersionOption.getCustomField(), 40);
             javaCustomOption = new MultiFileItem.FileOption<Pair<JavaVersionType, JavaRuntime>>(i18n("settings.custom"), pair(JavaVersionType.CUSTOM, null))
                     .setChooserTitle(i18n("settings.game.java_directory.choose"));

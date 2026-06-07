@@ -17,9 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.beans.binding.Bindings;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
@@ -96,7 +95,7 @@ public final class JavaInstallPage extends WizardSinglePage {
 
         private final ComponentList componentList = new ComponentList();
 
-        private final TextField nameField;
+        private final JFXTextField nameField;
 
         private final Set<String> usedNames = new HashSet<>();
 
@@ -113,16 +112,22 @@ public final class JavaInstallPage extends WizardSinglePage {
                 {
                     namePane.setTitle(i18n("java.install.name"));
 
-                    nameField = new TextField();
+                    nameField = new JFXTextField();
                     nameField.textProperty().bindBidirectional(control.nameProperty);
                     FXUtils.setLimitWidth(nameField, 200);
                     namePane.setRight(nameField);
-                    // JFoenix TextField validators removed
+                    nameField.setValidators(
+                            new RequiredValidator(),
+                            new Validator(i18n("java.install.warning.invalid_character"),
+                                    text -> !text.startsWith(JMCLJavaRepository.MOJANG_JAVA_PREFIX) && NAME_PATTERN.matcher(text).matches()),
+                            new Validator(i18n("java.install.failed.exists"), text -> !usedNames.contains(text))
+                    );
                     String defaultName = control.nameProperty.get();
                     if (JavaManager.REPOSITORY.isInstalled(control.info.getPlatform(), defaultName)) {
                         usedNames.add(defaultName);
                     }
-                    // Text change listener and initial validation removed
+                    nameField.textProperty().addListener(o -> nameField.validate());
+                    nameField.validate();
 
                     componentList.getContent().add(namePane);
                 }
@@ -143,17 +148,17 @@ public final class JavaInstallPage extends WizardSinglePage {
 
                 BorderPane installPane = new BorderPane();
                 {
-                    Button installButton = FXUtils.newRaisedButton(i18n("button.install"));
+                    JFXButton installButton = FXUtils.newRaisedButton(i18n("button.install"));
                     installButton.setOnAction(e -> {
                         String name = control.nameProperty.get();
                         if (JavaManager.REPOSITORY.isInstalled(control.info.getPlatform(), name)) {
                             Controllers.dialog(i18n("java.install.failed.exists"), null, MessageDialogPane.MessageType.WARNING);
                             usedNames.add(name);
-                            // Validation removed (dialog already shown above)
+                            nameField.validate();
                         } else
                             control.onFinish.run();
                     });
-                    installButton.disableProperty().bind(Bindings.createBooleanBinding(() -> nameField.getText().isEmpty(), nameField.textProperty()));
+                    installButton.disableProperty().bind(nameField.activeValidatorProperty().isNotNull());
                     installPane.setRight(installButton);
 
                     componentList.getContent().add(installPane);

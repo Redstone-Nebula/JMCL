@@ -19,8 +19,9 @@ package org.Open_code_Studio.jmcl.ui.construct;
 
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.property.*;
-import javafx.scene.control.TextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -190,13 +191,13 @@ public final class MultiFileItem<T> extends VBox {
     }
 
     public static final class StringOption<T> extends Option<T> {
-        private final TextField customField = new TextField();
+        private final JFXTextField customField = new JFXTextField();
 
         public StringOption(String title, T data) {
             super(title, data);
         }
 
-        public TextField getCustomField() {
+        public JFXTextField getCustomField() {
             return customField;
         }
 
@@ -217,6 +218,11 @@ public final class MultiFileItem<T> extends VBox {
             return this;
         }
 
+        public StringOption<T> setValidators(ValidatorBase... validators) {
+            customField.setValidators(validators);
+            return this;
+        }
+
         @Override
         protected Node createItem(ToggleGroup group) {
             BorderPane pane = new BorderPane();
@@ -231,6 +237,10 @@ public final class MultiFileItem<T> extends VBox {
 
             BorderPane.setAlignment(customField, Pos.CENTER_RIGHT);
             customField.disableProperty().bind(left.selectedProperty().not());
+
+            if (!customField.getValidators().isEmpty()) {
+                FXUtils.setValidateWhileTextChanged(customField, true);
+            }
 
             pane.setRight(customField);
 

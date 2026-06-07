@@ -17,8 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXSpinner;
 import io.nayuki.qrcodegen.QrCode;
@@ -72,7 +71,7 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
     private TaskExecutor browserTaskExecutor;
     private TaskExecutor deviceTaskExecutor;
 
-    private final Button btnLogin;
+    private final JFXButton btnLogin;
     private final SpinnerPane loginButtonSpinner;
 
     public MicrosoftAccountLoginPane() {
@@ -101,14 +100,14 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
 
         onEscPressed(this, this::onCancel);
 
-        btnLogin = new Button(i18n("account.login"));
+        btnLogin = new JFXButton(i18n("account.login"));
         btnLogin.getStyleClass().add("dialog-accept");
 
         loginButtonSpinner = new SpinnerPane();
         loginButtonSpinner.getStyleClass().add("small-spinner-pane");
         loginButtonSpinner.setContent(btnLogin);
 
-        Button btnCancel = new Button(i18n("button.cancel"));
+        JFXButton btnCancel = new JFXButton(i18n("button.cancel"));
         btnCancel.getStyleClass().add("dialog-cancel");
         btnCancel.setOnAction(e -> onCancel());
 
@@ -229,19 +228,19 @@ public class MicrosoftAccountLoginPane extends JFXDialogLayout implements Dialog
         linkBox.setPrefWrapLength(500);
 
         if (currentStep instanceof Step.Init || currentStep instanceof Step.StartAuthorizationCodeLogin || currentStep instanceof Step.WaitForOpenBrowser) {
-            Hyperlink useQrCode = new Hyperlink(i18n("account.methods.microsoft.methods.device"));
+            JFXHyperlink useQrCode = new JFXHyperlink(i18n("account.methods.microsoft.methods.device"));
             useQrCode.setOnAction(e -> this.step.set(new Step.StartDeviceCodeLogin()));
             linkBox.getChildren().add(useQrCode);
         } else if (currentStep instanceof Step.StartDeviceCodeLogin || currentStep instanceof Step.WaitForScanQrCode) {
-            Hyperlink userBrowser = new Hyperlink(i18n("account.methods.microsoft.methods.browser"));
+            JFXHyperlink userBrowser = new JFXHyperlink(i18n("account.methods.microsoft.methods.browser"));
             userBrowser.setOnAction(e -> this.step.set(new Step.StartAuthorizationCodeLogin()));
             linkBox.getChildren().add(userBrowser);
         }
 
-        Hyperlink profileLink = new Hyperlink(i18n("account.methods.microsoft.profile"));
-        profileLink.setOnAction(e -> FXUtils.openLink("https://account.live.com/editprof.aspx"));
-        Hyperlink purchaseLink = new Hyperlink(i18n("account.methods.microsoft.purchase"));
-        purchaseLink.setOnAction(e -> FXUtils.openLink(YggdrasilService.PURCHASE_URL));
+        JFXHyperlink profileLink = new JFXHyperlink(i18n("account.methods.microsoft.profile"));
+        profileLink.setExternalLink("https://account.live.com/editprof.aspx");
+        JFXHyperlink purchaseLink = new JFXHyperlink(i18n("account.methods.microsoft.purchase"));
+        purchaseLink.setExternalLink(YggdrasilService.PURCHASE_URL);
 
         linkBox.getChildren().addAll(profileLink, purchaseLink);
         rootContainer.getChildren().add(linkBox);

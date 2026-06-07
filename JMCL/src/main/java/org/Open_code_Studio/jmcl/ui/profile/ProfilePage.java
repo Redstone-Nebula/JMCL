@@ -17,9 +17,10 @@
  */
 package org.Open_code_Studio.jmcl.ui.profile;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import com.jfoenix.validation.base.ValidatorBase;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
@@ -49,7 +50,7 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
     private final ReadOnlyObjectWrapper<State> state = new ReadOnlyObjectWrapper<>();
     private final StringProperty location;
     private final Profile profile;
-    private final TextField txtProfileName;
+    private final JFXTextField txtProfileName;
     private final LineFileChooserButton gameDir;
     private final LineToggleButton toggleUseRelativePath;
 
@@ -82,11 +83,25 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
                         profileNamePane.setLeft(label);
                         BorderPane.setAlignment(label, Pos.CENTER_LEFT);
 
-                        txtProfileName = new TextField();
+                        txtProfileName = new JFXTextField();
                         profileNamePane.setRight(txtProfileName);
+                        RequiredFieldValidator validator = new RequiredFieldValidator();
+                        validator.setMessage(i18n("input.not_empty"));
+                        txtProfileName.getValidators().add(validator);
                         BorderPane.setMargin(txtProfileName, new Insets(8, 0, 8, 0));
 
                         txtProfileName.setText(profileDisplayName);
+                        txtProfileName.getValidators().add(new ValidatorBase() {
+                            {
+                                setMessage(i18n("profile.already_exists"));
+                            }
+
+                            @Override
+                            protected void eval() {
+                                JFXTextField control = (JFXTextField) this.getSrcControl();
+                                hasErrors.set(Profiles.getProfiles().stream().anyMatch(profile -> profile.getName().equals(control.getText())));
+                            }
+                        });
                     }
 
                     gameDir = new LineFileChooserButton();
@@ -118,14 +133,14 @@ public final class ProfilePage extends BorderPane implements DecoratorPage {
         savePane.setStyle("-fx-padding: 20;");
         StackPane.setAlignment(savePane, Pos.BOTTOM_RIGHT);
         {
-            Button saveButton = FXUtils.newRaisedButton(i18n("button.save"));
+            JFXButton saveButton = FXUtils.newRaisedButton(i18n("button.save"));
             savePane.setRight(saveButton);
             BorderPane.setAlignment(savePane, Pos.BOTTOM_RIGHT);
             StackPane.setAlignment(saveButton, Pos.BOTTOM_RIGHT);
             saveButton.setPrefSize(100, 40);
             saveButton.setOnAction(e -> onSave());
             saveButton.disableProperty().bind(Bindings.createBooleanBinding(
-                    () -> txtProfileName.getText().isEmpty() || StringUtils.isBlank(getLocation()),
+                    () -> !txtProfileName.validate() || StringUtils.isBlank(getLocation()),
                     txtProfileName.textProperty(), location));
         }
 

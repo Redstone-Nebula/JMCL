@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -202,7 +202,7 @@ public final class JavaManagementPage extends ListPageBase<JavaRuntime> {
             }
             res.add(createToolbarButton2(i18n("java.add"), SVG.ADD, skinnable::onAddJava));
 
-            Button disableJava = createToolbarButton2(i18n("java.disabled.management"), SVG.FORMAT_LIST_BULLETED, skinnable::onShowRestoreJavaPage);
+            JFXButton disableJava = createToolbarButton2(i18n("java.disabled.management"), SVG.FORMAT_LIST_BULLETED, skinnable::onShowRestoreJavaPage);
             disableJava.disableProperty().bind(Bindings.isEmpty(ConfigHolder.globalConfig().getDisabledJava()));
             res.add(disableJava);
 
@@ -210,7 +210,7 @@ public final class JavaManagementPage extends ListPageBase<JavaRuntime> {
         }
 
         @Override
-        protected ListCell<JavaRuntime> createListCell(ListView<JavaRuntime> listView) {
+        protected ListCell<JavaRuntime> createListCell(JFXListView<JavaRuntime> listView) {
             return new JavaItemCell(listView);
         }
     }
@@ -223,7 +223,7 @@ public final class JavaManagementPage extends ListPageBase<JavaRuntime> {
         private final StackPane removeIconPane;
         private final Tooltip removeTooltip = new Tooltip();
 
-        JavaItemCell(ListView<JavaRuntime> listView) {
+        JavaItemCell(JFXListView<JavaRuntime> listView) {
             BorderPane root = new BorderPane();
 
             HBox center = new HBox();
@@ -241,7 +241,7 @@ public final class JavaManagementPage extends ListPageBase<JavaRuntime> {
             HBox right = new HBox();
             right.setAlignment(Pos.CENTER_RIGHT);
             {
-                Button revealButton = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
+                JFXButton revealButton = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
                 revealButton.setOnAction(e -> {
                     JavaRuntime java = getItem();
                     if (java != null)
@@ -249,7 +249,7 @@ public final class JavaManagementPage extends ListPageBase<JavaRuntime> {
                 });
                 FXUtils.installFastTooltip(revealButton, i18n("reveal.in_file_manager"));
 
-                Button removeButton = new Button();
+                JFXButton removeButton = new JFXButton();
                 removeButton.getStyleClass().add("toggle-icon4");
                 removeButton.setOnAction(e -> {
                     JavaRuntime java = getItem();

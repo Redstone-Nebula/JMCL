@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -94,7 +94,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
             var worldNamePane = new LinePane();
             {
                 worldNamePane.setTitle(i18n("world.name"));
-                TextField worldNameField = new TextField();
+                JFXTextField worldNameField = new JFXTextField();
                 setRightTextField(worldNamePane, worldNameField, 200);
 
                 if (dataTag.get("LevelName") instanceof StringTag worldNameTag) {
@@ -130,8 +130,8 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
                     iconImageView.setImage(world.getIcon() == null ? FXUtils.newBuiltinImage("/assets/img/unknown_server.png") : world.getIcon());
                 }
 
-                Button editIconButton = FXUtils.newToggleButton4(SVG.EDIT, 20);
-                Button resetIconButton = FXUtils.newToggleButton4(SVG.RESTORE, 20);
+                JFXButton editIconButton = FXUtils.newToggleButton4(SVG.EDIT, 20);
+                JFXButton resetIconButton = FXUtils.newToggleButton4(SVG.RESTORE, 20);
                 {
                     editIconButton.setDisable(isReadOnly);
                     editIconButton.setOnAction(event -> Controllers.confirm(
@@ -160,7 +160,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
                 seedPane.setTitle(i18n("world.info.random_seed"));
 
                 SimpleBooleanProperty visibility = new SimpleBooleanProperty();
-                Button visibilityButton = FXUtils.newToggleButton4(SVG.VISIBILITY_OFF);
+                JFXButton visibilityButton = FXUtils.newToggleButton4(SVG.VISIBILITY_OFF);
                 {
                     visibilityButton.setAlignment(Pos.CENTER);
                     visibilityButton.setOnAction((event) -> visibility.set(!visibility.get()));
@@ -427,7 +427,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
     }
 
     private void setRightTextField(LinePane linePane, int perfWidth, Tag tag) {
-        TextField textField = new TextField();
+        JFXTextField textField = new JFXTextField();
         setRightTextField(linePane, textField, perfWidth);
         if (tag instanceof IntTag intTag) {
             bindTagAndTextField(intTag, textField);
@@ -438,7 +438,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
         }
     }
 
-    private void setRightTextField(LinePane linePane, TextField textField, int perfWidth) {
+    private void setRightTextField(LinePane linePane, JFXTextField textField, int perfWidth) {
         textField.setDisable(isReadOnly);
         textField.setPrefWidth(perfWidth);
         linePane.setRight(textField);
@@ -466,7 +466,7 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
         }
     }
 
-    private void bindTagAndTextField(IntTag intTag, TextField jfxTextField) {
+    private void bindTagAndTextField(IntTag intTag, JFXTextField jfxTextField) {
         jfxTextField.setText(intTag.getValue().toString());
 
         jfxTextField.textProperty().addListener((o, oldValue, newValue) -> {
@@ -484,9 +484,10 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
             }
         });
         FXUtils.setValidateWhileTextChanged(jfxTextField, true);
+        jfxTextField.setValidators(new NumberValidator(i18n("input.number"), true));
     }
 
-    private void bindTagAndTextField(FloatTag floatTag, TextField jfxTextField) {
+    private void bindTagAndTextField(FloatTag floatTag, JFXTextField jfxTextField) {
         jfxTextField.setText(new DecimalFormat("0.#").format(floatTag.getValue()));
 
         jfxTextField.textProperty().addListener((o, oldValue, newValue) -> {

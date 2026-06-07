@@ -17,29 +17,39 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import javafx.scene.control.TextField;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.base.ValidatorBase;
+
+import javafx.beans.InvalidationListener;
+import javafx.beans.WeakInvalidationListener;
+import javafx.scene.control.TextInputControl;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.Open_code_Studio.jmcl.util.javafx.SafeStringConverter;
 
-public final class Validator {
-    public static Consumer<Predicate<String>> addTo(TextField control) {
+public final class Validator extends ValidatorBase {
+
+    public static Consumer<Predicate<String>> addTo(JFXTextField control) {
         return addTo(control, null);
     }
 
     /**
      * @see SafeStringConverter#asPredicate(Consumer)
      */
-    public static Consumer<Predicate<String>> addTo(TextField control, String message) {
-        // JFoenix validation removed - validation is now done via simple string checks
+    public static Consumer<Predicate<String>> addTo(JFXTextField control, String message) {
         return predicate -> {
-            // No-op: validation is handled externally via TextField text checks
+            Validator validator = new Validator(message, predicate);
+            InvalidationListener listener = any -> control.validate();
+            validator.listener = listener;
+            control.textProperty().addListener(new WeakInvalidationListener(listener));
+            control.getValidators().add(validator);
         };
     }
 
     private final Predicate<String> validator;
+    private InvalidationListener listener;
 
     /**
      * @param validator return true if the input string is valid.
@@ -50,9 +60,15 @@ public final class Validator {
 
     public Validator(String message, Predicate<String> validator) {
         this(validator);
+
+        setMessage(message);
     }
 
-    public boolean test(String text) {
-        return validator.test(text);
+    @Override
+    protected void eval() {
+        if (this.srcControl.get() instanceof TextInputControl) {
+            String text = ((TextInputControl) srcControl.get()).getText();
+            hasErrors.set(!validator.test(text));
+        }
     }
 }

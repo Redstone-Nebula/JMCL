@@ -2,17 +2,22 @@ package org.Open_code_Studio.jmcl.ui.construct;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import org.Open_code_Studio.jmcl.ui.FXUtils;
+import org.Open_code_Studio.jmcl.ui.SVG;
+import org.Open_code_Studio.jmcl.ui.SVGContainer;
 import org.Open_code_Studio.jmcl.setting.StyleSheets;
 import org.Open_code_Studio.jmcl.util.logging.Logger;
 
@@ -34,8 +39,38 @@ public final class TaskLogDialog extends Stage {
         logArea.setWrapText(true);
         logArea.setStyle("-fx-font-family: 'Menlo', 'Monaco', 'Courier New', monospace; -fx-font-size: 11px;");
 
-        BorderPane contentPane = new BorderPane(logArea);
-        contentPane.setPadding(new Insets(8));
+        // --- MD3 Title Bar ---
+        Label titleLabel = new Label(i18n("log.viewer"));
+        titleLabel.getStyleClass().add("task-log-title");
+        HBox.setHgrow(titleLabel, Priority.ALWAYS);
+
+        SVGContainer closeIcon = SVG.CLOSE.createIcon(18);
+        closeIcon.getStyleClass().add("task-log-close-icon");
+
+        StackPane closeButton = new StackPane(closeIcon);
+        closeButton.getStyleClass().add("task-log-close-button");
+        closeButton.setCursor(Cursor.HAND);
+        closeButton.setOnMouseClicked(e -> close());
+
+        HBox titleBar = new HBox(titleLabel, closeButton);
+        titleBar.getStyleClass().add("task-log-title-bar");
+        titleBar.setAlignment(Pos.CENTER_LEFT);
+
+        // Window dragging via title bar
+        final double[] dragOffset = new double[2];
+        titleBar.setOnMousePressed(e -> {
+            dragOffset[0] = e.getSceneX();
+            dragOffset[1] = e.getSceneY();
+        });
+        titleBar.setOnMouseDragged(e -> {
+            setX(e.getScreenX() - dragOffset[0]);
+            setY(e.getScreenY() - dragOffset[1]);
+        });
+
+        // --- Content ---
+        BorderPane contentPane = new BorderPane();
+        contentPane.setTop(titleBar);
+        contentPane.setCenter(logArea);
         contentPane.getStyleClass().add("task-log-window");
 
         Rectangle clip = new Rectangle();

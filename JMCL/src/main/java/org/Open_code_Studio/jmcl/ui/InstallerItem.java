@@ -17,6 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRippler;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
@@ -27,7 +28,6 @@ import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Skin;
@@ -347,7 +347,7 @@ public class InstallerItem extends Control {
             buttonsContainer.setAlignment(Pos.CENTER);
             pane.getChildren().add(buttonsContainer);
 
-            Button removeButton = FXUtils.newToggleButton4(SVG.CLOSE);
+            JFXButton removeButton = FXUtils.newToggleButton4(SVG.CLOSE);
             if (control.id.equals(MINECRAFT.getPatchId())) {
                 removeButton.setVisible(false);
             } else {
@@ -364,7 +364,7 @@ public class InstallerItem extends Control {
             });
             buttonsContainer.getChildren().add(removeButton);
 
-            Button installButton = new Button();
+            JFXButton installButton = new JFXButton();
             installButton.graphicProperty().bind(Bindings.createObjectBinding(() ->
                             control.resolvedStateProperty.get() instanceof InstallableState ?
                                     SVG.ARROW_FORWARD.createIcon() :

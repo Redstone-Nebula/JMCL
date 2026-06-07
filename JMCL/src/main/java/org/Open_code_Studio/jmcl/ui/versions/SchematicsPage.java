@@ -17,9 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXListView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -515,7 +515,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                 }
 
                 {
-                    Button okButton = new Button();
+                    JFXButton okButton = new JFXButton();
                     okButton.getStyleClass().add("dialog-accept");
                     okButton.setText(i18n("button.ok"));
                     okButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
@@ -567,7 +567,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                 this.right = new HBox(8);
                 right.setAlignment(Pos.CENTER_RIGHT);
 
-                Button btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
+                JFXButton btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
                 FXUtils.installFastTooltip(btnReveal, i18n("reveal.in_file_manager"));
                 btnReveal.setOnAction(event -> {
                     Item item = getItem();
@@ -575,7 +575,7 @@ public final class SchematicsPage extends ListPageBase<SchematicsPage.Item> impl
                         item.onReveal();
                 });
 
-                Button btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
+                JFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
                 btnDelete.setOnAction(event -> {
                     Item item = getItem();
                     if (item != null && !(item instanceof BackItem)) {

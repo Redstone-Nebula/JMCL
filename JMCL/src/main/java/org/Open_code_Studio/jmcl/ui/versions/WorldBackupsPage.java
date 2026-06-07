@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXButton;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -166,7 +166,7 @@ public final class WorldBackupsPage extends ListPageBase<WorldBackupsPage.Backup
 
         @Override
         protected List<Node> initializeToolbar(WorldBackupsPage skinnable) {
-            Button createBackup = createToolbarButton2(i18n("world.backup.create.new_one"), SVG.ARCHIVE, skinnable::createBackup);
+            JFXButton createBackup = createToolbarButton2(i18n("world.backup.create.new_one"), SVG.ARCHIVE, skinnable::createBackup);
             createBackup.disableProperty().bind(getSkinnable().readOnly);
 
             return Arrays.asList(
@@ -256,12 +256,12 @@ public final class WorldBackupsPage extends ListPageBase<WorldBackupsPage.Backup
                 root.setRight(right);
                 right.setAlignment(Pos.CENTER_RIGHT);
 
-                Button btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
+                JFXButton btnReveal = FXUtils.newToggleButton4(SVG.FOLDER_OPEN);
                 right.getChildren().add(btnReveal);
                 FXUtils.installFastTooltip(btnReveal, i18n("reveal.in_file_manager"));
                 btnReveal.setOnAction(event -> skinnable.onReveal());
 
-                Button btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
+                JFXButton btnDelete = FXUtils.newToggleButton4(SVG.DELETE_FOREVER);
                 right.getChildren().add(btnDelete);
                 FXUtils.installFastTooltip(btnDelete, i18n("world.backup.delete"));
                 btnDelete.setOnAction(event -> Controllers.confirm(i18n("button.remove.confirm"), i18n("button.remove"), skinnable::onDelete, null));

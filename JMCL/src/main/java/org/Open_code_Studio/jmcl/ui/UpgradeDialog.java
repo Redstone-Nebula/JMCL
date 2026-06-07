@@ -19,7 +19,7 @@ package org.Open_code_Studio.jmcl.ui;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.scene.control.Label;
@@ -100,11 +100,11 @@ public final class UpgradeDialog extends JFXDialogLayout {
         JFXHyperlink openInBrowser = new JFXHyperlink(i18n("web.view_in_browser"));
         openInBrowser.setExternalLink(releaseUrl);
 
-        Button updateButton = new Button(i18n("update.accept"));
+        JFXButton updateButton = new JFXButton(i18n("update.accept"));
         updateButton.getStyleClass().add("dialog-accept");
         updateButton.setOnAction(e -> updateRunnable.run());
 
-        Button cancelButton = new Button(i18n("button.cancel"));
+        JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
         cancelButton.getStyleClass().add("dialog-cancel");
         cancelButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
 

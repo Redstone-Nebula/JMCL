@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.download;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -44,9 +44,9 @@ public abstract class ModpackPage extends SpinnerPane implements WizardPage {
     protected final StringProperty nameProperty;
     protected final StringProperty versionProperty;
     protected final StringProperty authorProperty;
-    protected final TextField txtModpackName;
-    protected final Button btnInstall;
-    protected final Button btnDescription;
+    protected final JFXTextField txtModpackName;
+    protected final JFXButton btnInstall;
+    protected final JFXButton btnDescription;
 
     protected ModpackPage(WizardController controller) {
         this.controller = controller;
@@ -61,7 +61,7 @@ public abstract class ModpackPage extends SpinnerPane implements WizardPage {
             {
                 archiveNamePane.setTitle(i18n("version.name"));
 
-                txtModpackName = new TextField();
+                txtModpackName = new JFXTextField();
                 txtModpackName.setPrefWidth(300);
                 FXUtils.setLimitHeight(archiveNamePane, 75);
                 // BorderPane.setMargin(txtModpackName, new Insets(0, 0, 8, 32));
@@ -95,7 +95,7 @@ public abstract class ModpackPage extends SpinnerPane implements WizardPage {
 
                 btnInstall = FXUtils.newRaisedButton(i18n("button.install"));
                 btnInstall.setOnAction(e -> onInstall());
-                btnInstall.disableProperty().bind(createBooleanBinding(() -> txtModpackName.getText().isEmpty(), txtModpackName.textProperty()));
+                btnInstall.disableProperty().bind(createBooleanBinding(() -> !txtModpackName.validate(), txtModpackName.textProperty()));
                 descriptionPane.setRight(btnInstall);
             }
 

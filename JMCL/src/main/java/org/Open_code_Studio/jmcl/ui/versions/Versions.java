@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
 import org.Open_code_Studio.jmcl.auth.Account;
@@ -118,7 +118,7 @@ public final class Versions {
         String message = isIndependent ? i18n("version.manage.remove.confirm.independent", version) :
                 i18n("version.manage.remove.confirm.trash", version, version + "_removed");
 
-        Button deleteButton = new Button(i18n("button.delete"));
+        JFXButton deleteButton = new JFXButton(i18n("button.delete"));
         deleteButton.getStyleClass().add("dialog-error");
         deleteButton.setOnAction(e -> {
             Task.supplyAsync(Schedulers.io(), () -> profile.getRepository().removeVersionFromDisk(version))
@@ -218,7 +218,9 @@ public final class Versions {
                             }).start();
                 })
                         .addQuestion(new PromptDialogPane.Builder.HintQuestion(i18n("version.manage.duplicate.confirm")))
-                        .addQuestion(new PromptDialogPane.Builder.StringQuestion(null, version))
+                        .addQuestion(new PromptDialogPane.Builder.StringQuestion(null, version,
+                                new Validator(i18n("install.new_game.malformed"), JMCLGameRepository::isValidVersionId),
+                                new Validator(i18n("install.new_game.already_exists"), newVersionName -> !profile.getRepository().versionIdConflicts(newVersionName))))
                         .addQuestion(new PromptDialogPane.Builder.BooleanQuestion(i18n("version.manage.duplicate.duplicate_save"), false)));
     }
 
@@ -320,7 +322,7 @@ public final class Versions {
 
     private static boolean checkVersionForLaunching(Profile profile, String id) {
         if (id == null || !profile.getRepository().isLoaded() || !profile.getRepository().hasVersion(id)) {
-            Button gotoDownload = new Button(i18n("version.empty.launch.goto_download"));
+            JFXButton gotoDownload = new JFXButton(i18n("version.empty.launch.goto_download"));
             gotoDownload.getStyleClass().add("dialog-accept");
             gotoDownload.setOnAction(e -> Controllers.navigate(Controllers.getDownloadPage()));
 

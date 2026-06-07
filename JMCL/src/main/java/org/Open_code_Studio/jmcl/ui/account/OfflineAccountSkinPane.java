@@ -17,11 +17,10 @@
  */
 package org.Open_code_Studio.jmcl.ui.account;
 
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialogLayout;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TextField;
+import com.jfoenix.controls.JFXTextField;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -58,8 +57,8 @@ public class OfflineAccountSkinPane extends StackPane {
     private final OfflineAccount account;
 
     private final MultiFileItem<Skin.Type> skinItem = new MultiFileItem<>();
-    private final TextField cslApiField = new TextField();
-    private final ComboBox<TextureModel> modelCombobox = new ComboBox<>();
+    private final JFXTextField cslApiField = new JFXTextField();
+    private final JFXComboBox<TextureModel> modelCombobox = new JFXComboBox<>();
     private final FileSelector skinSelector = new FileSelector();
     private final FileSelector capeSelector = new FileSelector();
 
@@ -112,6 +111,8 @@ public class OfflineAccountSkinPane extends StackPane {
         layout.setBody(pane);
 
         cslApiField.setPromptText(i18n("account.skin.type.csl_api.location.hint"));
+        cslApiField.setValidators(new URLValidator());
+        FXUtils.setValidateWhileTextChanged(cslApiField, true);
 
         skinItem.loadChildren(Arrays.asList(
                 new MultiFileItem.Option<>(i18n("message.default"), Skin.Type.DEFAULT),
@@ -168,7 +169,7 @@ public class OfflineAccountSkinPane extends StackPane {
             Skin.Type selectedType = skinItem.getSelectedData();
 
             if (selectedType == Skin.Type.CUSTOM_SKIN_LOADER_API) {
-                if (cslApiField.getText().isEmpty()) {
+                if (!cslApiField.validate()) {
                     pauseTransition.stop();
                     return;
                 }
@@ -225,23 +226,23 @@ public class OfflineAccountSkinPane extends StackPane {
             skinOptionPane.getChildren().setAll(gridPane);
         });
 
-        Button acceptButton = new Button(i18n("button.ok"));
+        JFXButton acceptButton = new JFXButton(i18n("button.ok"));
         acceptButton.getStyleClass().add("dialog-accept");
         acceptButton.setOnAction(e -> {
             account.setSkin(getSkin());
             fireEvent(new DialogCloseEvent());
         });
 
-        Hyperlink littleSkinLink = new Hyperlink(i18n("account.skin.type.little_skin"));
+        JFXHyperlink littleSkinLink = new JFXHyperlink(i18n("account.skin.type.little_skin"));
         littleSkinLink.setOnAction(e -> FXUtils.openLink("https://littleskin.cn/"));
-        Button cancelButton = new Button(i18n("button.cancel"));
+        JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
         cancelButton.getStyleClass().add("dialog-cancel");
         cancelButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
         onEscPressed(this, cancelButton::fire);
 
         acceptButton.disableProperty().bind(
                 skinItem.selectedDataProperty().isEqualTo(Skin.Type.CUSTOM_SKIN_LOADER_API)
-                        .and(cslApiField.textProperty().isEmpty()));
+                        .and(cslApiField.activeValidatorProperty().isNotNull()));
 
         layout.setActions(littleSkinLink, acceptButton, cancelButton);
     }

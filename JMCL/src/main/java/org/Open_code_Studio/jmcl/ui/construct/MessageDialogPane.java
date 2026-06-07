@@ -17,8 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBase;
@@ -148,8 +147,8 @@ public final class MessageDialogPane extends HBox {
         }
 
         public Builder addHyperLink(String text, String externalLink) {
-            Hyperlink link = new Hyperlink(text);
-            link.setOnAction(e -> FXUtils.openLink(externalLink));
+            JFXHyperlink link = new JFXHyperlink(text);
+            link.setExternalLink(externalLink);
             dialog.actions.getChildren().add(link);
             return this;
         }
@@ -161,8 +160,9 @@ public final class MessageDialogPane extends HBox {
         }
 
         public Builder addAction(String text, @Nullable Runnable action) {
-            Button btnAction = new Button(text);
+            JFXButton btnAction = new JFXButton(text);
             btnAction.getStyleClass().add("dialog-accept");
+            btnAction.setButtonType(JFXButton.ButtonType.FLAT);
             if (action != null) {
                 btnAction.setOnAction(e -> action.run());
             }
@@ -171,8 +171,9 @@ public final class MessageDialogPane extends HBox {
         }
 
         public Builder ok(@Nullable Runnable ok) {
-            Button btnOk = new Button(i18n("button.ok"));
+            JFXButton btnOk = new JFXButton(i18n("button.ok"));
             btnOk.getStyleClass().add("dialog-accept");
+            btnOk.setButtonType(JFXButton.ButtonType.FLAT);
             if (ok != null) {
                 btnOk.setOnAction(e -> ok.run());
             }
@@ -186,7 +187,8 @@ public final class MessageDialogPane extends HBox {
         }
 
         public Builder addCancel(String cancelText, @Nullable Runnable cancel) {
-            Button btnCancel = new Button(cancelText);
+            JFXButton btnCancel = new JFXButton(cancelText);
+            btnCancel.setButtonType(JFXButton.ButtonType.FLAT);
             btnCancel.getStyleClass().add("dialog-cancel");
             if (cancel != null) {
                 btnCancel.setOnAction(e -> cancel.run());
@@ -197,8 +199,9 @@ public final class MessageDialogPane extends HBox {
         }
 
         public Builder yesOrNo(@Nullable Runnable yes, @Nullable Runnable no) {
-            Button btnYes = new Button(i18n("button.yes"));
+            JFXButton btnYes = new JFXButton(i18n("button.yes"));
             btnYes.getStyleClass().add("dialog-accept");
+            btnYes.setButtonType(JFXButton.ButtonType.FLAT);
             if (yes != null) {
                 btnYes.setOnAction(e -> yes.run());
             }

@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import javafx.application.Platform;
 import javafx.beans.WeakListener;
 import javafx.beans.binding.Bindings;
@@ -91,7 +91,7 @@ public final class TaskListPane extends StackPane {
     private static final Insets STAGED_PROGRESS_NODE_PADDING = new Insets(0, 0, 4, 26);
 
     private TaskExecutor executor;
-    private final ListView<Node> listView = new ListView<>();
+    private final JFXListView<Node> listView = new JFXListView<>();
     private final Map<Task<?>, ProgressListNode> nodes = new HashMap<>();
     private final Map<String, StageNode> stageNodes = new HashMap<>();
     private final ObjectProperty<Insets> progressNodePadding = new SimpleObjectProperty<>(Insets.EMPTY);
@@ -106,7 +106,7 @@ public final class TaskListPane extends StackPane {
             cellWidth.set(w <= 12.0 ? w : w - 12.0);
         });
 
-        Button viewLogButton = new Button(i18n("log.viewer.view_logs"));
+        JFXButton viewLogButton = new JFXButton(i18n("log.viewer.view_logs"));
         viewLogButton.getStyleClass().add("jfx-button-border");
         viewLogButton.setMaxWidth(Double.MAX_VALUE);
         viewLogButton.visibleProperty().bind(ConfigHolder.globalConfig().showInstallationLogProperty());

@@ -21,7 +21,6 @@ import com.jfoenix.controls.*;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.ScrollPane;
@@ -131,7 +130,7 @@ public class DownloadSettingsPage extends StackPane {
                                             .orElse(i18n("launcher.cache_directory.disabled")),
                                     config().commonDirectoryProperty(), config().commonDirTypeProperty()));
 
-                    Button cleanButton = FXUtils.newBorderButton(i18n("launcher.cache_directory.clean"));
+                    JFXButton cleanButton = FXUtils.newBorderButton(i18n("launcher.cache_directory.clean"));
                     cleanButton.setOnAction(e -> clearCacheDirectory());
                     fileCommonLocationSublist.setHeaderRight(cleanButton);
                 }

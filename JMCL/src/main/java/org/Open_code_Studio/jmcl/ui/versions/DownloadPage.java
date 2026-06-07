@@ -17,8 +17,8 @@
  */
 package org.Open_code_Studio.jmcl.ui.versions;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
-import javafx.scene.control.Button;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -507,9 +507,9 @@ public class DownloadPage extends Control implements DecoratorPage {
 
             this.setBody(box);
 
-            Button downloadButton = null;
+            JFXButton downloadButton = null;
             if (selfPage.callback != null) {
-                downloadButton = new Button(type == RemoteModRepository.Type.MODPACK ? i18n("install.modpack") : i18n("mods.install"));
+                downloadButton = new JFXButton(type == RemoteModRepository.Type.MODPACK ? i18n("install.modpack") : i18n("mods.install"));
                 downloadButton.getStyleClass().add("dialog-accept");
                 downloadButton.setOnAction(e -> {
                     if (type == RemoteModRepository.Type.MODPACK || !spinnerPane.isLoading() && spinnerPane.getFailedReason() == null) {
@@ -519,7 +519,7 @@ public class DownloadPage extends Control implements DecoratorPage {
                 });
             }
 
-            Button saveAsButton = new Button(i18n("mods.save_as"));
+            JFXButton saveAsButton = new JFXButton(i18n("mods.save_as"));
             saveAsButton.getStyleClass().add("dialog-accept");
             saveAsButton.setOnAction(e -> {
                 if (!spinnerPane.isLoading() && spinnerPane.getFailedReason() == null) {
@@ -528,7 +528,7 @@ public class DownloadPage extends Control implements DecoratorPage {
                 selfPage.saveAs(mod, version);
             });
 
-            Button cancelButton = new Button(i18n("button.cancel"));
+            JFXButton cancelButton = new JFXButton(i18n("button.cancel"));
             cancelButton.getStyleClass().add("dialog-cancel");
             cancelButton.setOnAction(e -> fireEvent(new DialogCloseEvent()));
 

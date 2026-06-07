@@ -17,11 +17,11 @@
  */
 package org.Open_code_Studio.jmcl.ui.nbt;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Skin;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -77,7 +77,7 @@ public final class NBTEditorPage extends SpinnerPane implements DecoratorPage {
         actions.setPadding(new Insets(8));
         actions.setAlignment(Pos.CENTER_RIGHT);
 
-        Button saveButton = FXUtils.newRaisedButton(i18n("button.save"));
+        JFXButton saveButton = FXUtils.newRaisedButton(i18n("button.save"));
         saveButton.setOnAction(e -> {
             try {
                 save();
@@ -87,7 +87,7 @@ public final class NBTEditorPage extends SpinnerPane implements DecoratorPage {
             }
         });
 
-        Button cancelButton = FXUtils.newRaisedButton(i18n("button.cancel"));
+        JFXButton cancelButton = FXUtils.newRaisedButton(i18n("button.cancel"));
         cancelButton.setOnAction(e -> fireEvent(new PageCloseEvent()));
         onEscPressed(this, cancelButton::fire);
 

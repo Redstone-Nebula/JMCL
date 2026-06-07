@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialogLayout;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -36,7 +36,7 @@ public class DialogPane extends JFXDialogLayout {
     private final StringProperty title = new SimpleStringProperty();
     private final BooleanProperty valid = new SimpleBooleanProperty(true);
     protected final SpinnerPane acceptPane = new SpinnerPane();
-    protected final Button cancelButton = new Button();
+    protected final JFXButton cancelButton = new JFXButton();
     protected final Label warningLabel = new Label();
     private final ProgressBar progressBar = new ProgressBar();
 
@@ -52,7 +52,7 @@ public class DialogPane extends JFXDialogLayout {
         StackPane.setAlignment(progressBar, Pos.TOP_CENTER);
         progressBar.setMaxWidth(Double.MAX_VALUE);
 
-        Button acceptButton = new Button(i18n("button.ok"));
+        JFXButton acceptButton = new JFXButton(i18n("button.ok"));
         acceptButton.setOnAction(e -> onAccept());
         acceptButton.disableProperty().bind(valid.not());
         acceptButton.getStyleClass().add("dialog-accept");

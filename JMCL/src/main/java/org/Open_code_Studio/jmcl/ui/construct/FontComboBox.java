@@ -24,13 +24,13 @@ import static javafx.collections.FXCollections.singletonObservableList;
 import org.Open_code_Studio.jmcl.ui.FXUtils;
 import org.Open_code_Studio.jmcl.util.javafx.BindingMapping;
 
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListCell;
 
 import javafx.beans.binding.Bindings;
 import javafx.scene.text.Font;
 
-public final class FontComboBox extends ComboBox<String> {
+public final class FontComboBox extends JFXComboBox<String> {
 
     private boolean loaded = false;
 
@@ -39,7 +39,7 @@ public final class FontComboBox extends ComboBox<String> {
 
         styleProperty().bind(Bindings.concat("-fx-font-family: \"", valueProperty(), "\""));
 
-        setCellFactory(listView -> new ListCell<String>() {
+        setCellFactory(listView -> new JFXListCell<String>() {
             @Override
             public void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);

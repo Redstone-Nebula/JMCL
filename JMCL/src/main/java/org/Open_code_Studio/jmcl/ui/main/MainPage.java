@@ -17,7 +17,7 @@
  */
 package org.Open_code_Studio.jmcl.ui.main;
 
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPopup;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -100,7 +100,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
     private TransitionPane announcementPane;
     private final StackPane updatePane;
-    private final Button menuButton;
+    private final JFXButton menuButton;
 
     {
         HBox titleNode = new HBox(8);
@@ -139,7 +139,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
             titleBar.getStyleClass().add("title");
             titleBar.setLeft(new Label(title));
 
-            Button btnHide = new Button();
+            JFXButton btnHide = new JFXButton();
             btnHide.setOnAction(e -> {
                 announcementPane.setContent(new StackPane(), ContainerAnimations.FADE);
                 if (Metadata.isDev()) {
@@ -195,7 +195,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
                 hBox.getChildren().setAll(SVG.UPDATE.createIcon(20), prompt);
             }
 
-            Button closeUpdateButton = new Button();
+            JFXButton closeUpdateButton = new JFXButton();
             closeUpdateButton.setGraphic(SVG.CLOSE.createIcon(10));
             StackPane.setAlignment(closeUpdateButton, Pos.TOP_RIGHT);
             closeUpdateButton.getStyleClass().add("toggle-icon-tiny");
@@ -214,7 +214,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
         StackPane.setAlignment(launchPane, Pos.BOTTOM_RIGHT);
         {
-            Button launchButton = new Button();
+            JFXButton launchButton = new JFXButton();
             launchButton.getStyleClass().addAll("launch-button", "md3-elevated-button");
             launchButton.setDefaultButton(true);
             {
@@ -252,7 +252,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
                 launchButton.setGraphic(graphic);
             }
 
-            menuButton = new Button();
+            menuButton = new JFXButton();
             menuButton.getStyleClass().addAll("menu-button", "md3-icon-button");
             menuButton.setOnAction(e -> GameListPopupMenu.show(
                     menuButton,

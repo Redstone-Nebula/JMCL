@@ -17,9 +17,9 @@
  */
 package org.Open_code_Studio.jmcl.ui.construct;
 
-import javafx.scene.control.Button;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPopup;
-import javafx.scene.control.TextField;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -44,7 +44,7 @@ public class FileSelector extends HBox {
     private SelectionMode selectionMode = SelectionMode.FILE;
     private final ObservableList<FileChooser.ExtensionFilter> extensionFilters = FXCollections.observableArrayList();
 
-    Button selectButton = FXUtils.newToggleButton4(SVG.FOLDER_OPEN, 15);
+    JFXButton selectButton = FXUtils.newToggleButton4(SVG.FOLDER_OPEN, 15);
 
     public enum SelectionMode {
         FILE,
@@ -87,7 +87,7 @@ public class FileSelector extends HBox {
     }
 
     public FileSelector() {
-        TextField customField = new TextField();
+        JFXTextField customField = new JFXTextField();
         FXUtils.bindString(customField, valueProperty());
 
         selectButton.setOnAction(e -> {
@@ -113,7 +113,7 @@ public class FileSelector extends HBox {
         getChildren().addAll(customField, selectButton);
     }
 
-    private void openFileChooser(TextField customField) {
+    private void openFileChooser(JFXTextField customField) {
         FileChooser chooser = new FileChooser();
         chooser.getExtensionFilters().addAll(getExtensionFilters());
         chooser.setTitle(StringUtils.isBlank(chooserTitle) ? i18n("selector.choose_file") : chooserTitle);
@@ -125,7 +125,7 @@ public class FileSelector extends HBox {
         }
     }
 
-    private void openDirectoryChooser(TextField customField) {
+    private void openDirectoryChooser(JFXTextField customField) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(StringUtils.isBlank(chooserTitle) ? i18n("selector.choose_directory") : chooserTitle);
         Path dir = FileUtils.toPath(chooser.showDialog(Controllers.getStage()));
