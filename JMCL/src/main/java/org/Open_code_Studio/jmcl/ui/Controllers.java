@@ -348,7 +348,7 @@ public final class Controllers {
         stage.setOnCloseRequest(e -> Launcher.stopApplication());
 
         Node rootNode;
-        if ("PLAY".equalsIgnoreCase(config().getLauncherType())) {
+        if ("PLAYER".equalsIgnoreCase(config().getLauncherType())) {
             Profile profile = Profiles.getSelectedProfile();
             JMCLGameRepository repo = profile != null ? profile.getRepository() : null;
             rootNode = repo != null ? new PlayModePane(repo) : getRootPage();
