@@ -68,7 +68,9 @@ public final class PlayModePane extends VBox {
         VBox.setMargin(appName, new Insets(0, 0, 8, 0));
 
         // Account label
-        Label accountLabel = new Label(i18n("account") + ": " + Accounts.getCurrentAccountName());
+        Account selectedAccount = Accounts.getSelectedAccount();
+        String accountName = selectedAccount != null ? selectedAccount.getCharacter() : i18n("account.not_logged_in");
+        Label accountLabel = new Label(i18n("account") + ": " + accountName);
         accountLabel.getStyleClass().add("play-mode-section-title");
         accountLabel.setOnMouseClicked(e -> Controllers.navigate(Controllers.getAccountListPage()));
         accountLabel.setMaxWidth(Double.MAX_VALUE);
