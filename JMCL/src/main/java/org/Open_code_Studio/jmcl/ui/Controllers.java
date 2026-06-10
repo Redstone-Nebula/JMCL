@@ -43,6 +43,7 @@ import javafx.util.Duration;
 import org.Open_code_Studio.jmcl.Launcher;
 import org.Open_code_Studio.jmcl.Metadata;
 import org.Open_code_Studio.jmcl.game.LauncherHelper;
+import org.Open_code_Studio.jmcl.game.JMCLGameRepository;
 import org.Open_code_Studio.jmcl.game.ModpackHelper;
 import org.Open_code_Studio.jmcl.java.JavaManager;
 import org.Open_code_Studio.jmcl.java.JavaRuntime;
@@ -346,7 +347,15 @@ public final class Controllers {
 
         stage.setOnCloseRequest(e -> Launcher.stopApplication());
 
-        decorator = new DecoratorController(stage, getRootPage());
+        Node rootNode;
+        if ("PLAY".equalsIgnoreCase(config().getLauncherType())) {
+            Profile profile = Profiles.getSelectedProfile();
+            JMCLGameRepository repo = profile != null ? profile.getRepository() : null;
+            rootNode = repo != null ? new PlayModePane(repo) : getRootPage();
+        } else {
+            rootNode = getRootPage();
+        }
+        decorator = new DecoratorController(stage, rootNode);
 
         if (config().getCommonDirType() == EnumCommonDirectory.CUSTOM &&
                 !FileUtils.canCreateDirectory(config().getCommonDirectory())) {
@@ -505,6 +514,12 @@ public final class Controllers {
                             Platform.exit();
                         }, updateShowTips);
                     }, updateShowTips);
+        }
+
+        // Show first-launch wizard on initial startup
+        if (!config().isFirstLaunchWizardShown()) {
+            FirstLaunchWizard wizard = new FirstLaunchWizard(stage);
+            wizard.show();
         }
     }
 
